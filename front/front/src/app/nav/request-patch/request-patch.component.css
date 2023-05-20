@@ -10,5 +10,32 @@
 }
 
 .request-patch-file-area{
-
+    display: flex;
+    margin-top: 2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+
+.request-patch-file-item{
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+
+.request-patch-device-area {
+    padding: 10px;
+}
+
+.request-patch-device-item {
+    display: flex;
+    align-items: center;
+}
+.request-patch-device-label {
+    padding-left: 1.1rem;
+}
+
+.request-patch-button-bar {
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+  }

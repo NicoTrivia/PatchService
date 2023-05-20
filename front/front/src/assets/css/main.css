@@ -32,10 +32,15 @@
     font-weight: bold;
     font-size: 1.8rem;
     letter-spacing: 0px;
-    opacity: 1;
-    margin-top: 15px;
     margin-bottom: 5px;
 }
+.patch-form-title-desc {
+    padding-top: 15px;
+    text-align: left;
+    font-size: 1rem;
+    letter-spacing: 0px;
+}
+
 .patch-form-title-number {
     background: #a5b4fc;
     border-radius: 5px;

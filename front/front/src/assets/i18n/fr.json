@@ -1,14 +1,43 @@
 {
     "HOME_PAGE": {
         "TITLE": {
-            "MAIN": "PATCH SERVICES DEVELOPMENT"
+            "MAIN": "PATCH SERVICES Developement"
         }
     },
     "REQUEST_PATCH": {
-            "TITLE":  {
-                "UPLOAD_FILE": "Soumettre un ficher à patcher",
-                "SELECT_DEVICE": "Sélection du calculateur",
-                "PATCH_SELECTION": "Traitements à appliquer"
-            }
+        "TITLE":  {
+            "SIDEBAR": "Patcher",
+            "UPLOAD_FILE": "Soumettre un fichier à patcher",
+            "SELECT_DEVICE": "Sélection du calculateur",
+            "PATCH_SELECTION": "Traitements à appliquer"
+        },
+        "DESC": {
+            "UPLOAD_FILE": "Le fichier binaire peut être soumis tel quel ou dans un fichier zip. Utiliser le bouton ou un drag and drop du fichier."
+        },
+        "BTN": {
+            "UPLOAD_FILE": "Soumettre un fichier"
+        },
+        "MSG": {
+            "UPLOAD": "Le fichier a été soumis avec succès : sélectionnez un calculateur",
+            "SELECT_BRAND": "Marque du véhicule",
+            "SELECT_DEVICE": "Type de calculateur"
+        }
+    },
+    "BTN": {
+        "SUBMIT_TICKET": "Soumettre la demande",
+        "SET_PASSWORD": "Mot de passe",
+        "LOGOUT": "Déconnexion",
+        "INFORMATION": "Information",
+        "HISTORY_VIEW": "Historique"
+    },
+    "HISTORY_VIEW": {
+        "TITLE":  {
+            "SIDEBAR": "Historique des tickets"
+        }
+    },
+    "GENERAL": {
+        "UNDEFINED": "Non défini",
+        "GREETINGS": "Bonjour",
+        "VERSION": "Version de l'application"
     }
 }

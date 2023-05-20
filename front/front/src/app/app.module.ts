@@ -2,6 +2,7 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
 import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
 import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 registerLocaleData(localeFr);
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,8 +16,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 // UI
 import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
+import { MessageService } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
@@ -35,8 +39,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SidebarComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule,
-    FileUploadModule, DialogModule,
+    BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
+    FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,
 
     TranslateModule.forRoot({
       loader: {

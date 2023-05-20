@@ -71,9 +71,10 @@
             </tr>
         </table>
     </div>
+    <p-toast></p-toast>
 </aside>
-<p-dialog header="Patch" [(visible)]="displayVersion" [style]="{width: '30vw'}" position="center" [draggable]='false' [resizable]='false'>
-    <div class='slfp-theme'>{{"GENERAL.VERSION" | translate}}</div>
+<p-dialog header="{{'HOME_PAGE.TITLE.MAIN' | translate}}" [(visible)]="displayVersion" [style]="{width: '30vw'}" position="center" [draggable]='false' [resizable]='false'>
+    <div>{{"GENERAL.VERSION" | translate}}</div>
     <br/><p>
     {{getVersion()}}
     </p>

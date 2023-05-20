@@ -4,18 +4,83 @@
         <div class="row patch-card-area">
             <div class="col-6 patch-card request-patch-card-top">
                 <div class="patch-form-title"><span class="patch-form-title-number">1</span>&nbsp;{{'REQUEST_PATCH.TITLE.UPLOAD_FILE' | translate}}</div>
-                <div class="patch-form-file-area"> 
+                <div class="patch-form-title-desc">{{'REQUEST_PATCH.DESC.UPLOAD_FILE' | translate}}</div>
+                <div class="request-patch-file-area"> 
                     <p-fileUpload mode="basic" name="upload-patch-file" url="https://www.primefaces.org/cdn/api/upload.php"  [maxFileSize]="5000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="{{'REQUEST_PATCH.BTN.UPLOAD_FILE' | translate}}"></p-fileUpload>
+                    <div *ngIf="fileName" class="request-patch-file-item"><i class="fa-regular fa-file"></i>&nbsp;<span class="patch-form-title-desc">{{fileName}} ({{fileSize}} Ko)</span></div>
                 </div>
             </div>
             <div class="col-6 patch-card request-patch-card-top">
                 <div class="patch-form-title"><span class="patch-form-title-number">2</span>&nbsp;{{'REQUEST_PATCH.TITLE.SELECT_DEVICE' | translate}}</div>
+                <div>
+                    <br/>
+                    <p-dropdown [disabled]="!fileName" [options]="brandList" [(ngModel)]="brandSelected" [placeholder]="placeholderBrand"  optionLabel="name"  [style]="{'width':'60%'}" (onChange)="updateDevices()"></p-dropdown>
+                </div>
+                <div>
+                    <br/>
+                    <p-dropdown [disabled]="!brandSelected || brandSelected.code==''" [options]="deviceList" [(ngModel)]="deviceSelected" [placeholder]="placeholderDevice"  optionLabel="name"  [style]="{'width':'60%'}"></p-dropdown>
+                </div>
             </div>
         </div>
         <div class="row patch-card-area">
             <div class="col-12 patch-card request-patch-card-bottom">
                 <div class="patch-form-title"><span class="patch-form-title-number">3</span>&nbsp;{{'REQUEST_PATCH.TITLE.PATCH_SELECTION' | translate}}</div>
+                <br/>
+                <div class="row request-patch-device-area">
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_dpf"></p-inputSwitch>
+                             <span class='request-patch-device-label'>DPF</span>
+                        </span>
+                    </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_egr"></p-inputSwitch> 
+                            <span class='request-patch-device-label'>EGR</span>
+                        </span>
+                    </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_tva"></p-inputSwitch>
+                            <span class='request-patch-device-label'>TVA</span>
+                        </span>
+                    </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_flaps"></p-inputSwitch>
+                            <span class='request-patch-device-label'>FLAPS</span>
+                        </span>
+                    </div>
+                </div>    
+                <div class="row request-patch-device-area">
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_start_stop"></p-inputSwitch> 
+                            <span class='request-patch-device-label'>Start / Stop</span>
+                        </span>
+                </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_adblue"></p-inputSwitch>
+                            <span class='request-patch-device-label'>Adblue</span>
+                        </span>
+                    </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_lambda"></p-inputSwitch>
+                            <span class='request-patch-device-label'>Lambda</span>
+                        </span>
+                    </div>
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_readiness"></p-inputSwitch>
+                            <span class='request-patch-device-label'>Readiness</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="row request-patch-device-area">
+                    <div class="col-3">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_maf"></p-inputSwitch>
+                            <span class='request-patch-device-label'>MAF</span>
+                        </span>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="request-patch-button-bar">
+            <button [disabled]="!canSubmit()" pButton id="validate" class="p-button-rounded" (click)="submitTicket()" label="{{'BTN.SUBMIT_TICKET' | translate}}"></button>
         </div>
     </div>
 </section>
