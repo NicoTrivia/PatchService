@@ -33,9 +33,9 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
         }
 
         if (localStorage.getItem(Config.STORAGE_SLFP_SIDEBAR_LARGE) === 'false') {
-            this.sidebarSmall = false;
-        } else {
             this.sidebarSmall = true;
+        } else {
+            this.sidebarSmall = false;
         }
         if (this.selected == null || !this.selected) {
             this.selected = localStorage.getItem(Config.STORAGE_SLFP_SIDEBAR_ITEM);
@@ -78,7 +78,7 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
 
     public sidebarSize(status: boolean): void {
         this.sidebarSmall = status;
-        localStorage.setItem(Config.STORAGE_SLFP_SIDEBAR_LARGE, status.toString());
+        localStorage.setItem(Config.STORAGE_SLFP_SIDEBAR_LARGE, (!status).toString());
     }
 
     public select(dest: string): void {
