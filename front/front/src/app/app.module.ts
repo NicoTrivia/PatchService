@@ -13,8 +13,15 @@ import { AppRoutingModule } from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
+// UI
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+import {DialogModule} from 'primeng/dialog';
+
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
+import { SidebarComponent } from './nav/sidebar/sidebar.component';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -24,11 +31,12 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    RequestPatchComponent
+    RequestPatchComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule,
-
+    FileUploadModule, DialogModule,
 
     TranslateModule.forRoot({
       loader: {
@@ -40,6 +48,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [
+    MessageService,
     {provide: APP_BASE_HREF, useValue : '/front/' },
     { provide: LOCALE_ID, useValue: navigator.language}
   ],

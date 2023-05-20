@@ -1,0 +1,83 @@
+<aside class='container-sidebar custom-scrollbar' [ngClass]="{'container-sidebar-small': sidebarSmall, 'container-sidebar-large' :!sidebarSmall }">
+    <div class="sidebar-area" *ngIf="initialized">
+        <div class='sidebar-selector'>
+            <table class='sidebar-logo-table'>
+                <tr>
+                    <td rowspan="3">
+                        <img alt="Patch Services" src="assets/images/logo.png" id="imgSidebarLogo" [class]="(sidebarSmall ? 'sidebar-logo-small' : 'sidebar-logo')" (click)="select('home')"/>
+                    </td>
+                    <td>
+                        <button (click)="sidebarSize(!sidebarSmall)" class="sidebar-toggle-btn" [ngClass]="{'sidebar-toggle-small': sidebarSmall, 'sidebar-toggle-large': !sidebarSmall}">
+                            <em  class="fa-solid fa-angle-left sidebar-toggle-arrow"></em>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr/>
+        <table class="sidebar-options-table">
+            <tr>
+                <td class="sidebar-options-td-top">
+                    <div class='sidebar-options-top'>
+                        <div class='sidebar-link-row'>
+                            <div id="divPatch" *ngIf="allow(PROFILE.OPERATOR)" class='sidebar-link sidebar-hover' (click)="select('requestPatch')" [ngClass]="{'sidebar-item-selected': isSelected('requestPatch')}">
+                                <em  class="fa-solid fa-gears" title="{{'REQUEST_PATCH.TITLE.SIDEBAR' | translate}}"></em>
+                                <span id="spanPatch" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('requestPatch')}" *ngIf="!sidebarSmall">{{'REQUEST_PATCH.TITLE.SIDEBAR' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('requestPatch')}"></div>
+                        </div>
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
+                            <div id="divHistoryView" class='sidebar-link sidebar-hover' [ngClass]="{'sidebar-item-selected': isSelected('viewHistory')}" (click)="select('viewHistory')">
+                                <em class="fa-solid fa-receipt" style='cursor: pointer' title="{{'HISTORY_VIEW.TITLE.SIDEBAR' | translate}}"></em>
+                                <span id="spanHistoryView" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('viewHistory')}" *ngIf="!sidebarSmall">{{'BTN.HISTORY_VIEW' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('viewHistory')}"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td  class="sidebar-options-td-bottom">
+                    <div class='sidebar-options-bottom'>
+                        <hr/>
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)">
+                            <div id="divSelectPasswordView" class='sidebar-link sidebar-hover'  [ngClass]="{'sidebar-item-selected': isSelected('selectPassword')}" (click)="select('selectPassword')">
+                                <em  class="fa-solid fa-unlock" style="cursor: pointer;" title="{{'BTN.SET_PASSWORD' | translate}}"></em>
+                                <span id="spanSelectPasswordView" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('selectPassword')}" *ngIf="!sidebarSmall">{{'BTN.SET_PASSWORD' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('selectPassword')}"></div>
+                        </div>
+                        <div class='sidebar-link-row'>
+                            <div id="divInformation" class='sidebar-nolink sidebar-hover' (click)="displayVersionDialog()">
+                                <em class="fa-solid fa-info-circle" title="{{getVersion()}}"></em>
+                                <span id="spanInformation" class='sidebar-label'  [ngClass]="{'sidebar-label-bold': displayVersion}"  *ngIf="!sidebarSmall">{{'BTN.INFORMATION' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class='sidebar-link-row'>
+                            <div id="divLogout" class='sidebar-link sidebar-hover'  (click)="logout()">
+                                <em class="fa-solid fa-sign-out"  title="{{'BTN.LOGOUT' | translate}}"></em>
+                                <span id="spanLogout" class='sidebar-label' *ngIf="!sidebarSmall">{{'BTN.LOGOUT' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class='sidebar-link-row'>
+                            <div class='sidebar-nolink sidebar-hover'>
+                                <em class='fa-solid' [ngClass]="{'fa-user-shield': (getProfile() === 'ADMIN'), 'fa-user-friends': (getProfile() === 'ITESOFT'), 'fa-user': (getProfile() !== 'ADMIN' && getProfile() !== 'ITESOFT')}"  [title]="getUserName()+'\n'+getTenant()"></em>
+                                <span class='sidebar-label' *ngIf="!sidebarSmall">{{getUserName()}}</span>
+                                <div class='sidebar-label-line'><span *ngIf="!sidebarSmall">{{getTenant()}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</aside>
+<p-dialog header="Patch" [(visible)]="displayVersion" [style]="{width: '30vw'}" position="center" [draggable]='false' [resizable]='false'>
+    <div class='slfp-theme'>{{"GENERAL.VERSION" | translate}}</div>
+    <br/><p>
+    {{getVersion()}}
+    </p>
+    <ng-template pTemplate="footer">
+        <button pButton id="btnDisplayVersion" class="ui-button-slfp p-button-rounded p-button-outlined" icon="pi pi-check" (click)="displayVersion=false" label="Ok"></button>
+    </ng-template>
+</p-dialog>

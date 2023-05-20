@@ -6,9 +6,24 @@
     },
     "REQUEST_PATCH": {
         "TITLE":  {
+            "SIDEBAR": "Patcher",
             "UPLOAD_FILE": "Soumettre un ficher à patcher",
             "SELECT_DEVICE": "Sélection du calculateur",
             "PATCH_SELECTION": "Traitements à appliquer"
+        }, 
+        "BTN": {
+            "UPLOAD_FILE": "Soumettre un fichier"
+        }
+    },
+    "BTN": {
+        "SET_PASSWORD": "Mot de passe",
+        "LOGOUT": "Déconnexion",
+        "INFORMATION": "Information",
+        "HISTORY_VIEW": "Historique"
+    },
+    "HISTORY_VIEW": {
+        "TITLE":  {
+            "SIDEBAR": "Historique des tickets"
         }
     }
 }

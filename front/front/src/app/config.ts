@@ -9,6 +9,9 @@ export class Config {
     public  static TIMEOUT_CHECK = 300000;
     public  static MAX_WAIT_REPORT = 600000;
 
+    public  static STORAGE_SLFP_SIDEBAR_LARGE = 'slfp-sidebar-large';
+    public  static STORAGE_SLFP_SIDEBAR_ITEM = 'slfp-sidebar-item';
+    
     public static CALENDAR_FR = {
         firstDayOfWeek: 1,
         dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],

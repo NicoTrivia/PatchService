@@ -1,3 +1,7 @@
+.patch {
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+}
 .patch-container-sidebar
 {
     line-height: 1;
@@ -28,7 +32,6 @@
     font-weight: bold;
     font-size: 1.8rem;
     letter-spacing: 0px;
-    color:#E9F3EC 0% 0% no-repeat padding-box;
     opacity: 1;
     margin-top: 15px;
     margin-bottom: 5px;
@@ -38,4 +41,14 @@
     border-radius: 5px;
     padding: 0.1rem 0.5rem;
     margin-left: 3px;
+}
+.patch-card-area {
+    margin: 1rem;
+}
+
+.patch-card {
+    background: var(--surface-card);
+    color: var(--text-color);
+    padding: 2rem;
+    border-radius: 10px;
 }

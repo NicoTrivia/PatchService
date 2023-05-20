@@ -1,16 +1,20 @@
 <section class='patch-container-sidebar'>
+    <app-sidebar [title]="'ALERT_CONSULT.TITLE.MAIN'"></app-sidebar>
     <div class="patch-container-large patch-no-scroll-container">
-        <div class="row">
-            <div class="col-6">
+        <div class="row patch-card-area">
+            <div class="col-6 patch-card request-patch-card-top">
                 <div class="patch-form-title"><span class="patch-form-title-number">1</span>&nbsp;{{'REQUEST_PATCH.TITLE.UPLOAD_FILE' | translate}}</div>
+                <div class="patch-form-file-area"> 
+                    <p-fileUpload mode="basic" name="upload-patch-file" url="https://www.primefaces.org/cdn/api/upload.php"  [maxFileSize]="5000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="{{'REQUEST_PATCH.BTN.UPLOAD_FILE' | translate}}"></p-fileUpload>
+                </div>
             </div>
-            <div class="col-6">
-                <div class="patch-form-title"><span class="patch-form-title-number">1</span>&nbsp;{{'REQUEST_PATCH.TITLE.SELECT_DEVICE' | translate}}</div>
+            <div class="col-6 patch-card request-patch-card-top">
+                <div class="patch-form-title"><span class="patch-form-title-number">2</span>&nbsp;{{'REQUEST_PATCH.TITLE.SELECT_DEVICE' | translate}}</div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="patch-form-title"><span class="patch-form-title-number">1</span>&nbsp;{{'REQUEST_PATCH.TITLE.PATCH_SELECTION' | translate}}</div>
+        <div class="row patch-card-area">
+            <div class="col-12 patch-card request-patch-card-bottom">
+                <div class="patch-form-title"><span class="patch-form-title-number">3</span>&nbsp;{{'REQUEST_PATCH.TITLE.PATCH_SELECTION' | translate}}</div>
             </div>
         </div>
     </div>
