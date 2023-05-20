@@ -1,0 +1,41 @@
+.patch-container-sidebar
+{
+    line-height: 1;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    min-height: 640px;
+}
+
+.patch-container-large {
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-left: 5px;
+    max-width: 2500px;
+    height: 98vh;
+    width: 100%;
+    min-width: 1180px;
+    min-height: 640px;
+}
+
+.patch-no-scroll-container {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.patch-form-title {
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.8rem;
+    letter-spacing: 0px;
+    color:#E9F3EC 0% 0% no-repeat padding-box;
+    opacity: 1;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+.patch-form-title-number {
+    background: #a5b4fc;
+    border-radius: 5px;
+    padding: 0.1rem 0.5rem;
+    margin-left: 3px;
+}

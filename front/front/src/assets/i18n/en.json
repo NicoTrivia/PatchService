@@ -1,0 +1,14 @@
+{
+    "HOME_PAGE": {
+        "TITLE": {
+            "MAIN": "PATCH SERVICES DEVELOPMENT"
+        }
+    },
+    "REQUEST_PATCH": {
+        "TITLE":  {
+            "UPLOAD_FILE": "Soumettre un ficher à patcher",
+            "SELECT_DEVICE": "Sélection du calculateur",
+            "PATCH_SELECTION": "Traitements à appliquer"
+        }
+    }
+}
