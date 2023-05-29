@@ -7,6 +7,8 @@ import { Router} from '@angular/router';
 import {Config} from '../../config';
 import { PatchSecured } from '../../auth/patchSecured';
 import {Brand} from '../../model/brand';
+// services
+import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
 
 @Component({
   selector: 'app-request-patch',
@@ -40,8 +42,9 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
   protected pr_flaps = false;
 
   constructor(private readonly translate: TranslateService, private messageService: MessageService, 
+    override readonly authenticationService: AuthenticationService,
     override readonly router: Router) {
-    super(router);
+    super(authenticationService, router);
   }
 
   

@@ -1,0 +1,27 @@
+.login-title1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+.login-title2 {
+    font-size: 1.4rem;
+}
+.login {
+    font-size: 16px !important;
+    display: block;
+    width: 80%;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top:30%;
+}
+.login-form {
+    height: 70%;
+    width: 30%;
+}
+.login_image {
+    width: 40%;
+    margin-top: 20%;
+    margin-left: 20%;
+}

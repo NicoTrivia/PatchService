@@ -24,11 +24,12 @@
         }
     },
     "BTN": {
-        "SUBMIT_TICKET": "Soumettre la demande",
-        "SET_PASSWORD": "Mot de passe",
-        "LOGOUT": "Déconnexion",
+        "CONTINUE": "Continuer",
+        "HISTORY_VIEW": "Historique",
         "INFORMATION": "Information",
-        "HISTORY_VIEW": "Historique"
+        "LOGOUT": "Déconnexion",
+        "SUBMIT_TICKET": "Soumettre la demande",
+        "SET_PASSWORD": "Mot de passe"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -39,5 +40,26 @@
         "UNDEFINED": "Non défini",
         "GREETINGS": "Bonjour",
         "VERSION": "Version de l'application"
+    },
+    "LOGIN_FORM": {
+        "CONNECT": "Se connecter",
+        "CONNECT_L2": "Authentifiez vous pour appliquer vos patches",
+        "FLD": {
+            "LOGIN": "Login",
+            "PASSWORD": "Mot de passe",
+            "TENANT": "Compte client"
+        },
+        "MSG": {
+            "FAILED": "Echec de connexion. Vérifiez votre login et mot de passe.",
+            "UNACTIVE": "Echec de connexion. Votre compte est inactif, veuillez contacter votre service client : xxx@yy.zzz."
+        },
+        "LOGOUT": {
+            "TITLE": "Déconnecté du service"
+        }
+    },
+    "WARNING": {
+        "MISSING_VALUE": "Valeur requise manquante",
+        "NO_CNX": "Attention : connexion au serveur non disponible. Vérifiez le lancement du service.",
+        "SLOW_CNX": "Requête en cours, veuillez patienter."
     }
 }

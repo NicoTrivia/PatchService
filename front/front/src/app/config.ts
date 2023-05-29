@@ -1,6 +1,6 @@
 export class Config {
 
-    //private static _appUrl = '/slfp-backend';
+    //private static _appUrl = '/front';
     private static _appUrl = ':8080';
 
     public  static DATE_TIME_FORMAT = 'DD-MM-YYYY HH:mm';
@@ -9,9 +9,13 @@ export class Config {
     public  static TIMEOUT_CHECK = 300000;
     public  static MAX_WAIT_REPORT = 600000;
 
-    public  static STORAGE_SLFP_SIDEBAR_LARGE = 'slfp-sidebar-large';
-    public  static STORAGE_SLFP_SIDEBAR_ITEM = 'slfp-sidebar-item';
-    
+    public  static STORAGE_PS_SIDEBAR_LARGE = 'ps-sidebar-large';
+    public  static STORAGE_PS_SIDEBAR_ITEM = 'ps-sidebar-item';
+    public  static STORAGE_USER_OBJ = 'ps-user';
+    public  static STORAGE_LOGIN = 'ps-login';
+    public  static STORAGE_TENANT = 'ps-tenant';
+    public  static STORAGE_ACCESS_TOKEN = 'ps-access-token';
+
     public static CALENDAR_FR = {
         firstDayOfWeek: 1,
         dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],

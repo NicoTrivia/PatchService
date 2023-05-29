@@ -1,9 +1,12 @@
-import {Component, Input, SimpleChanges, OnInit, OnChanges, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {Component, Input, SimpleChanges, OnInit, OnChanges, OnDestroy} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import { Router} from '@angular/router';
 
 import {Config} from '../../config';
 import { PatchSecured } from '../../auth/patchSecured';
+
+// services
+import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
 
 @Component({
     selector: 'app-sidebar',
@@ -19,8 +22,9 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
     public displayVersion = false;
 
     constructor(private readonly translate: TranslateService,
+        override readonly authenticationService: AuthenticationService,
         override readonly router: Router) {
-        super(router);
+        super(authenticationService, router);
     }
 
     ngOnInit(): void {
@@ -32,13 +36,13 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
             });
         }
 
-        if (localStorage.getItem(Config.STORAGE_SLFP_SIDEBAR_LARGE) === 'false') {
+        if (localStorage.getItem(Config.STORAGE_PS_SIDEBAR_LARGE) === 'false') {
             this.sidebarSmall = true;
         } else {
             this.sidebarSmall = false;
         }
         if (this.selected == null || !this.selected) {
-            this.selected = localStorage.getItem(Config.STORAGE_SLFP_SIDEBAR_ITEM);
+            this.selected = localStorage.getItem(Config.STORAGE_PS_SIDEBAR_ITEM);
         }
         if (this.selected == null || !this.selected || this.selected === 'null') {
             this.selected = 'home';
@@ -78,12 +82,12 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
 
     public sidebarSize(status: boolean): void {
         this.sidebarSmall = status;
-        localStorage.setItem(Config.STORAGE_SLFP_SIDEBAR_LARGE, (!status).toString());
+        localStorage.setItem(Config.STORAGE_PS_SIDEBAR_LARGE, (!status).toString());
     }
 
     public select(dest: string): void {
         this.selected = dest;
-        localStorage.setItem(Config.STORAGE_SLFP_SIDEBAR_ITEM, dest);
+        localStorage.setItem(Config.STORAGE_PS_SIDEBAR_ITEM, dest);
         if (dest === 'home') {
             this.router.navigate([`/request_patch`]);
         } else if (dest === 'selectPassword') {
@@ -99,11 +103,18 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
     }
 
     getUserName(): string {
-        return 'Martine Duval';
+        if (this.authenticationService.getUser()) {
+            return this.authenticationService.getUser()!.firstname + ' '
+            + this.authenticationService.getUser()!.lastname;
+        }
+        return '';
     }
 
     getTenant(): string {
-        return 'ACME';  
+        if (this.authenticationService.getTenant()) {
+            return this.authenticationService.getTenant();
+        }
+        return '';  
     }
 
     getProfile(): string {

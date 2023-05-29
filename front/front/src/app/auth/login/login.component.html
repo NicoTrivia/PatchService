@@ -1,0 +1,43 @@
+<div class="container-full no-scroll-container" style="min-width: 1250px; min-height: 650px;">
+    <div class="row" [hidden]="(!isInitialized()) || (ping())">
+        <div class="col-12 mx-auto alert alert-danger ps-top-warning" role="alert" >
+            {{'WARNING.NO_CNX' | translate}}                        
+        </div>
+    </div>    
+    <div class="row" style="height: 100%">
+        <div class="col-6 ps-nopadding">
+            <img src="assets/images/logo_tr.png" class="login_image"/>
+            <p-toast></p-toast>
+        </div>
+        <div class="col-4 mx-auto ps-nopadding" >
+            <form #loginForm="ngForm">
+                <div  class="vertical-center login-form">
+                        <div class='login-title1'>{{'LOGIN_FORM.CONNECT' | translate}}</div>
+                        <div class='login-title2'>{{'LOGIN_FORM.CONNECT_L2' | translate}}</div>
+                        <div style="height: 40px;"></div>
+                        <span>
+                            <input id='tenant' pInputText class="login" [(ngModel)]='Tenant' name='Tenant' id='Tenant' placeholder="{{'LOGIN_FORM.FLD.TENANT' | translate}}">
+                        </span>
+                        <div style="height: 20px;"></div>                      
+                        <span>
+                            <input id='login' pInputText class="login" [(ngModel)]='Login' name='Login' id='Login' placeholder="{{'LOGIN_FORM.FLD.LOGIN' | translate}}">
+                        </span>
+                        <div style="height: 20px;"></div>
+                        <span>
+                            <input id='password' type="password"  pInputText class="login"  [(ngModel)]='Password' name='password' id='password' placeholder="{{'LOGIN_FORM.FLD.PASSWORD' | translate}}">
+                        </span>
+                        <div style="height: 30px;"></div>
+                        <div class="row mt-2 text-center">
+                            <div class="col-md-12 text-center">
+                                <button id="btn_validate" pButton type="submit" class="ui-button-ps p-button-rounded" (click)="validateForm()" label="{{'BTN.CONTINUE' | translate}}"></button>
+                            </div>
+                        </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-2 ps-nopadding">
+  
+        </div>
+    </div>
+</div>
