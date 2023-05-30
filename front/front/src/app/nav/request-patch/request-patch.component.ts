@@ -9,7 +9,7 @@ import { PatchSecured } from '../../auth/patchSecured';
 import {Brand} from '../../model/brand';
 // services
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
-
+import { TawkService } from '../../services/TawkService';
 @Component({
   selector: 'app-request-patch',
   templateUrl: './request-patch.component.html',
@@ -43,7 +43,8 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
 
   constructor(private readonly translate: TranslateService, private messageService: MessageService, 
     override readonly authenticationService: AuthenticationService,
-    override readonly router: Router) {
+    override readonly router: Router,
+    private TawkService: TawkService) {
     super(authenticationService, router);
   }
 

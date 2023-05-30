@@ -34,7 +34,7 @@ import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { AuthenticationService } from './auth/authentication-service/authentication-service';
 import { LoginComponent } from './auth/login/login.component';
 import { LogoutComponent } from './auth/logout/logout.component';
-
+import { TawkService} from './services/TawkService';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -68,6 +68,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     AuthenticationService,
+    TawkService,
     {provide: APP_BASE_HREF, useValue : '/front/' },
     { provide: LOCALE_ID, useValue: navigator.language}
   ],
