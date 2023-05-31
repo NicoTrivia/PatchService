@@ -68,6 +68,7 @@ export class User {
     }
 
     public set profile(p: PROFILE) {
+        console.log("0 profile : %o", p);
         this._profile = p;
     }
 
@@ -95,8 +96,17 @@ export class User {
         this._jwt = null;
     }
 
-    public allow(profile: PROFILE): boolean {
-        return true;
+    public allow(p: PROFILE): boolean {
+        if (p == PROFILE.CUSTOMER) {
+            return true;
+        }
+        if (p == PROFILE.OPERATOR) {
+            return this._profile == PROFILE.ADMIN || this._profile == PROFILE.OPERATOR;
+        }
+        if (p == PROFILE.ADMIN) {
+            return this._profile == PROFILE.ADMIN;
+        }
+        return false;
     }
 
     toJSON(): any {

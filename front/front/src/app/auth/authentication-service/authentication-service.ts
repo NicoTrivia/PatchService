@@ -314,11 +314,11 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         return this.jwtToken != null;
     }
 
-    public allow(profile: PROFILE): boolean {
-        if (!this.user || !this.jwtToken || this.isTimeout || !profile) {
+    public allow(p: PROFILE): boolean {
+        if (!this.user || !this.jwtToken || this.isTimeout) {
             return false;
         }
-        return this.user.allow(profile);
+        return this.user.allow(p);
     }
     public encodeWord(w: string) {
         return '*' + encodeURIComponent(btoa(w)) + '*';
