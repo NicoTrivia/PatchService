@@ -10,8 +10,7 @@ export class PatchSecured {
         this.authenticationService.checkTimeOut(true);
     }
 
-    public allow(profile: PROFILE): boolean {
-       
-        return true;
+    public allow(p: PROFILE): boolean {
+        return  this.authenticationService.allow(p);
     }
 }

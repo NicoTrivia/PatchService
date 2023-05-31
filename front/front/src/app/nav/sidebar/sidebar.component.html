@@ -20,18 +20,25 @@
                 <td class="sidebar-options-td-top">
                     <div class='sidebar-options-top'>
                         <div class='sidebar-link-row'>
-                            <div id="divPatch" *ngIf="allow(PROFILE.OPERATOR)" class='sidebar-link sidebar-hover' (click)="select('requestPatch')" [ngClass]="{'sidebar-item-selected': isSelected('requestPatch')}">
+                            <div id="divPatch" *ngIf="allow(PROFILE.CUSTOMER)" class='sidebar-link sidebar-hover' (click)="select('requestPatch')" [ngClass]="{'sidebar-item-selected': isSelected('requestPatch')}">
                                 <em  class="fa-solid fa-gears" title="{{'REQUEST_PATCH.TITLE.SIDEBAR' | translate}}"></em>
                                 <span id="spanPatch" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('requestPatch')}" *ngIf="!sidebarSmall">{{'REQUEST_PATCH.TITLE.SIDEBAR' | translate}}</span>
                             </div>
                             <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('requestPatch')}"></div>
                         </div>
-                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.CUSTOMER)" >
                             <div id="divHistoryView" class='sidebar-link sidebar-hover' [ngClass]="{'sidebar-item-selected': isSelected('viewHistory')}" (click)="select('viewHistory')">
                                 <em class="fa-solid fa-receipt" style='cursor: pointer' title="{{'HISTORY_VIEW.TITLE.SIDEBAR' | translate}}"></em>
                                 <span id="spanHistoryView" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('viewHistory')}" *ngIf="!sidebarSmall">{{'BTN.HISTORY_VIEW' | translate}}</span>
                             </div>
                             <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('viewHistory')}"></div>
+                        </div>
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
+                            <div id="divHistoryView" class='sidebar-link sidebar-hover' (click)="select('tawk')">
+                                <em class="fa-solid fa-comments" style='cursor: pointer' title="{{'TAWK.TITLE.SIDEBAR' | translate}}"></em>
+                                <span id="spanHistoryView" class='sidebar-label' *ngIf="!sidebarSmall">{{'TAWK.TITLE.SIDEBAR' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder"></div>
                         </div>
                     </div>
                 </td>
@@ -40,7 +47,7 @@
                 <td  class="sidebar-options-td-bottom">
                     <div class='sidebar-options-bottom'>
                         <hr/>
-                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)">
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.CUSTOMER)">
                             <div id="divSelectPasswordView" class='sidebar-link sidebar-hover'  [ngClass]="{'sidebar-item-selected': isSelected('selectPassword')}" (click)="select('selectPassword')">
                                 <em  class="fa-solid fa-unlock" style="cursor: pointer;" title="{{'BTN.SET_PASSWORD' | translate}}"></em>
                                 <span id="spanSelectPasswordView" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('selectPassword')}" *ngIf="!sidebarSmall">{{'BTN.SET_PASSWORD' | translate}}</span>

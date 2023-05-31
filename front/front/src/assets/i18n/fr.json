@@ -61,5 +61,10 @@
         "MISSING_VALUE": "Valeur requise manquante",
         "NO_CNX": "Attention : connexion au serveur non disponible. Vérifiez le lancement du service.",
         "SLOW_CNX": "Requête en cours, veuillez patienter."
+    },
+    "TAWK": {
+        "TITLE": {
+            "SIDEBAR": "Assistance"
+        }
     }
 }

@@ -92,6 +92,9 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
             this.router.navigate([`/request_patch`]);
         } else if (dest === 'selectPassword') {
             this.setPassword();
+        } 
+        else if (dest === 'tawk') {
+            window.open("https://dashboard.tawk.to/#/dashboard", "tawk_to");
         } else {
           this.router.navigate([`/`]);
         }

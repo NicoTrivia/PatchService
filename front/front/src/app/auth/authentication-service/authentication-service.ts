@@ -116,6 +116,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             user.firstname = "Nicolas";
             user.lastname = "Duval";
             user.tenant = tenant;
+            user.email = "nicolas.duval@acme.fr"
             user.profile = PROFILE.CUSTOMER;
             user.active = true;
             this.setUser(user);
@@ -127,6 +128,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             user.firstname = "Julia";
             user.lastname = "Valasky";
             user.tenant = tenant;
+            user.email = "j.valasky@autobis.com"
             user.profile = PROFILE.CUSTOMER;
             user.active = true;
             this.setUser(user);
@@ -140,6 +142,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             user.lastname = "Sably";
             user.tenant = tenant;
             user.profile = PROFILE.CUSTOMER;
+            user.email = "f.sably@autobis.com"
             user.active = false;
             this.setUser(user);
 
@@ -150,6 +153,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             user.login = login;
             user.firstname = "Lionel";
             user.lastname = "Gros";
+            user.email = "support@eatech.com"
             user.tenant = tenant;
             user.profile = PROFILE.OPERATOR;
             user.active = true;
@@ -310,11 +314,11 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         return this.jwtToken != null;
     }
 
-    public allow(profile: PROFILE): boolean {
-        if (!this.user || !this.jwtToken || this.isTimeout || !profile) {
+    public allow(p: PROFILE): boolean {
+        if (!this.user || !this.jwtToken || this.isTimeout) {
             return false;
         }
-        return this.user.allow(profile);
+        return this.user.allow(p);
     }
     public encodeWord(w: string) {
         return '*' + encodeURIComponent(btoa(w)) + '*';
