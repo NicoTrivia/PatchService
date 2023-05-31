@@ -24,6 +24,13 @@
     min-height: 640px;
 }
 
+
+.patch-container-full {
+    margin: 0px;
+    height: 100vh;
+    width: 100vw;
+}
+
 .patch-no-scroll-container {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -58,4 +65,10 @@
     color: var(--text-color);
     padding: 2rem;
     border-radius: 10px;
+}
+
+
+.patch-im-bg{
+    background-repeat: no-repeat;
+    background-size: contain;
 }

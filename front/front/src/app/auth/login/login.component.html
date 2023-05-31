@@ -1,11 +1,11 @@
-<div class="container-full no-scroll-container" style="min-width: 1250px; min-height: 650px;">
+<div class="patch-container-full no-scroll-container" style="min-width: 1250px; min-height: 650px;">
     <div class="row" [hidden]="(!isInitialized()) || (ping())">
         <div class="col-12 mx-auto alert alert-danger ps-top-warning" role="alert" >
             {{'WARNING.NO_CNX' | translate}}                        
         </div>
     </div>    
     <div class="row" style="height: 100%">
-        <div class="col-6 ps-nopadding">
+        <div class="col-6 ps-nopadding patch-im-bg" style="background-image: url('assets/images/bg.png')">
             <img src="assets/images/logo_tr.png" class="login_image"/>
             <p-toast></p-toast>
         </div>
