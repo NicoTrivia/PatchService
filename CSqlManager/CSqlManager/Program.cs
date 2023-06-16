@@ -17,27 +17,12 @@ class Program
 {
     static void Main()
     {
-        ExelReader exl = new ExelReader("C:/Users/Alexandre/Documents/CSqlManager/CSqlManager/PATCH_SERVICES_DEVELOPPMENTS.xlsx");
+        ExelReader exl = new ExelReader("C:/Users/Alexandre Bodin/Documents/PatchServices-main/CSqlManager/CSqlManager/PATCH_SERVICES_DEVELOPPMENTS.xlsx");
         exl.ExtractExel();
-        
-        APISender myController = new APISender();
-        myController.exelReader = exl;
-        
-        
-        IActionResult result = myController.GetInBrand("code");
-        Console.WriteLine(myController);
-        if (result is OkObjectResult okObjectResult)
-        {
-            var responseContent = okObjectResult.Value;
-           var web = WebApplication.Create();
-            web.MapGet("brand", () => responseContent);
-            web.Run();
-            
-        }
-        else
-        {
-            Console.WriteLine("Request failed.");
-        }
+        exl.LinkWithDatabase();
+        //var web = WebApplication.Create();
+        //BrandEndPoints.MapEndPoints(web);
+        //web.Run();
         
     }
 
