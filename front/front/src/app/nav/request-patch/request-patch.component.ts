@@ -11,6 +11,8 @@ import {Ticket} from '../../model/ticket';
 import {ItemInterface} from '../../model/ItemInterface';
 
 // services
+import { TawkService } from '../../services/TawkService';
+
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
 import { BrandService } from '../../services/brand.service';
 import { EcuService } from '../../services/ecu.service';
@@ -47,7 +49,8 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
   constructor(private readonly translate: TranslateService, private messageService: MessageService, 
     override readonly authenticationService: AuthenticationService,
     override readonly router: Router, private readonly brandService: BrandService,
-    private readonly ecuService: EcuService) {
+    private readonly ecuService: EcuService,
+    private TawkService: TawkService) {
     super(authenticationService, router);
   }
 
