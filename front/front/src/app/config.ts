@@ -1,7 +1,7 @@
 export class Config {
 
-    //private static _appUrl = '/front';
-    private static _appUrl = ':8080';
+   //private static _appUrl = '/ps/api';
+    private static _appUrl = ':5000';
 
     public  static DATE_TIME_FORMAT = 'DD-MM-YYYY HH:mm';
     public  static DATE_TIME_FORMAT_SECOND = 'DD-MM-YYYY HH:mm:ss';
@@ -40,7 +40,9 @@ export class Config {
     public static get API_ROUTES(): any {
         return {
             request_patch: '/request_patch',
-            ping: '/auth/ping'
+            ping: '/auth/ping',
+            brand: '/brand',
+            ecu: '/ecu'
         };
     }
 }

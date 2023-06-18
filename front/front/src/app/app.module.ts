@@ -25,6 +25,7 @@ import { MessagesModule } from 'primeng/messages';
 import {DialogModule} from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
@@ -35,6 +36,9 @@ import { AuthenticationService } from './auth/authentication-service/authenticat
 import { LoginComponent } from './auth/login/login.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { TawkService} from './services/TawkService';
+import { BrandService} from './services/brand.service';
+import { EcuService} from './services/ecu.service';
+import { TicketViewComponent } from './tile-components/ticket-view/ticket-view.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -47,11 +51,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     RequestPatchComponent,
     SidebarComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    TicketViewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
+    InputTextModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,
@@ -68,7 +74,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     AuthenticationService,
-    TawkService,
+    TawkService, BrandService, EcuService, 
     {provide: APP_BASE_HREF, useValue : '/front/' },
     { provide: LOCALE_ID, useValue: navigator.language}
   ],

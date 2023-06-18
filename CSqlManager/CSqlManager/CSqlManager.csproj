@@ -15,7 +15,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0-preview.5.23280.8" />
-      <PackageReference Include="Npgsql" Version="8.0.0-preview.4" />
+      <PackageReference Include="Npgsql" Version="7.0.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     </ItemGroup>
 

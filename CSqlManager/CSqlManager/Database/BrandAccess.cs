@@ -10,11 +10,11 @@ public class BrandAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT code,name FROM ps_brand";
+            command.CommandText = $"SELECT code,name FROM ps_brand ORDER BY name";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                requestResult.Add(new Brand(reader.GetString(0), reader.GetString(1)));
+                requestResult.Add(new Brand(reader.GetString(reader.GetOrdinal("code")), reader.GetString(reader.GetOrdinal("name"))));
                 
             }
 
@@ -36,7 +36,7 @@ public class BrandAccess : DbAccess
             var reader = command.ExecuteReader();
             if (reader.Read())
             {
-                return new Brand(code, reader.GetString(0));
+                return new Brand(code, reader.GetString(reader.GetOrdinal("name")));
             }
 
         }

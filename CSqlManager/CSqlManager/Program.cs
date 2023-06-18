@@ -17,15 +17,35 @@ class Program
 {
     static void Main()
     {
-        ExelReader exl = new ExelReader("C:/Users/Alexandre Bodin/Documents/PatchServices-main/CSqlManager/CSqlManager/PATCH_SERVICES_DEVELOPPMENTS.xlsx");
+       /* ExelReader exl = new ExelReader("C:/Users/Alexandre Bodin/Documents/PatchServices-main/CSqlManager/CSqlManager/PATCH_SERVICES_DEVELOPPMENTS.xlsx");
         exl.ExtractExel();
-        exl.LinkWithDatabase();
-        //var web = WebApplication.Create();
-        //BrandEndPoints.MapEndPoints(web);
-        //web.Run();
+        exl.LinkWithDatabase();*/
+
+        string[] args = null;
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+
+        var web = builder.Build();
+        // Register CORS services
+        web.UseCors();
+        mapEndPoints(web);
+        web.Run();
         
     }
 
+    static void mapEndPoints(WebApplication web) {
+        BrandEndPoints.MapEndPoints(web);
+        EcuEndPoints.MapEndPoints(web);
+    }
     
 }
 

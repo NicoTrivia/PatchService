@@ -1,5 +1,5 @@
 <section class='patch-container-sidebar'>
-    <app-sidebar [title]="'ALERT_CONSULT.TITLE.MAIN'"></app-sidebar>
+    <app-sidebar [title]="'REQUEST_PATCH.TITLE.MAIN'"></app-sidebar>
     <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
         <div class="row patch-card-area">
             <div class="col-6 patch-card request-patch-card-top">
@@ -12,13 +12,20 @@
             </div>
             <div class="col-6 patch-card request-patch-card-top">
                 <div class="patch-form-title"><span class="patch-form-title-number">2</span>&nbsp;{{'REQUEST_PATCH.TITLE.SELECT_DEVICE' | translate}}</div>
-                <div>
-                    <br/>
+                <div class="request-patch-immat">
+                    <span>{{'REQUEST_PATCH.DESC.IMMATRICULATION' | translate}}</span>
+                    <span class="p-input-icon-right request-desc-right">
+                        <i class="fa-solid fa-car"></i>
+                        <input type="text" pInputText [(ngModel)]="immatriculation" [style]="{'width':'10rem'}"/>
+                    </span>
+                    <span class="request-desc-right">{{'REQUEST_PATCH.DESC.FUEL' | translate}}</span>
+                    <p-dropdown class='request-desc-right' [options]="fuelList" [(ngModel)]="fuelSelected" optionLabel="name"  [style]="{'width':'10rem'}" (onChange)="updateDevices()"></p-dropdown>
+                </div>
+                <div class="request-patch-sel">
                     <p-dropdown [disabled]="!fileName" [options]="brandList" [(ngModel)]="brandSelected" [placeholder]="placeholderBrand"  optionLabel="name"  [style]="{'width':'60%'}" (onChange)="updateDevices()"></p-dropdown>
                 </div>
-                <div>
-                    <br/>
-                    <p-dropdown [disabled]="!brandSelected || brandSelected.code==''" [options]="deviceList" [(ngModel)]="deviceSelected" [placeholder]="placeholderDevice"  optionLabel="name"  [style]="{'width':'60%'}"></p-dropdown>
+                <div class="request-patch-sel">
+                    <p-dropdown [disabled]="!brandSelected || brandSelected.code==''" [options]="deviceList" [(ngModel)]="deviceSelected" [placeholder]="placeholderDevice"  optionLabel="code"  [style]="{'width':'60%'}"></p-dropdown>
                 </div>
             </div>
         </div>
@@ -27,55 +34,160 @@
                 <div class="patch-form-title"><span class="patch-form-title-number">3</span>&nbsp;{{'REQUEST_PATCH.TITLE.PATCH_SELECTION' | translate}}</div>
                 <br/>
                 <div class="row request-patch-device-area">
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_dpf"></p-inputSwitch>
-                             <span class='request-patch-device-label'>DPF</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.dpf" [(ngModel)]="ecu_sel.dpf"></p-inputSwitch>
+                             <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.dpf? '' : ' request-patch-device-label-unvailable')">DPF</span>
                         </span>
                     </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_egr"></p-inputSwitch> 
-                            <span class='request-patch-device-label'>EGR</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.egr" [(ngModel)]="ecu_sel.egr"></p-inputSwitch> 
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.egr? '' : ' request-patch-device-label-unvailable')">EGR</span>
                         </span>
                     </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_tva"></p-inputSwitch>
-                            <span class='request-patch-device-label'>TVA</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.lambda" [(ngModel)]="ecu_sel.lambda"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.lambda? '' : ' request-patch-device-label-unvailable')">Lambda</span>
                         </span>
                     </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_flaps"></p-inputSwitch>
-                            <span class='request-patch-device-label'>FLAPS</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.hotstart" [(ngModel)]="ecu_sel.hotstart"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.hotstart? '' : ' request-patch-device-label-unvailable')">Hotstart</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.flap" [(ngModel)]="ecu_sel.flap"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.flap? '' : ' request-patch-device-label-unvailable')">Flap</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.adblue" [(ngModel)]="ecu_sel.adblue"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.adblue? '' : ' request-patch-device-label-unvailable')">Adblue</span>
                         </span>
                     </div>
                 </div>    
                 <div class="row request-patch-device-area">
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_start_stop"></p-inputSwitch> 
-                            <span class='request-patch-device-label'>Start / Stop</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.dtc" [(ngModel)]="ecu_sel.dtc"></p-inputSwitch> 
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.dtc? '' : ' request-patch-device-label-unvailable')">DTC</span>
                         </span>
                 </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_adblue"></p-inputSwitch>
-                            <span class='request-patch-device-label'>Adblue</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.torqmonitor" [(ngModel)]="ecu_sel.torqmonitor"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.torqmonitor? '' : ' request-patch-device-label-unvailable')">TorqMonitor</span>
                         </span>
                     </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_lambda"></p-inputSwitch>
-                            <span class='request-patch-device-label'>Lambda</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.speedlimit" [(ngModel)]="ecu_sel.speedlimit"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.speedlimit? '' : ' request-patch-device-label-unvailable')">Speed Limit</span>
                         </span>
                     </div>
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_readiness"></p-inputSwitch>
-                            <span class='request-patch-device-label'>Readiness</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.startstop" [(ngModel)]="ecu_sel.startstop"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.startstop? '' : ' request-patch-device-label-unvailable')">Start Stop</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.nox" [(ngModel)]="ecu_sel.nox"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.nox? '' : ' request-patch-device-label-unvailable')">NOX</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.tva" [(ngModel)]="ecu_sel.tva"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.tva? '' : ' request-patch-device-label-unvailable')">TVA</span>
                         </span>
                     </div>
                 </div>
                 <div class="row request-patch-device-area">
-                    <div class="col-3">
-                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || deviceSelected.code==''" [(ngModel)]="pr_maf"></p-inputSwitch>
-                            <span class='request-patch-device-label'>MAF</span>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.readiness" [(ngModel)]="ecu_sel.readiness"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.readiness? '' : ' request-patch-device-label-unvailable')">Readiness</span>
                         </span>
                     </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.immo" [(ngModel)]="ecu_sel.immo"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.immo? '' : ' request-patch-device-label-unvailable')">Immo</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.maf" [(ngModel)]="ecu_sel.maf"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.maf? '' : ' request-patch-device-label-unvailable')">MAF</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.hardcut" [(ngModel)]="ecu_sel.hardcut"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.hardcut? '' : ' request-patch-device-label-unvailable')">Hardcut</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.displaycalibration" [(ngModel)]="ecu_sel.displaycalibration"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.displaycalibration? '' : ' request-patch-device-label-unvailable')">Display calibration</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.waterpump" [(ngModel)]="ecu_sel.waterpump"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.waterpump? '' : ' request-patch-device-label-unvailable')">Water pump</span>
+                        </span>
+                    </div>                    
+                </div>
+                <div class="row request-patch-device-area">
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.tprot" [(ngModel)]="ecu_sel.tprot"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.tprot? '' : ' request-patch-device-label-unvailable')">Tprot</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.o2" [(ngModel)]="ecu_sel.o2"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.o2? '' : ' request-patch-device-label-unvailable')">O2</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.glowplugs" [(ngModel)]="ecu_sel.glowplugs"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.glowplugs? '' : ' request-patch-device-label-unvailable')">Glowplugs</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.hardcut" [(ngModel)]="ecu_sel.y75"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.y75? '' : ' request-patch-device-label-unvailable')">Y75</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.special" [(ngModel)]="ecu_sel.special"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.special? '' : ' request-patch-device-label-unvailable')">Special</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.decata" [(ngModel)]="ecu_sel.decata"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.decata? '' : ' request-patch-device-label-unvailable')">Decata</span>
+                        </span>
+                    </div>                    
+                </div>
+                <div class="row request-patch-device-area">
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.vmax" [(ngModel)]="ecu_sel.vmax"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.vmax? '' : ' request-patch-device-label-unvailable')">Vmax</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.stage1" [(ngModel)]="ecu_sel.stage1"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.stage1? '' : ' request-patch-device-label-unvailable')">Stage1</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.stage2" [(ngModel)]="ecu_sel.stage2"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.stage2? '' : ' request-patch-device-label-unvailable')">Stage2</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+                        <span class="request-patch-device-item"><p-inputSwitch [disabled]="!fileName || !brandSelected || brandSelected.code=='' || !deviceSelected || !deviceSelected.flexfuel" [(ngModel)]="ecu_sel.flexfuel"></p-inputSwitch>
+                            <span [class]="'request-patch-device-label'+(!deviceSelected || deviceSelected.flexfuel? '' : ' request-patch-device-label-unvailable')">Flexfuel</span>
+                        </span>
+                    </div>
+                    <div class="col-2">
+        
+                    </div>
+                    <div class="col-2">
+   
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -84,3 +196,7 @@
         </div>
     </div>
 </section>
+
+<p-dialog id='confirm-ticket-dialog' header="{{'REQUEST_PATCH.TITLE.TICKET_CONFIRM' | translate}}" [(visible)]="ticketConfirmVisible" [modal]="true" [draggable]="true" [resizable]="false" styleClass="request-patch-dialog patch">
+    <app-ticket-view [ticket]="ticket" (confirmTicketEvent)="confirmTicketEvent($event)"></app-ticket-view>
+</p-dialog>

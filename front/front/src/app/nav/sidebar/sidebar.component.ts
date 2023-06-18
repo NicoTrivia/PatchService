@@ -106,11 +106,7 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
     }
 
     getUserName(): string {
-        if (this.authenticationService.getUser()) {
-            return this.authenticationService.getUser()!.firstname + ' '
-            + this.authenticationService.getUser()!.lastname;
-        }
-        return '';
+        return this.authenticationService.getUserName();
     }
 
     getTenant(): string {

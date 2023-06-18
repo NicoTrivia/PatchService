@@ -3,6 +3,7 @@ import { Inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 
 // services
 import { AuthenticationService } from '../auth/authentication-service/authentication-service';
+import {Config} from '../config';
 
 declare var Tawk_API: any;
 
@@ -21,7 +22,7 @@ export class TawkService {
         }
 
     private load(){
-        if(this.loaded)
+        if(this.loaded || Config.APP_URL.includes('5000'))
             return;
 
         const s = this.renderer.createElement('script');

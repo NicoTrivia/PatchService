@@ -10,7 +10,7 @@ public class BrandEndPoints
     }
     
     
-    public static IResult Get(string? name = null)
+    public static IResult Get()
     {
         var access = new BrandAccess();
         var list = access.GetBrands();

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import { Router} from '@angular/router';
@@ -7,9 +6,15 @@ import { Router} from '@angular/router';
 import {Config} from '../../config';
 import { PatchSecured } from '../../auth/patchSecured';
 import {Brand} from '../../model/brand';
+import {Ecu} from '../../model/ecu';
+import {Ticket} from '../../model/ticket';
+import {ItemInterface} from '../../model/ItemInterface';
+
 // services
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
-import { TawkService } from '../../services/TawkService';
+import { BrandService } from '../../services/brand.service';
+import { EcuService } from '../../services/ecu.service';
+
 @Component({
   selector: 'app-request-patch',
   templateUrl: './request-patch.component.html',
@@ -25,26 +30,24 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
   protected brandList: Brand[] = [];
   protected brandSelected: Brand|null = null;
 
-  protected deviceList: Brand[] = [];
-  protected deviceSelected: Brand|null = null;
+  protected deviceList: any[] = [];
+  protected deviceSelected: any|null = null;
 
   protected placeholderBrand: string = ' ';
   protected placeholderDevice: string = ' ';
+  protected immatriculation: string = '';
+  protected fuelList: ItemInterface[] = [];
+  protected fuelSelected: ItemInterface | null = null;
+  
+  protected ecu_sel: Ecu = new Ecu('');
 
-  protected pr_dpf = false;
-  protected pr_egr = false;
-  protected pr_tva = false;
-  protected pr_start_stop = false;
-  protected pr_adblue = false;
-  protected pr_lambda = false;
-  protected pr_readiness = false;
-  protected pr_maf = false;
-  protected pr_flaps = false;
-
+  protected ticket: Ticket| null = null;
+  protected ticketConfirmVisible = false;
+  
   constructor(private readonly translate: TranslateService, private messageService: MessageService, 
     override readonly authenticationService: AuthenticationService,
-    override readonly router: Router,
-    private TawkService: TawkService) {
+    override readonly router: Router, private readonly brandService: BrandService,
+    private readonly ecuService: EcuService) {
     super(authenticationService, router);
   }
 
@@ -56,17 +59,21 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
     this.translate.get("REQUEST_PATCH.MSG.SELECT_DEVICE").subscribe(msg => {
       this.placeholderDevice = msg;
     });
-    this.brandList = [
-      { name: '', code: '' },
-      { name: 'Alpha', code: 'ALPHA' },
-      { name: 'BMW', code: 'IST' },
-      { name: 'Fiat', code: 'FIAT' },
-      { name: 'Lancia', code: 'LANCIA' },
-      { name: 'Volkswagen VAG', code: 'VAG' },
-      { name: 'Peugeot', code: 'PEUGEOT' }
+    this.brandList = [];
 
-  ];
+    this.brandService.findAll().subscribe(br => {
+      this.brandList = br;
+    });
 
+    this.fuelList =  [
+      { name: 'Toutes', code: 'A' },
+      { name: 'Diesel', code: 'D' },
+      { name: 'Essence', code: 'P' }
+    ];
+    this.fuelSelected = this.fuelList[0];
+    if (Config.APP_URL.includes('5000')) {
+      this.fileName="dev_test.zip"
+    }
   }
 
   onBasicUploadAuto(event: any) {
@@ -89,23 +96,40 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
     this.deviceSelected = null;
     this.deviceList= [];
     if (this.brandSelected && this.brandSelected.code.length > 0) {
-      for (var _i = 0; _i < 2 * this.brandSelected.code.length; _i++) {
-        this.deviceList.push({ code: 'EQ_'+this.brandSelected.code+'_'+_i, name: 'Calc. '+this.brandSelected.name+" n° "+_i});
-      }
+      this.ecuService.findByBrand(this.brandSelected.code).subscribe(ecu => {
+        this.deviceList = ecu;
+      });
     }
   }
 
   canSubmit() : boolean {
     if (this.fileName 
         && this.brandSelected && this.brandSelected.code != '' 
-        && this.deviceSelected && this.deviceSelected.code != ''
-        && (this.pr_dpf || this.pr_egr || this.pr_tva || this.pr_start_stop
-          || this.pr_adblue || this.pr_lambda || this.pr_readiness|| this.pr_maf|| this.pr_flaps)) {
+        && this.deviceSelected && this.deviceSelected.code != '') {
       return true;
     }
     return false;
   }
   submitTicket() {
-    this.messageService.add({ severity: 'success', summary: 'Information', detail: "Une fenetre de confirmation s''affichera ici." });
+    this.ticket = new Ticket();
+    this.ticket.updateFromEcu(this.ecu_sel);
+    this.ticket.customer_code = this.authenticationService.getTenant();
+    this.ticket.customer_level = "Silver";
+    this.ticket.user_name = this.authenticationService.getUserName();
+    this.ticket.date = new Date();
+    this.ticket.filename = this.fileName!;
+    this.ticket.file_size = this.fileSize;
+    this.ticket.immatriculation = this.immatriculation;
+    this.ticket.fuel = this.fuelSelected!.name;
+   
+    this.ticket.brand_code = this.brandSelected!.code;
+    this.ticket.brand_name = this.brandSelected!.name;
+    this.ticket.ecu_code = this.deviceSelected!.code;
+    
+    this.ticketConfirmVisible = true;
+  }
+
+  confirmTicketEvent(resu: string) {
+    this.ticketConfirmVisible = false;
   }
 }

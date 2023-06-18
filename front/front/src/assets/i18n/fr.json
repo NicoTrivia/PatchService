@@ -9,9 +9,12 @@
             "SIDEBAR": "Patcher",
             "UPLOAD_FILE": "Soumettre un fichier à patcher",
             "SELECT_DEVICE": "Sélection du calculateur",
-            "PATCH_SELECTION": "Traitements à appliquer"
+            "PATCH_SELECTION": "Traitements à appliquer",
+            "TICKET_CONFIRM": "Confirmation de la demande de traitement de votre fichier"
         },
         "DESC": {
+            "IMMATRICULATION": "Immat. (Opt.)",
+            "FUEL": "Mot.",
             "UPLOAD_FILE": "Le fichier binaire peut être soumis tel quel ou dans un fichier zip. Utiliser le bouton ou un drag and drop du fichier."
         },
         "BTN": {
@@ -24,6 +27,8 @@
         }
     },
     "BTN": {
+        "CANCEL": "Annuler",
+        "SUBMIT": "Soumettre",
         "CONTINUE": "Continuer",
         "HISTORY_VIEW": "Historique",
         "INFORMATION": "Information",

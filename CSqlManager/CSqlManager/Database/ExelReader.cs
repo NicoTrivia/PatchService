@@ -141,9 +141,9 @@ public class ExelReader
                 {
                     foreach(ECU ecu in _ecus)
                     {
-                        if (!request2.Contains((ecu.Brand_code, ecu.ECU_code)))
+                        if (!request2.Contains((ecu.Brand_code, ecu.code)))
                         {
-                            Console.WriteLine($"differs :{ecu.Brand_code}, {ecu.ECU_code}");
+                            Console.WriteLine($"differs :{ecu.Brand_code}, {ecu.code}");
                         }
                     }
                 }
@@ -290,7 +290,7 @@ public class ExelReader
                     if(command.Parameters.Contains("Ecu"))
                         command.Parameters.Remove("Ecu");
                             
-                    command.Parameters.AddWithValue("Ecu", ecu.ECU_code);
+                    command.Parameters.AddWithValue("Ecu", ecu.code);
                     
                     if (command.Parameters.Contains("Code"))
                         command.Parameters.Remove("Code");
@@ -313,7 +313,7 @@ public class ExelReader
                                               $" maf, hardcut, displaycalibration, waterpump, tprot," +
                                               $" o2, glowplugs, y75, special, decata, vmax, stage1," +
                                               $" stage2, flexfuel) " +
-                                              $"VALUES ('{ecu.Brand_code}', '{ecu.ECU_code}', '{ecu.Fuel}'," +
+                                              $"VALUES ('{ecu.Brand_code}', '{ecu.code}', '{ecu.Fuel}'," +
                                               $" {ecu.toggles[0].ToString().ToLower()}, {ecu.toggles[1].ToString().ToLower()}," +
                                               $"{ecu.toggles[2].ToString().ToLower()}, {ecu.toggles[3].ToString().ToLower()}," +
                                               $"{ecu.toggles[4].ToString().ToLower()}, {ecu.toggles[5].ToString().ToLower()}," +

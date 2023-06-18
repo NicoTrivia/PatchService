@@ -1,7 +1,7 @@
 .request-patch-card-top {
     width: 48%;
     margin: 1%;
-    height: 33vh;
+    min-height: 25vh;
 }
 
 .request-patch-card-bottom {
@@ -11,7 +11,7 @@
 
 .request-patch-file-area{
     display: flex;
-    margin-top: 2rem;
+    margin-top: 1rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -39,3 +39,25 @@
     right: 150px;
     bottom: 20px;
   }
+
+.request-desc-right {
+    margin-left: 2rem;
+}
+
+.request-patch-immat {
+    margin-top: 1vh;
+    margin-bottom: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: center;
+    align-items: center;
+}
+
+.request-patch-sel {
+    margin-top: 1vh;
+}
+
+.request-patch-device-label-unvailable {
+    opacity: 0.2;
+}
+

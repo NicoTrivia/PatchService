@@ -52,6 +52,13 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         return this.user;
     }
 
+    public getUserName(): string {
+        if (this.getUser()) {
+            return this.getUser()!.firstname + ' '
+            + this.getUser()!.lastname;
+        }
+        return '';
+    }
     public getTenant(): string {
         return this.getUser() ? this.getUser()!.tenant : '';
     }
