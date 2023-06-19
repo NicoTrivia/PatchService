@@ -1,7 +1,7 @@
 <div *ngIf='ticket' class="patch-no-scroll-container">
     <div class="patch-dialog-flow">
         <div class="patch-dialog-box patch-dialog-box-container">
-            <span class="ticket-view-field">Client :</span><span class="ticket-view-value">{{ticket.customer_code}}</span>
+            <span class="ticket-view-field">Client :</span><span class="ticket-view-value">{{ticket.tenant}}</span>
             <span class="ticket-view-field">Utilisateur :</span><span class="ticket-view-value">{{ticket.user_name}}</span>
             <span class="ticket-view-field">Fichier :</span><span class="ticket-view-value"><i class="fa-regular fa-file"></i>&nbsp;&nbsp;{{ticket.filename}}&nbsp;&nbsp;({{ticket.file_size}} Ko)</span>
             <span class="ticket-view-field">Date :</span><span class="ticket-view-value">{{ticket.date| date:'dd/MM/yyyy hh:mm'}}</span>

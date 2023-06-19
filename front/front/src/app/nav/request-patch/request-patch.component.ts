@@ -116,7 +116,7 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
   submitTicket() {
     this.ticket = new Ticket();
     this.ticket.updateFromEcu(this.ecu_sel);
-    this.ticket.customer_code = this.authenticationService.getTenant();
+    this.ticket.tenant = this.authenticationService.getTenant();
     this.ticket.customer_level = "Silver";
     this.ticket.user_name = this.authenticationService.getUserName();
     this.ticket.date = new Date();
