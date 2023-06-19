@@ -3,16 +3,25 @@ import {Ecu} from './ecu';
 export class Ticket {
     id: number = -1;
     
-    customer_code: string = '';
+    // Processing info
+    tenant: string = '';
     customer_level: string = '';
-    
+    user_id: number = 0;
     user_name: string = '';
     date: Date = new Date();
     filename: string  = '';
-    file_size: number  = 0;
+    file_size: number  = -1;
     immatriculation: string = '';
     fuel: string = '';
-   
+
+    // When ticket is processed
+    processed_filename: string|null  = null;
+    processed_file_size: number  = -1;
+    processed_user_name: string|null  = null;
+    processed_user_id: number = 0;
+    processed_date: Date|null = null;
+    
+    // Parameters
     brand_code: string = '';
     ecu_code: string = '';
     brand_name: string = '';
