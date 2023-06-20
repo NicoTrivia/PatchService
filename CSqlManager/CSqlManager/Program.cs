@@ -49,6 +49,7 @@ class Program
     static void mapEndPoints(WebApplication web) {
         BrandEndPoints.MapEndPoints(web);
         EcuEndPoints.MapEndPoints(web);
+        TenantEndPoints.MapEndPoints(web);
     }
     
 }

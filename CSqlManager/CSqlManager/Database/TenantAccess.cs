@@ -19,10 +19,10 @@ public class TenantAccess : DbAccess
                 current.code = reader.GetString(reader.GetOrdinal("code"));
                 current.name = reader.GetString(reader.GetOrdinal("name"));
                 current.email = reader.GetString(reader.GetOrdinal("email"));
-                current.Level = reader.GetString(reader.GetOrdinal("level"));
+                current.level = reader.GetString(reader.GetOrdinal("level"));
                 current.active = reader.GetBoolean(reader.GetOrdinal("active"));
-                current.creation_date = reader.GetString(reader.GetOrdinal("creation_date"));
-                current.expiration_date = reader.GetString(reader.GetOrdinal("expiration_date"));
+                current.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+                current.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
                 
                 
                 requestResult.Add(current);
@@ -49,10 +49,10 @@ public class TenantAccess : DbAccess
                 current.code = reader.GetString(reader.GetOrdinal("code"));
                 current.name = reader.GetString(reader.GetOrdinal("name"));
                 current.email = reader.GetString(reader.GetOrdinal("email"));
-                current.Level = reader.GetString(reader.GetOrdinal("level"));
+                current.level = reader.GetString(reader.GetOrdinal("level"));
                 current.active = reader.GetBoolean(reader.GetOrdinal("active"));
-                current.creation_date = reader.GetString(reader.GetOrdinal("creation_date"));
-                current.expiration_date = reader.GetString(reader.GetOrdinal("expiration_date"));
+                current.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+                current.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
                 
             }
         }
@@ -60,25 +60,35 @@ public class TenantAccess : DbAccess
         return tenant;
     }
 
-    public void PostTenant(Tenant tenant)
+    public void Create(Tenant tenant)
     {
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date)" +
-                                  $"VALUES ('{tenant.code}', '{tenant.name}', '{tenant.email}', '{tenant.Level}'," +
-                                  $" {tenant.active.ToString().ToLower()}, '{tenant.creation_date}', '{tenant.expiration_date}');";
+                                  $"VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date);";
+            command.Parameters.AddWithValue("code", getParamStr(tenant.code));
+            command.Parameters.AddWithValue("name", getParamStr(tenant.name));
+            command.Parameters.AddWithValue("email", getParamStr(tenant.email));
+            command.Parameters.AddWithValue("level",getParamStr(tenant.level));
+            command.Parameters.AddWithValue("active",getParamStr(tenant.active));
+            command.Parameters.AddWithValue("creation_date", new DateTime());
+            command.Parameters.AddWithValue("expiration_date", getParamStr(tenant.expiration_date));
             command.ExecuteNonQuery();
         }
     }
 
-    public void PutTenant(Tenant tenant)
+    public object getParamStr(object? param){
+        return param == null ? DBNull.Value : param;
+    }
+    
+    public void Update(Tenant tenant)
     {
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = 
                 "UPDATE ps_tenant" +
-                $"SET name = '{tenant.name}', email = '{tenant.email}', level = '{tenant.Level}',active = {tenant.active.ToString().ToLower()}," +
-                $"creation_date = '{tenant.creation_date}', expiration_date = 'tenant.expiration_date' WHERE code = @Code;";
+                $"SET name = '{tenant.name}', email = '{tenant.email}', level = '{tenant.level}',active = {tenant.active.ToString().ToLower()}," +
+                $"expiration_date = 'tenant.expiration_date' WHERE code = @Code;";
             command.Parameters.AddWithValue("Code", tenant.code);
             command.ExecuteNonQuery();
         }

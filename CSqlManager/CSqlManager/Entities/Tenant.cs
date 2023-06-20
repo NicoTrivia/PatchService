@@ -1,4 +1,5 @@
-﻿namespace CSqlManager;
+﻿using System.Text.Json;
+namespace CSqlManager;
 
 public class Tenant
 {
@@ -12,10 +13,15 @@ public class Tenant
     
     public string email { get; set; }
 
-    public string Level { get; set; }
+    public string level { get; set; }
     
-    public string creation_date { get; set; }
-    public string expiration_date { get; set; }
+    public DateTime?  creation_date { get; set; }
+    public DateTime?  expiration_date { get; set; }
     
     public bool active  { get; set; }
+
+    public override string ToString()
+    {
+        return JsonSerializer.Serialize(this);
+    }
 }
