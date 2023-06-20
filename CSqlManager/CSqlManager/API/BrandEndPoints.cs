@@ -6,11 +6,11 @@ public class BrandEndPoints
 {
     public static void MapEndPoints(WebApplication app)
     {
-        app.MapGet("/brand", Get);
+        app.MapGet("/brand", GetAll);
     }
     
     
-    public static IResult Get()
+    public static IResult GetAll()
     {
         var access = new BrandAccess();
         var list = access.GetBrands();

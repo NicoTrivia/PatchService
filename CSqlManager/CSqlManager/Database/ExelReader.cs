@@ -156,96 +156,7 @@ public class ExelReader
         }
     }
 
-    public List<string> SelectInEcu<T>(string name)
-    {
-        List<string> requestResult = new List<string>();
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
-        using (NpgsqlConnection connection = new NpgsqlConnection(connString))
-        {
-            connection.Open();
-
-            using (NpgsqlCommand command = connection.CreateCommand())
-            {
-
-                command.CommandText = $"SELECT {name} FROM ps_ecu";
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if(typeof(T) == typeof(string))
-                        requestResult.Add(reader.GetString(0));
-                    if(typeof(T) == typeof(bool))
-                        requestResult.Add(reader.GetBoolean(0).ToString());
-                }
-
-            }
-        }
-
-        return requestResult;
-    }
     
-    
-
-    public void ResetDatabase()
-    { 
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
-        using (NpgsqlConnection connection = new NpgsqlConnection(connString))
-        {
-            connection.Open();
-            
-            using (NpgsqlCommand command = connection.CreateCommand())
-            {
-                command.CommandText = "DELETE FROM ps_ecu";
-                command.ExecuteNonQuery();
-               
-                command.CommandText = "DELETE FROM ps_brand";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Database content deleted");
-            }
-            
-            connection.Close();
-        }
-    }
-
-    public void RemoveCol(Table table, string name)
-    {
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
-        using (NpgsqlConnection connection = new NpgsqlConnection(connString))
-        {
-            connection.Open();
-            
-            using (NpgsqlCommand command = connection.CreateCommand())
-            {
-                command.CommandText = $"ALTER TABLE ps_{table} DROP COLUMN {name}";
-                command.ExecuteNonQuery();
-                
-                Console.WriteLine($"Column {name} deleted from {table}");
-            }
-            
-            connection.Close();
-        }
-    }
-
-    public void AddVarChrCol(Table table, string name)
-    {
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
-        using (NpgsqlConnection connection = new NpgsqlConnection(connString))
-        {
-            connection.Open();
-            
-            using (NpgsqlCommand command = connection.CreateCommand())
-            {
-                command.CommandText = $"ALTER TABLE ps_{table} ADD {name} varchar";
-                command.ExecuteNonQuery();
-                
-                Console.WriteLine($"Column {name} created in {table}");
-            }
-            
-            connection.Close();
-        }
-    }
-    
-
     public void LinkWithDatabase()
     {
         string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
@@ -314,20 +225,20 @@ public class ExelReader
                                               $" o2, glowplugs, y75, special, decata, vmax, stage1," +
                                               $" stage2, flexfuel) " +
                                               $"VALUES ('{ecu.Brand_code}', '{ecu.code}', '{ecu.Fuel}'," +
-                                              $" {ecu.toggles[0].ToString().ToLower()}, {ecu.toggles[1].ToString().ToLower()}," +
-                                              $"{ecu.toggles[2].ToString().ToLower()}, {ecu.toggles[3].ToString().ToLower()}," +
-                                              $"{ecu.toggles[4].ToString().ToLower()}, {ecu.toggles[5].ToString().ToLower()}," +
-                                              $"{ecu.toggles[6].ToString().ToLower()}, {ecu.toggles[7].ToString().ToLower()}," +
-                                              $"{ecu.toggles[8].ToString().ToLower()}, {ecu.toggles[9].ToString().ToLower()}," +
-                                              $"{ecu.toggles[10].ToString().ToLower()}, {ecu.toggles[11].ToString().ToLower()}," +
-                                              $"{ecu.toggles[12].ToString().ToLower()}, {ecu.toggles[13].ToString().ToLower()}," +
-                                              $"{ecu.toggles[14].ToString().ToLower()}, {ecu.toggles[15].ToString().ToLower()}," +
-                                              $"{ecu.toggles[16].ToString().ToLower()}, {ecu.toggles[17].ToString().ToLower()}," +
-                                              $"{ecu.toggles[18].ToString().ToLower()}, {ecu.toggles[19].ToString().ToLower()}," +
-                                              $"{ecu.toggles[20].ToString().ToLower()}, {ecu.toggles[21].ToString().ToLower()}," +
-                                              $"{ecu.toggles[22].ToString().ToLower()}, {ecu.toggles[23].ToString().ToLower()}," +
-                                              $"{ecu.toggles[24].ToString().ToLower()}, {ecu.toggles[25].ToString().ToLower()}," +
-                                              $"{ecu.toggles[26].ToString().ToLower()}, {ecu.toggles[27].ToString().ToLower()})";
+                                              $" {ecu.dpf.ToString().ToLower()}, {ecu.egr.ToString().ToLower()}," +
+                                              $"{ecu.lambda.ToString().ToLower()}, {ecu.hotstart.ToString().ToLower()}," +
+                                              $"{ecu.flap.ToString().ToLower()}, {ecu.adblue.ToString().ToLower()}," +
+                                              $"{ecu.dtc.ToString().ToLower()}, {ecu.torqmonitor.ToString().ToLower()}," +
+                                              $"{ecu.speedlimit.ToString().ToLower()}, {ecu.startstop.ToString().ToLower()}," +
+                                              $"{ecu.nox.ToString().ToLower()}, {ecu.tva.ToString().ToLower()}," +
+                                              $"{ecu.readiness.ToString().ToLower()}, {ecu.immo.ToString().ToLower()}," +
+                                              $"{ecu.maf.ToString().ToLower()}, {ecu.hardcut.ToString().ToLower()}," +
+                                              $"{ecu.displaycalibration.ToString().ToLower()}, {ecu.waterpump.ToString().ToLower()}," +
+                                              $"{ecu.tprot.ToString().ToLower()}, {ecu.o2.ToString().ToLower()}," +
+                                              $"{ecu.glowplugs.ToString().ToLower()}, {ecu.y75.ToString().ToLower()}," +
+                                              $"{ecu.special.ToString().ToLower()}, {ecu.decata.ToString().ToLower()}," +
+                                              $"{ecu.vmax.ToString().ToLower()}, {ecu.stage1.ToString().ToLower()}," +
+                                              $"{ecu.stage2.ToString().ToLower()}, {ecu.flexfuel.ToString().ToLower()})";
                         command.ExecuteNonQuery();
                     }
                     
