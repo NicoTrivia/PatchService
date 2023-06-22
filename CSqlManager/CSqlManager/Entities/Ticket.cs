@@ -4,15 +4,28 @@ public class Ticket
 {
     public int id { get; set; }
     
+    // information 
     public string tenant { get; set; }
     
-    public Tenant.Levels user_level { get; set; }
+    public string user_level { get; set; }
     public int user_id { get; set; }
+    public string user_name { get; set; }
     
-    public string date { get; set; }
-    public string filename { get; set; }
+    public DateTime date { get; set; }
+    public string file_name { get; set; }
     public int file_size { get; set; }
     
+    public string immatriculation { get; set; }
+    public string fuel { get; set; }
+    
+    // processed 
+    public string? processed_file_name { get; set; }
+    public int? processed_file_size { get; set; }
+    public DateTime? processed_date { get; set; }
+    public int? processed_user_id { get; set; }
+    public string? processed_user_name { get; set; }
+    
+    // parameters 
     public string brand_code { get; set; }
     public string ecu_code { get; set; }
     public string brand_name { get; set; }

@@ -50,6 +50,8 @@ class Program
         BrandEndPoints.MapEndPoints(web);
         EcuEndPoints.MapEndPoints(web);
         TenantEndPoints.MapEndPoints(web);
+        UserEndPoints.MapEndPoints(web);
+        TenantEndPoints.MapEndPoints(web);
     }
     
 }

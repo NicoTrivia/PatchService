@@ -8,10 +8,11 @@ public class TenantEndPoints
     {
         app.MapGet("/tenant", GetAll);
         app.MapGet("/tenant/{Code}", GetByCode);
-        app.MapPost("/tenant", Create );
+        
+        app.MapPost("/tenant", Create);
+        
         app.MapPut("/tenant", Update);
     }
-    
     
     public static IResult GetAll(string BrandCode)
     {
@@ -29,7 +30,6 @@ public class TenantEndPoints
         return Results.Ok(tenant);
     }
 
-    
     public static IResult Create(Tenant tenant)
     {
         Console.WriteLine($"TENANT POST {tenant}");
@@ -41,7 +41,8 @@ public class TenantEndPoints
     }
     public static IResult Update(Tenant tenant)
     {
-          Console.WriteLine($"TENANT PUT{tenant} ");
+        Console.WriteLine($"TENANT PUT {tenant}");
+        
         var access = new TenantAccess();
         access.Update(tenant);
 

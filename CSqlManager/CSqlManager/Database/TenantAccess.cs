@@ -4,6 +4,18 @@ namespace CSqlManager;
 
 public class TenantAccess : DbAccess
 {
+    private void AddFromReader(NpgsqlDataReader reader, Tenant tenant)
+    {
+        tenant.code = reader.GetString(reader.GetOrdinal("code"));
+        tenant.name = reader.GetString(reader.GetOrdinal("name"));
+        tenant.email = reader.GetString(reader.GetOrdinal("email"));
+        tenant.level = reader.GetString(reader.GetOrdinal("level"));
+        tenant.active = reader.GetBoolean(reader.GetOrdinal("active"));
+        tenant.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+        tenant.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
+    }
+    
+    
     public List<Tenant> GetTenants()
     {
         List<Tenant> requestResult = new List<Tenant>();
@@ -16,17 +28,8 @@ public class TenantAccess : DbAccess
             while (reader.Read())
             {
                 Tenant current = new Tenant();
-                current.code = reader.GetString(reader.GetOrdinal("code"));
-                current.name = reader.GetString(reader.GetOrdinal("name"));
-                current.email = reader.GetString(reader.GetOrdinal("email"));
-                current.level = reader.GetString(reader.GetOrdinal("level"));
-                current.active = reader.GetBoolean(reader.GetOrdinal("active"));
-                current.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
-                current.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
-                
-                
+                AddFromReader(reader, current);
                 requestResult.Add(current);
-                
             }
 
         }
@@ -46,14 +49,7 @@ public class TenantAccess : DbAccess
             if (reader.Read())
             {
                 Tenant current = new Tenant();
-                current.code = reader.GetString(reader.GetOrdinal("code"));
-                current.name = reader.GetString(reader.GetOrdinal("name"));
-                current.email = reader.GetString(reader.GetOrdinal("email"));
-                current.level = reader.GetString(reader.GetOrdinal("level"));
-                current.active = reader.GetBoolean(reader.GetOrdinal("active"));
-                current.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
-                current.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
-                
+                AddFromReader(reader, current);
             }
         }
 
@@ -66,19 +62,15 @@ public class TenantAccess : DbAccess
         {
             command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date)" +
                                   $"VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date);";
-            command.Parameters.AddWithValue("code", getParamStr(tenant.code));
-            command.Parameters.AddWithValue("name", getParamStr(tenant.name));
-            command.Parameters.AddWithValue("email", getParamStr(tenant.email));
-            command.Parameters.AddWithValue("level",getParamStr(tenant.level));
-            command.Parameters.AddWithValue("active",getParamStr(tenant.active));
+            command.Parameters.AddWithValue("code", GetParam(tenant.code));
+            command.Parameters.AddWithValue("name", GetParam(tenant.name));
+            command.Parameters.AddWithValue("email", GetParam(tenant.email));
+            command.Parameters.AddWithValue("level",GetParam(tenant.level));
+            command.Parameters.AddWithValue("active",GetParam(tenant.active));
             command.Parameters.AddWithValue("creation_date", new DateTime());
-            command.Parameters.AddWithValue("expiration_date", getParamStr(tenant.expiration_date));
+            command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             command.ExecuteNonQuery();
         }
-    }
-
-    public object getParamStr(object? param){
-        return param == null ? DBNull.Value : param;
     }
     
     public void Update(Tenant tenant)
@@ -87,9 +79,17 @@ public class TenantAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_tenant" +
-                $"SET name = '{tenant.name}', email = '{tenant.email}', level = '{tenant.level}',active = {tenant.active.ToString().ToLower()}," +
-                $"expiration_date = 'tenant.expiration_date' WHERE code = @Code;";
-            command.Parameters.AddWithValue("Code", tenant.code);
+                $"SET name = @name, email = @email, level = @level ,active = @active," +
+                $"expiration_date = @expiration_date WHERE code = @code;";
+            
+            command.Parameters.AddWithValue("code", tenant.code);
+            
+            command.Parameters.AddWithValue("name", GetParam(tenant.name));
+            command.Parameters.AddWithValue("email", GetParam(tenant.email));
+            command.Parameters.AddWithValue("level",GetParam(tenant.level));
+            command.Parameters.AddWithValue("active",GetParam(tenant.active));
+            command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
+            
             command.ExecuteNonQuery();
         }
         

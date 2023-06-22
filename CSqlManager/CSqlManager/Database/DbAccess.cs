@@ -7,9 +7,9 @@ public class DbAccess
 {
     static readonly string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
 
-    public NpgsqlConnection? Connection = null;
-
-    public NpgsqlConnection GetConnection()
+    private NpgsqlConnection? Connection = null;
+    protected object GetParam(object? param) => param == null ? DBNull.Value : param;
+    private NpgsqlConnection GetConnection()
     {
         if (Connection == null || Connection.State != ConnectionState.Open)
         {
