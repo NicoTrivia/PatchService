@@ -1,4 +1,6 @@
 ﻿using Npgsql;
+using System.Security.Cryptography;
+using System.Text;
 namespace CSqlManager;
 
 public class UserAccess : DbAccess
@@ -12,8 +14,6 @@ public class UserAccess : DbAccess
         user.firstname = reader.GetString(reader.GetOrdinal("firstname"));
         user.lastname = reader.GetString(reader.GetOrdinal("lastname"));
         user.login = reader.GetString(reader.GetOrdinal("login"));
-        
-        user.password = reader.GetString(reader.GetOrdinal("password")); // get the encrypted password => need to decrypt
     }
     
     public List<User> GetUsers()
@@ -22,7 +22,7 @@ public class UserAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active,password FROM ps_user";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user";
             var reader = command.ExecuteReader();
             
             while (reader.Read())
@@ -42,7 +42,7 @@ public class UserAccess : DbAccess
         User user = new User();
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active,password FROM ps_user WHERE id = @id";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE id = @id";
             
             command.Parameters.AddWithValue("id", id);
             var reader = command.ExecuteReader();
@@ -61,7 +61,7 @@ public class UserAccess : DbAccess
         List<User> requestResult = new List<User>();
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active,password FROM ps_user WHERE tenant = @tenant";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE tenant = @tenant";
             
             command.Parameters.AddWithValue("tenant", tenant);
             var reader = command.ExecuteReader();
@@ -76,6 +76,24 @@ public class UserAccess : DbAccess
 
         return requestResult;
     }
+    
+    static string ComputeSHA256Hash(string input)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+            StringBuilder builder = new StringBuilder();
+
+            foreach (byte b in hashBytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+
+            return builder.ToString();
+        }
+    }
 
     public void Create(User user)
     {
@@ -83,6 +101,7 @@ public class UserAccess : DbAccess
         {
             command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, password)" +
                                   $"VALUES (@id, @login, @email, @firstname, @active, @lastname, @tenant, @password);";
+            
             command.Parameters.AddWithValue("id", GetParam(user.id));
             command.Parameters.AddWithValue("login", GetParam(user.login));
             command.Parameters.AddWithValue("email", GetParam(user.email));
@@ -91,7 +110,15 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("lastname", GetParam(user.lastname));
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
             
-            command.Parameters.AddWithValue("password", GetParam(user.password)); // need an encryption
+            if (!string.IsNullOrEmpty(user.password))
+            {
+                command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.password)); 
+            }
+            else
+            {
+                command.Parameters.AddWithValue("password", DBNull.Value);
+            }
+            
             command.ExecuteNonQuery();
         }
     }
@@ -100,7 +127,6 @@ public class UserAccess : DbAccess
     {
         using (NpgsqlCommand command = CreateCommand())
         {
-            // Password updates ?? 
             command.CommandText = 
                 "UPDATE ps_user" +
                 $"SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, password = @password," +
@@ -114,10 +140,40 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("lastname", GetParam(user.lastname));
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
             
-            command.Parameters.AddWithValue("password", GetParam(user.password)); // need an encryption
+            if (!string.IsNullOrEmpty(user.password))
+            {
+                command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.password)); 
+            }
+            else
+            {
+                command.Parameters.AddWithValue("password", DBNull.Value);
+            }
             
             command.ExecuteNonQuery();
         }
         
+    }
+
+    public User? Login(string tenant, string login, string password)
+    {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.Parameters.AddWithValue("login", GetParam(login));
+            command.Parameters.AddWithValue("password", GetParam(ComputeSHA256Hash(password)));
+            command.Parameters.AddWithValue("tenant", GetParam(tenant));
+
+            command.CommandText = "SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE login = @login, tenant = @tenant, password = @password";
+            var reader = command.ExecuteReader();
+            
+            if (reader.Read())
+            {
+                User user = new User();
+                AddFromReader(reader, user);
+                return user;
+            }
+            
+            return null;
+            
+        }
     }
 }

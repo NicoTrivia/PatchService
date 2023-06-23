@@ -7,6 +7,7 @@ public class UserEndPoints
         app.MapGet("/user", GetAll);
         app.MapGet("/user/{Tenant}", GetByTenant);
         app.MapGet("/user/{Id}", GetById);
+        app.MapGet("/user/login/{Tenant}/{Login}/{Password}", UserLogin);
         
         app.MapPost("/user", Create);
         
@@ -40,7 +41,7 @@ public class UserEndPoints
     public static IResult Create(User user)
     {
         Console.WriteLine($"USER POST {user}");
-       
+        
         var access = new UserAccess();
         access.Create(user);
 
@@ -54,5 +55,13 @@ public class UserEndPoints
         access.Update(user);
 
         return Results.Ok();
+    }
+
+    public static IResult UserLogin(string Tenant, string Login, string Password)
+    {
+        var access = new UserAccess();
+        var user = access.Login(Tenant,Login,Password);
+
+        return Results.Ok(user);
     }
 }
