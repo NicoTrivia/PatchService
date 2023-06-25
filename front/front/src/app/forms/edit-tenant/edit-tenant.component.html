@@ -1,0 +1,63 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="isCreation ? 'TENANT_FORM.TITLE.CREATE' : 'TENANT_FORM.TITLE.SET'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <form #userForm="ngForm" *ngIf="tenant" class="patch-card-area patch-card-form-top">
+                    <!-- Create / set tenant  -->
+                        <div class="patch-card">
+                            <div class="patch-form-title-main">
+                                {{(isCreation ? 'TENANT_FORM.TITLE.CREATE' :'TENANT_FORM.TITLE.SET') | translate}}
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="code" class="col-sm-4 patch-col-form-label">
+                                    {{'TENANT.FLD.CODE' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <input pInputText [readOnly]='!isCreation' class="form-control form-control-sm" [(ngModel)]='tenant.code' name='code'>
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="name" class="col-sm-4 patch-col-form-label">
+                                    {{'TENANT.FLD.NAME' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <input pInputText class="form-control form-control-sm" [(ngModel)]='tenant.name' name='name'>
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="Email" class="col-sm-4 patch-col-form-label">
+                                    {{'TENANT.FLD.EMAIL' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <input pInputText class="form-control form-control-sm" [(ngModel)]='tenant.email' name='email'>
+                                </div>
+                            </div>
+        
+                            <div class="patch-form-group row">
+                                <label for="Level" class="col-sm-4 patch-col-form-label">
+                                    {{'TENANT.FLD.LEVEL' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <input pInputText class="form-control form-control-sm" [(ngModel)]='tenant.level' name='Level'>
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="Active" class="col-sm-4 patch-col-form-label">
+                                    {{'TENANT.FLD.ACTIVE' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <p-inputSwitch [(ngModel)]="tenant.active" name="Active"></p-inputSwitch>
+                                </div>
+                            </div>
+                            <div class="patch-form-buttonbar">
+                                <button pButton id="btnCancelTenant" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
+                                <button pButton type='submit' id="btnValidateTenant" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
+                            </div>
+                        </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -28,13 +28,22 @@
     },
     "BTN": {
         "CANCEL": "Annuler",
+        "CREATE_USER": "Ajouter un utilisateur",
+        "CREATE_TENANT": "Ajouter un client",
+        "TENANT_LIST": "Voir les clients",
+        "USER_LIST": "Voir les utilisateurs",
         "SUBMIT": "Soumettre",
         "CONTINUE": "Continuer",
         "HISTORY_VIEW": "Historique",
         "INFORMATION": "Information",
         "LOGOUT": "Déconnexion",
         "SUBMIT_TICKET": "Soumettre la demande",
-        "SET_PASSWORD": "Mot de passe"
+        "SET_PASSWORD": "Mot de passe",
+        "VALIDATE": "Valider",
+        "SET": "Modifier",
+        "DELETE": "Supprimer",
+        "ACTIVATE": "Activer",
+        "UNACTIVATE": "Désactiver"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -65,11 +74,65 @@
     "WARNING": {
         "MISSING_VALUE": "Valeur requise manquante",
         "NO_CNX": "Attention : connexion au serveur non disponible. Vérifiez le lancement du service.",
-        "SLOW_CNX": "Requête en cours, veuillez patienter."
+        "SLOW_CNX": "Requête en cours, veuillez patienter.",
+        "DATA_SAVED": "Données enregistrées"
     },
     "TAWK": {
         "TITLE": {
             "SIDEBAR": "Assistance"
+        }
+    },
+    "USER_LIST" : {
+        "TITLE": {
+            "SIDEBAR": "Utilisateurs"
+        }
+    },
+    "USER_FORM": {
+        "TITLE": {
+            "CREATE": "Ajouter un utilisateur",
+            "SET": "Modifier un utilisateur"
+        }
+    },
+    "TENANT_FORM": {
+        "TITLE": {
+            "CREATE": "Ajouter un client",
+            "SET": "Modifier un client"
+        }
+    },
+    "TENANT": {
+        "FLD" : {
+            "CODE": "Code",
+            "NAME": "Nom / Libellé",
+            "EMAIL": "Email",
+            "LEVEL": "Niveau d'abonnement",
+            "ACTIVE": "Actif",
+            "CREATION_DATE": "Creation",
+            "EXPIRATION_DATE": "Expiration"
+        }
+    },
+    "USER": {
+        "FLD" : {
+            "LOGIN": "Login",
+            "FIRSTNAME": "Prénom",
+            "NAME": "Nom",
+            "EMAIL": "Email",
+            "PROFILE": "Profil",
+            "TENANT": "Client",
+            "ACTIVE": "Actif",
+            "PASSWORD": "Mot de passe",
+            "PASSWORD2": "Mot de passe (confirmer)"
+        },
+        "PASSWORD": {
+            "PROMPT": "Sécurité du mot de passe",
+            "WEAK": "Faible",
+            "MEDIUM": "Bonne",
+            "STRONG": "Forte",
+            "MSG" : {
+                "PASSWORD_STRENGTH": "Le mot de passe doit contenir : une minuscule, une majuscule, un char. spécial !@#$%^&* ",
+                "PASSWORD_TOO_SHORT": "Le mot de passe est trop court (10 mini)",
+                "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas",
+                "PASSWORD_EMPTY": "Le mot de passe ne peut être vide"
+            }
         }
     }
 }

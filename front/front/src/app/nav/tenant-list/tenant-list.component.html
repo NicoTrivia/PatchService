@@ -1,0 +1,54 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="'TENANT_LIST.TITLE'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <form #parameterForm="ngForm">
+            <p-table #tenantTable [value]="tenantList" [paginator]="true" [rows]="25" [resizableColumns]="true" tableStyleClass="prime-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="'code'" pResizableColumn>{{'TENANT.FLD.CODE'| translate}}<p-sortIcon [field]="'code'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'name'" pResizableColumn>{{'TENANT.FLD.NAME' | translate}}<p-sortIcon [field]="'name'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'email'" pResizableColumn>{{'TENANT.FLD.EMAIL' | translate}}<p-sortIcon [field]="'email'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'level'" pResizableColumn>{{'TENANT.FLD.LEVEL'| translate}}<p-sortIcon [field]="'level'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'creation_date'" pResizableColumn>{{'TENANT.FLD.CREATION_DATE'| translate}}<p-sortIcon [field]="'creation_date'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'expiration_date'" pResizableColumn>{{'TENANT.FLD.EXPIRATION_DATE'| translate}}<p-sortIcon [field]="'expiration_date'"></p-sortIcon></th>
+                            <th>{{'USER.FLD.ACTIVE'| translate}}</th>
+                            <th>#</th>
+                        </tr>
+                        <tr>
+                            <th><input pInputText type="text" (input)="tenantTable.filter($event.target, 'code', 'contains')"></th>
+                            <th><input pInputText type="text" (input)="tenantTable.filter($event.target, 'name', 'contains')"></th>
+                            <th><input pInputText type="text" (input)="tenantTable.filter($event.target, 'email', 'contains')"></th>
+                            <th><input pInputText type="text" (input)="tenantTable.filter($event.target, 'level', 'contains')"></th>
+                            <th></th>
+                            <th></th>
+                            <th><p-triStateCheckbox (onChange)="tenantTable.filter($event.value, 'active', 'equals')"></p-triStateCheckbox></th>
+                            <th></th>
+                        </tr>     
+                    </ng-template>
+                    <ng-template pTemplate="body" let-u>
+                        <tr>
+                            <td>{{u.code}}</td>
+                            <td>{{u.name}}</td>
+                            <td>{{u.email}}</td>
+                            <td>{{u.level}}</td>
+                            <td>{{u.creation_date | date:'dd/MM/yyyy'}}</td>
+                            <td>{{u.expiration_date | date:'dd/MM/yyyy'}}</td>
+                            <td><em [hidden]="!u.active" (click)="activate(u, false)" id="emUnactivateTenant" class="fa-solid fa-check" style='cursor: pointer' title="{{'BTN.UNACTIVATE' | translate}}"></em>
+                                <em [hidden]="u.active" (click)="activate(u, true)" id="emActivateTenant" class="fa-solid fa-times" style='cursor: pointer;color:red' title="{{'BTN.ACTIVATE' | translate}}"></em>
+                            </td>
+                            <td>
+                                <em (click)="set(u.code)" id="emSetTenant" class="fa-solid fa-pen-to-square" style="cursor: pointer;" title="{{'BTN.SET' | translate}}"></em>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                <em id="emDeleteTenant" class="fa-solid fa-trash-alt" style="cursor: pointer;" title="{{'BTN.DELETE' | translate}}"></em>
+                            </td>
+                        </tr>
+                    </ng-template>
+             </p-table>
+        </form>
+
+        <div class="patch-form-buttonbar">
+            <button pButton type="button" id="btnCreateTenant" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/edit_tenant" label="{{'BTN.CREATE_TENANT' | translate}}"></button>
+            <button pButton type="button" id="btnTenants" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/user_list" label="{{'BTN.USER_LIST' | translate}}"></button>
+        </div>
+    </div>
+</section>

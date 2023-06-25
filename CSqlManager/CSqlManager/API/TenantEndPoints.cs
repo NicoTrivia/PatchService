@@ -14,7 +14,7 @@ public class TenantEndPoints
         app.MapPut("/tenant", Update);
     }
     
-    public static IResult GetAll(string BrandCode)
+    public static IResult GetAll()
     {
         var access = new TenantAccess();
         var list = access.GetTenants();

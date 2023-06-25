@@ -36,6 +36,19 @@
     overflow-y: hidden;
 }
 
+.patch-form-title-main {
+    text-align: center;request-patch-button-bar {
+    position: absolute;
+    right: 150px;
+    bottom: 20px;
+  }
+
+    font-weight: bold;
+    font-size: 1.6rem;
+    letter-spacing: 0px;
+    margin-bottom: 2rem;
+}
+
 .patch-form-title {
     text-align: left;
     font-weight: bold;
@@ -58,6 +71,10 @@
 }
 .patch-card-area {
     margin: 1rem;
+}
+
+.patch-card-form-top {
+    margin-top: 5rem;
 }
 
 .patch-card {
@@ -112,4 +129,33 @@
     justify-content: end;
     text-align: end;
     margin-right: 5px;
+}
+.patch .prime-table, .ui-dropdown-label, .ui-dropdown-item{
+    font-size: 0.9em !important;
+    padding: 0.15em;
+}
+.patch-form-group {
+    font-family: 'Segoe UI', 'Source Sans Pro', sans-serif;
+    margin-bottom: .2rem;
+}
+.patch-col-form-label {
+    padding-top: calc(.1rem + 1px) !important;
+    padding-bottom: calc(.1rem + 1px) !important;
+    line-height: 1.0;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+.patch-col-form-label-light {
+  padding-top: calc(.1rem + 1px) !important;
+  padding-bottom: calc(.1rem + 1px) !important;
+  line-height: 2.0;
+  font-size: 0.85rem;
+  vertical-align: top;
+  padding-right: 0.8rem;
+  padding-left: 0.8rem;
+}
+.patch-form-buttonbar {
+    margin-top: 2rem;
+    text-align: center;
+    align-items: center;
 }

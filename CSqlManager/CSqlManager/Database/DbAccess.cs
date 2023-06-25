@@ -81,4 +81,16 @@ public class DbAccess
             Console.WriteLine($"Table {name} created");
         }
     }
+
+
+    public string? getString(NpgsqlDataReader reader, string code) {
+        if (!reader.IsDBNull(reader.GetOrdinal(code)))
+            return reader.GetString(reader.GetOrdinal(code));
+        return null;
+    }
+    public DateTime? getDateTime(NpgsqlDataReader reader, string code) {
+        if (!reader.IsDBNull(reader.GetOrdinal(code)))
+            return reader.GetDateTime(reader.GetOrdinal(code));
+        return null;
+    }
 }

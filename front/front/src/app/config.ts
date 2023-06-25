@@ -42,6 +42,8 @@ export class Config {
             request_patch: '/request_patch',
             ping: '/auth/ping',
             brand: '/brand',
+            user: '/user',
+            tenant: '/tenant',
             ecu: '/ecu'
         };
     }

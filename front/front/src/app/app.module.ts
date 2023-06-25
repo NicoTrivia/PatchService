@@ -17,11 +17,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 // UI
+import {TableModule} from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
-
+import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
+import {PasswordModule} from 'primeng/password';
 import {DialogModule} from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -30,6 +32,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
+import { MessageService } from 'primeng/api';
 
 // services
 import { AuthenticationService } from './auth/authentication-service/authentication-service';
@@ -39,6 +42,10 @@ import { TawkService} from './services/TawkService';
 import { BrandService} from './services/brand.service';
 import { EcuService} from './services/ecu.service';
 import { TicketViewComponent } from './tile-components/ticket-view/ticket-view.component';
+import { UserListComponent } from './nav/user-list/user-list.component';
+import { EditUserComponent } from './forms/edit-user/edit-user.component';
+import { TenantListComponent } from './nav/tenant-list/tenant-list.component';
+import { EditTenantComponent } from './forms/edit-tenant/edit-tenant.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -52,12 +59,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     SidebarComponent,
     LoginComponent,
     LogoutComponent,
-    TicketViewComponent
+    TicketViewComponent,
+    UserListComponent,
+    EditUserComponent,
+    TenantListComponent,
+    EditTenantComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
-    InputTextModule,
+    InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,
@@ -74,7 +85,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     AuthenticationService,
-    TawkService, BrandService, EcuService, 
+    TawkService, BrandService, EcuService, MessageService,
     {provide: APP_BASE_HREF, useValue : '/front/' },
     { provide: LOCALE_ID, useValue: navigator.language}
   ],

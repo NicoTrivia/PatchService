@@ -34,9 +34,16 @@
                             <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('viewHistory')}"></div>
                         </div>
                         <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
-                            <div id="divHistoryView" class='sidebar-link sidebar-hover' (click)="select('tawk')">
+                            <div id="divTawkView" class='sidebar-link sidebar-hover' (click)="select('tawk')">
                                 <em class="fa-solid fa-comments" style='cursor: pointer' title="{{'TAWK.TITLE.SIDEBAR' | translate}}"></em>
-                                <span id="spanHistoryView" class='sidebar-label' *ngIf="!sidebarSmall">{{'TAWK.TITLE.SIDEBAR' | translate}}</span>
+                                <span id="spanTawkView" class='sidebar-label' *ngIf="!sidebarSmall">{{'TAWK.TITLE.SIDEBAR' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder"></div>
+                        </div>
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
+                            <div id="divUserView" class='sidebar-link sidebar-hover' (click)="select('user_list')">
+                                <em class="fa-solid fa-users" style='cursor: pointer' title="{{'USER_LIST.TITLE.SIDEBAR' | translate}}"></em>
+                                <span id="spanUserView" class='sidebar-label' *ngIf="!sidebarSmall">{{'USER_LIST.TITLE.SIDEBAR' | translate}}</span>
                             </div>
                             <div class="sidebar-item-rightborder"></div>
                         </div>
@@ -68,7 +75,7 @@
                         </div>
                         <div class='sidebar-link-row'>
                             <div class='sidebar-nolink sidebar-hover'>
-                                <em class='fa-solid' [ngClass]="{'fa-user-shield': (getProfile() === 'ADMIN'), 'fa-user-friends': (getProfile() === 'ITESOFT'), 'fa-user': (getProfile() !== 'ADMIN' && getProfile() !== 'ITESOFT')}"  [title]="getUserName()+'\n'+getTenant()"></em>
+                                <em class='fa-solid' ngClass="fa-user"  [title]="getUserName()+'\n'+getTenant()"></em>
                                 <span class='sidebar-label' *ngIf="!sidebarSmall">{{getUserName()}}</span>
                                 <div class='sidebar-label-line'><span *ngIf="!sidebarSmall">{{getTenant()}}</span></div>
                             </div>

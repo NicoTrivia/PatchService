@@ -37,14 +37,6 @@ public class ECU
 
     public ECU() { }
 
-    public ECU(string brandCode, string ecuCode)
-    {
-        Brand_code = brandCode;
-        code = ecuCode;
-        Fuel = "X";
-        
-    }
-    
     public ECU(string brandCode, string ecuCode, bool[] toToggle)
     {
         Brand_code = brandCode;

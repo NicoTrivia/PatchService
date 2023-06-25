@@ -20,8 +20,7 @@ import { EcuService } from '../../services/ecu.service';
 @Component({
   selector: 'app-request-patch',
   templateUrl: './request-patch.component.html',
-  styleUrls: ['./request-patch.component.css'],
-  providers: [MessageService]
+  styleUrls: ['./request-patch.component.css']  
 })
 
 

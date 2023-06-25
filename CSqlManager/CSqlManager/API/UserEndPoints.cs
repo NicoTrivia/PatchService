@@ -5,7 +5,7 @@ public class UserEndPoints
     public static void MapEndPoints(WebApplication app)
     {
         app.MapGet("/user", GetAll);
-        app.MapGet("/user/{Tenant}", GetByTenant);
+        app.MapGet("/user/tenant/{Tenant}", GetByTenant);
         app.MapGet("/user/{Id}", GetById);
         app.MapGet("/user/login/{Tenant}/{Login}/{Password}", UserLogin);
         

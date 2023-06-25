@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
 
 // http://localhost:8080
@@ -53,8 +53,8 @@ class Program
         EcuEndPoints.MapEndPoints(web);
         TenantEndPoints.MapEndPoints(web);
         UserEndPoints.MapEndPoints(web);
-        TenantEndPoints.MapEndPoints(web);
         FileTransfers.MapEndPoints(web);
+        TicketEndPoints.MapEndPoints(web);
     }
     
 }

@@ -6,15 +6,14 @@ public class TenantAccess : DbAccess
 {
     private void AddFromReader(NpgsqlDataReader reader, Tenant tenant)
     {
-        tenant.code = reader.GetString(reader.GetOrdinal("code"));
-        tenant.name = reader.GetString(reader.GetOrdinal("name"));
-        tenant.email = reader.GetString(reader.GetOrdinal("email"));
-        tenant.level = reader.GetString(reader.GetOrdinal("level"));
+        tenant.code = getString(reader, "code");
+        tenant.name = getString(reader, "name");
+        tenant.email = getString(reader, "email");
+        tenant.level = getString(reader, "level");
         tenant.active = reader.GetBoolean(reader.GetOrdinal("active"));
-        tenant.creation_date = reader.GetDateTime(reader.GetOrdinal("creation_date"));
-        tenant.expiration_date = reader.GetDateTime(reader.GetOrdinal("expiration_date"));
+        tenant.creation_date = getDateTime(reader, "creation_date");
+        tenant.expiration_date =  getDateTime(reader, "expiration_date");
     }
-    
     
     public List<Tenant> GetTenants()
     {
@@ -67,7 +66,7 @@ public class TenantAccess : DbAccess
             command.Parameters.AddWithValue("email", GetParam(tenant.email));
             command.Parameters.AddWithValue("level",GetParam(tenant.level));
             command.Parameters.AddWithValue("active",GetParam(tenant.active));
-            command.Parameters.AddWithValue("creation_date", new DateTime());
+            command.Parameters.AddWithValue("creation_date", DateTime.Today);
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             command.ExecuteNonQuery();
         }
@@ -75,14 +74,17 @@ public class TenantAccess : DbAccess
     
     public void Update(Tenant tenant)
     {
+        if (tenant == null) {
+            return;
+        }
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = 
-                "UPDATE ps_tenant" +
+                "UPDATE ps_tenant " +
                 $"SET name = @name, email = @email, level = @level ,active = @active," +
                 $"expiration_date = @expiration_date WHERE code = @code;";
             
-            command.Parameters.AddWithValue("code", tenant.code);
+            command.Parameters.AddWithValue("code", tenant.code!);
             
             command.Parameters.AddWithValue("name", GetParam(tenant.name));
             command.Parameters.AddWithValue("email", GetParam(tenant.email));
@@ -92,7 +94,5 @@ public class TenantAccess : DbAccess
             
             command.ExecuteNonQuery();
         }
-        
     }
-    
 }
