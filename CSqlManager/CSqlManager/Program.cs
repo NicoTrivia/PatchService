@@ -25,7 +25,9 @@ class Program
         // Web management 
        string[] args = null;
        var builder = WebApplication.CreateBuilder(args);
-
+        
+       // WARNING : Rememeber to change the file upload directory depending on the context
+       
        builder.Services.AddCors(options =>
        {
            options.AddDefaultPolicy(builder =>
@@ -52,6 +54,7 @@ class Program
         TenantEndPoints.MapEndPoints(web);
         UserEndPoints.MapEndPoints(web);
         TenantEndPoints.MapEndPoints(web);
+        FileTransfers.MapEndPoints(web);
     }
     
 }
