@@ -6,11 +6,11 @@ public class FileTransfers
     public static void MapEndPoints(WebApplication app)
     {
         app.MapGet("/files/{fileName}", GetFile);
-        app.MapPost("/files/{fileName}", PostFile);
+        app.MapPost("/files", PostFile);
     }
     
     // To change depending on the context
-    private static readonly string UploadDirectory = "C:/Users/Alexandre Bodin/Documents/PatchServices-main/CSqlManager/CSqlManager/Files" ;
+    private static readonly string UploadDirectory = "C:/temp" ;
 
     static Task GetFile(HttpContext context, string fileName)
     {
@@ -34,7 +34,7 @@ public class FileTransfers
         return Task.CompletedTask;
     }
 
-    static Task PostFile(HttpContext context, string fileName)
+    static Task PostFile(HttpContext context)
     {
         var file = context.Request.Form.Files.FirstOrDefault();
 
@@ -43,6 +43,21 @@ public class FileTransfers
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             return Task.CompletedTask;
         }
+        var fileName = "file.bin";
+        var tenant = "";
+        var ticket_id = "";
+        foreach (var formPart in context.Request.Form) {
+            if (formPart.Key == "filename") {
+               fileName = formPart.Value;
+            }
+            if (formPart.Key == "ticket_id") {
+               ticket_id = formPart.Value;
+            }
+            if (formPart.Key == "tenant") {
+               tenant = formPart.Value;
+            }
+        }
+        Console.WriteLine(fileName+" "+ticket_id+" "+tenant);
         
         var filePath = Path.Combine(UploadDirectory, fileName);
 
@@ -56,4 +71,11 @@ public class FileTransfers
 
         return Task.CompletedTask;
     }
+/*
+    public string BuildDirectory( ) {
+        <baseDir>/<Tenant>/<annee>/<mois>/<id_ticket>
+
+
+        "C:\temp\ACME\2023\06\123456.jpg"
+    }*/
 }
