@@ -12,6 +12,7 @@ public class FileTransfers
     // To change depending on the context
     private static readonly string UploadDirectory = "C:/temp" ;
 
+    // Needs an update 
     static Task GetFile(HttpContext context, string fileName)
     {
         string? name = context.Request.RouteValues[fileName] as string;
@@ -36,11 +37,13 @@ public class FileTransfers
 
     static Task PostFile(HttpContext context)
     {
+        Console.WriteLine("Post treatment of a file :");
         var file = context.Request.Form.Files.FirstOrDefault();
 
         if (file == null || file.Length == 0)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            Console.WriteLine("ERROR 400 : No file was found");
             return Task.CompletedTask;
         }
         var fileName = "file.bin";
@@ -50,16 +53,21 @@ public class FileTransfers
             if (formPart.Key == "filename") {
                fileName = formPart.Value;
             }
-            if (formPart.Key == "ticket_id") {
+            else if (formPart.Key == "ticket_id") {
                ticket_id = formPart.Value;
             }
-            if (formPart.Key == "tenant") {
+            else if (formPart.Key == "tenant") {
                tenant = formPart.Value;
             }
+            else
+            {
+                Console.WriteLine("WARNING UNKNOWN PARAMETER :" + formPart.Key + " with value :" + formPart.Value);
+            }
         }
-        Console.WriteLine(fileName+" "+ticket_id+" "+tenant);
+        Console.WriteLine("file informations : " + fileName+" "+ticket_id+" "+tenant);
         
-        var filePath = Path.Combine(UploadDirectory, fileName);
+        string fileLocation = BuildDirectory(tenant, ticket_id, fileName);
+        var filePath = Path.Combine(fileLocation, fileName);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
         {
@@ -67,15 +75,20 @@ public class FileTransfers
         }
 
         context.Response.StatusCode = StatusCodes.Status201Created;
-        context.Response.Headers["Location"] = $"/api/files/{fileName}";
-
+        context.Response.Headers["Location"] = fileLocation;
+        Console.WriteLine("File Saved in : " + fileLocation);
+        Console.WriteLine();
         return Task.CompletedTask;
     }
-/*
-    public string BuildDirectory( ) {
-        <baseDir>/<Tenant>/<annee>/<mois>/<id_ticket>
 
+    public static string BuildDirectory(string tenant, string ticketID, string filename)
+    {
+        string Dlocation = $"{UploadDirectory}/{tenant}/{ticketID}";
+        if (!Path.Exists(Dlocation))
+        {
+            Directory.CreateDirectory(Dlocation);
+        }
 
-        "C:\temp\ACME\2023\06\123456.jpg"
-    }*/
+        return Dlocation + $"/{filename}";
+    }
 }

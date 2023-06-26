@@ -162,14 +162,19 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("password", GetParam(ComputeSHA256Hash(password)));
             command.Parameters.AddWithValue("tenant", GetParam(tenant));
 
-            command.CommandText = "SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE login = @login, tenant = @tenant, password = @password";
+            command.CommandText = "SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE login = @login AND tenant = @tenant AND password = @password";
             var reader = command.ExecuteReader();
             
             if (reader.Read())
             {
                 User user = new User();
                 AddFromReader(reader, user);
+                Console.WriteLine($"User with id {user.id} was found !");
                 return user;
+            }
+            else
+            {
+                Console.WriteLine("No user was found with the given informations");
             }
             
             return null;

@@ -59,6 +59,8 @@ public class UserEndPoints
 
     public static IResult UserLogin(string Tenant, string Login, string Password)
     {
+        Console.WriteLine($"Trying to login in tenant : : {Tenant} as : {Login} with password : {Password} ");
+        
         var access = new UserAccess();
         var user = access.Login(Tenant,Login,Password);
 
