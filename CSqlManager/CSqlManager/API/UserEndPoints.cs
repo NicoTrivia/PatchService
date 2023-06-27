@@ -61,9 +61,13 @@ public class UserEndPoints
     {
         Console.WriteLine($"Trying to login in tenant : : {Tenant} as : {Login} with password : {Password} ");
         
-        var access = new UserAccess();
-        var user = access.Login(Tenant,Login,Password);
+        UserAccess access = new UserAccess();
+        TenantAccess tenantAccess = new TenantAccess();
+        User user = access.Login(Tenant,Login,Password);
 
+        string level = tenantAccess.GetTenantByCode(user.tenant).level;
+        user.jwt = User.GenerateJwtToken(user.login, user.tenant, level);
+        
         return Results.Ok(user);
     }
 }
