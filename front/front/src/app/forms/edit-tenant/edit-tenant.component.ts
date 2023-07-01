@@ -64,7 +64,7 @@ export class EditTenantComponent extends PatchSecured  implements OnInit {
   public validateForm(): void {
     if (!this.tenant || !this.tenant.code || !this.tenant.name) {
         this.translate.get('WARNING.NO_VALUE').subscribe(msg => {
-          this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg });
+          this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg });
       });
       return;
     }

@@ -91,7 +91,8 @@
     "USER_FORM": {
         "TITLE": {
             "CREATE": "Ajouter un utilisateur",
-            "SET": "Modifier un utilisateur"
+            "SET": "Modifier un utilisateur",
+            "PASSWORD": "Modifier le mot de passe"
         }
     },
     "TENANT_FORM": {
@@ -130,7 +131,7 @@
             "STRONG": "Forte",
             "MSG" : {
                 "PASSWORD_STRENGTH": "Le mot de passe doit contenir : une minuscule, une majuscule, un char. spécial !@#$%^&* ",
-                "PASSWORD_TOO_SHORT": "Le mot de passe est trop court (10 mini)",
+                "PASSWORD_TOO_SHORT": "Le mot de passe est trop court (8 mini)",
                 "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas",
                 "PASSWORD_EMPTY": "Le mot de passe ne peut être vide"
             }

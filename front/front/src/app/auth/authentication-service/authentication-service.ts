@@ -105,7 +105,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
 
     public login(tenant: string, login: string, password: string): Observable<User|null> {
         this.isTimeout = false;
-        /*const formData: FormData = new FormData();
+        const formData: FormData = new FormData();
         formData.append('tenant', tenant);
         formData.append('login', login);
         formData.append('password', password);
@@ -116,7 +116,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             catchError(err => {
                 this.handleError(err);
                 return of(null); }));
-                */
+        /*
         if (tenant === 'ACME' && 'nicolas' === login && 'nicolas' == password) {
             const user = new User('');
             user.login = login;
@@ -168,7 +168,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
 
             return of(user);
         }
-        return of(null);    
+        return of(null);    */
     }
 
     private setUser(user :any): User|null
@@ -177,13 +177,13 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         if (!user) {
             return null;
         }
-        //this.logger.warn('userObj %o : %o', userObj, user);
+        this.logger.warn('1 setUser %o :', user);
         // JWT token OR API Key
-        /*const userObj = new User(user);
-        this.jwtToken = userObj.jwtToken;
-        */
-        const userObj = user;
-        this.jwtToken = user.login;
+
+        this.jwtToken = user.jwt;
+        const userObj: User = new User(user);
+        userObj.password = null;
+        
         try {
             localStorage.setItem(Config.STORAGE_ACCESS_TOKEN, this.jwtToken ? this.jwtToken: '');
         } catch (err1) {
@@ -193,6 +193,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         userObj.clearJwtToken();
         this.updateUser(userObj);
         this.initTimeOut();
+        this.logger.warn('2 setUser %o :', this.user);
         return this.user;
     }
   

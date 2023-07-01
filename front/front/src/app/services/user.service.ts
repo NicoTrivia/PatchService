@@ -65,4 +65,15 @@ export class UserService extends PSCommonService {
       return new User(p);
     }));
   }
+
+  /**
+  * Update
+  */
+  public password(user: User): Observable<User> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.password}`;
+
+    return this.http.put(url, user).pipe(map(p => {
+      return new User(p);
+    }));
+  }
 }

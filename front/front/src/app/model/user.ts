@@ -70,7 +70,6 @@ export class User {
     }
 
     public set profile(p: PROFILE) {
-        console.log("0 profile : %o", p);
         this._profile = p;
     }
 

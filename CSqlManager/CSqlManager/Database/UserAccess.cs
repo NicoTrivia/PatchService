@@ -100,7 +100,7 @@ public class UserAccess : DbAccess
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, password)" +
-            
+             $" VALUES (nextval('ps_user_id_seq'), @login, @email, @firstname, @active, @lastname, @tenant, @password);";
             command.Parameters.AddWithValue("login", GetParam(user.login));
             command.Parameters.AddWithValue("email", GetParam(user.email));
             command.Parameters.AddWithValue("firstname",GetParam(user.firstname));
@@ -110,7 +110,7 @@ public class UserAccess : DbAccess
             
             if (!string.IsNullOrEmpty(user.password))
             {
-                command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.password)); 
+                command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.login+user.password)); 
             }
             else
             {
@@ -127,7 +127,7 @@ public class UserAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_user" +
-                $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, password = @password" +
+                $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant" +
                 $" WHERE id = @id;";
             
             command.Parameters.AddWithValue("id", GetParam(user.id));
@@ -137,27 +137,36 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("active",GetParam(user.active));
             command.Parameters.AddWithValue("lastname", GetParam(user.lastname));
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
-            
-            if (!string.IsNullOrEmpty(user.password))
-            {
-                command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.password)); 
-            }
-            else
-            {
-                command.Parameters.AddWithValue("password", DBNull.Value);
-            }
-            
+       
             command.ExecuteNonQuery();
         }
-        
+    }
+
+  
+    public void UpdatePassword(User user)
+    {
+        if (string.IsNullOrEmpty(user.password)) {
+            return;
+        }
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = 
+                "UPDATE ps_user SET password = @password WHERE id = @id;";
+            
+            command.Parameters.AddWithValue("id", GetParam(user.id));
+            command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.login+user.password)); 
+
+            command.ExecuteNonQuery();
+        }        
     }
 
     public User? Login(string tenant, string login, string password)
     {
         using (NpgsqlCommand command = CreateCommand())
         {
+            string encrypted = ComputeSHA256Hash(login+password);
             command.Parameters.AddWithValue("login", GetParam(login));
-            command.Parameters.AddWithValue("password", GetParam(ComputeSHA256Hash(password)));
+            command.Parameters.AddWithValue("password", GetParam(encrypted));
             command.Parameters.AddWithValue("tenant", GetParam(tenant));
 
             command.CommandText = "SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE login = @login AND tenant = @tenant AND password = @password";
@@ -172,7 +181,7 @@ public class UserAccess : DbAccess
             }
             else
             {
-                Console.WriteLine("No user was found with the given informations");
+                Console.WriteLine($"No user was found with the given informations");
             }
             
             return null;

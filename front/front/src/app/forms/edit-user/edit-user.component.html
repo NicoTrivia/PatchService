@@ -6,15 +6,17 @@
                 <div class="patch-card-area patch-card-form-top" *ngIf="user">
                     <!-- Create / set user  -->
                         <div class="patch-card">
-                            <div class="patch-form-title-main">
+                            <div class="patch-form-title-main" *ngIf="!isEditPasword()">
                                 {{(user && user.id > 0 ? 'USER_FORM.TITLE.SET' :'USER_FORM.TITLE.CREATE') | translate}}
+                            </div>
+                            <div class="patch-form-title-main" *ngIf="isEditPasword()">{{'USER_FORM.TITLE.PASSWORD' | translate}}
                             </div>
                             <div class="patch-form-group row">
                                 <label for="tenant" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.TENANT' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    <p-dropdown [options]="tenantList" [(ngModel)]="tenant" optionLabel="name"  [style]="{'width':'25rem'}" [readonly]="user && user.id > 0"></p-dropdown>
+                                    <p-dropdown [options]="tenantList" [(ngModel)]="tenant" optionLabel="name"  [style]="{'width':'25rem'}" [readonly]="isEditPasword() ||(user && user.id > 0)"></p-dropdown>
                                 </div>
                             </div>
                             <div class="patch-form-group row">
@@ -22,7 +24,7 @@
                                     {{'USER.FLD.LOGIN' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    <input [disabled]="isEditPasword()" pInputText class="form-control form-control-sm" [(ngModel)]='user.login' name='login'>
+                                    <input [readonly]="isEditPasword()" pInputText class="form-control form-control-sm" [(ngModel)]='user.login' name='login'>
                                 </div>
                             </div>
 
@@ -31,10 +33,9 @@
                                     {{'USER.FLD.PASSWORD' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    {{password}}
-                                    <input type="password" pPassword promptLabel="{{'USER.PASSWORD.PROMPT' | translate}}"
+                                    <p-password promptLabel="{{'USER.PASSWORD.PROMPT' | translate}}" styleClass="ps-control-witdh" inputStyleClass="ps-control-witdh"
                                         weakLabel="{{'USER.PASSWORD.WEAK' | translate}}" mediumLabel="{{'USER.PASSWORD.MEDIUM' | translate}}"
-                                        strongLabel="{{'USER.PASSWORD.STRONG' | translate}}" class="form-control form-control-sm" [(ngModel)]='password' name='Password'>
+                                        strongLabel="{{'USER.PASSWORD.STRONG' | translate}}" [(ngModel)]='password'></p-password>
                                 </div>
                             </div>
                             <div *ngIf="isEditPasword()" class="patch-form-group row">
@@ -42,12 +43,12 @@
                                     {{'USER.FLD.PASSWORD2' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="password" [feedback]='false' pPassword class="form-control form-control-sm" [(ngModel)]='password2' name='Password2'>
+                                    <p-password [(ngModel)]='password2' [feedback]="false" styleClass="ps-control-witdh" inputStyleClass="ps-control-witdh"></p-password>
                                 </div>
                             </div>
                         </div>
-                        <div class="patch-card patch-card-form-top-small">
-                            <div *ngIf="!isEditPasword()" class="patch-form-group row">
+                        <div class="patch-card patch-card-form-top-small" *ngIf="!isEditPasword()">
+                            <div class="patch-form-group row">
                                 <label for="firstname" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.FIRSTNAME' | translate}}&nbsp;:
                                 </label>
@@ -55,7 +56,7 @@
                                     <input pInputText class="form-control form-control-sm" [(ngModel)]='user.firstname' name='firstname'>
                                 </div>
                             </div>
-                            <div *ngIf="!isEditPasword()" class="patch-form-group row">
+                            <div class="patch-form-group row">
                                 <label for="lastname" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.NAME' | translate}}&nbsp;:
                                 </label>
@@ -63,7 +64,7 @@
                                     <input pInputText class="form-control form-control-sm" [(ngModel)]='user.lastname' name='lastname'>
                                 </div>
                             </div>
-                            <div *ngIf="!isEditPasword()" class="patch-form-group row">
+                            <div class="patch-form-group row">
                                 <label for="Email" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.EMAIL' | translate}}&nbsp;:
                                 </label>
@@ -72,7 +73,7 @@
                                 </div>
                             </div>
         
-                            <div *ngIf="!isEditPasword()" class="patch-form-group row">
+                            <div class="patch-form-group row">
                                 <label for="Active" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.ACTIVE' | translate}}&nbsp;:
                                 </label>
@@ -80,12 +81,11 @@
                                     <p-inputSwitch [(ngModel)]="user.active" name="Active"></p-inputSwitch>
                                 </div>
                             </div>
-                            <div class="patch-form-buttonbar">
-                                <button pButton id="btnCancelUser" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
-                                <button pButton type='submit' id="btnValidateUser" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
-                            </div>
                         </div>
-                    
+                        <div class="patch-form-buttonbar">
+                            <button pButton id="btnCancelUser" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
+                            <button pButton type='submit' id="btnValidateUser" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
+                        </div>
                 </div>
             </div>
         </div>

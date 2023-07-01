@@ -45,7 +45,7 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                   this.user.active = true;
 
                   this.loadTenantList();
-                } else {
+            } else {
                 const cPassword = params['password'];
                 if (cPassword) {
                     this.editPassword = true;
@@ -54,7 +54,8 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                 }
                 
                 // set form : get value
-                this.userService.findById(parseInt(cId, 10)).subscribe((user) => {
+                const id = parseInt(cId, 10);
+                this.userService.findById(id).subscribe((user) => {
                       if (user) {
                           this.user = user;
                       } else {
@@ -91,7 +92,7 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
       public validateForm(): void {
           if (!this.user || !this.user.login || !this.user.firstname || !this.user.lastname || !this.user.email || ((this.user.id <= 0 && !this.password))) {
               this.translate.get('WARNING.NO_VALUE').subscribe(msg => {
-                this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg });
+                this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg });
               });
 
               return;
@@ -99,18 +100,18 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
           if (this.editPassword) {
               if (this.password && this.password2) {
                   const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})');
-                  if (this.password.length < 10)  {
-                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_TOO_SHORT').subscribe(msg =>  this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg }));
+                  if (this.password.length < 8)  {
+                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_TOO_SHORT').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                       return;
                   } else if (!strongRegex.test(this.password))  {
-                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_STRENGTH').subscribe(msg =>  this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg }));
+                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_STRENGTH').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                       return;
                   } else if (this.password !== this.password2) {
-                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_MISMATCH').subscribe(msg =>  this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg }));
+                      this.translate.get('USER.PASSWORD.MSG.PASSWORD_MISMATCH').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                       return;
                   }
               } else {
-                  this.translate.get('USER.PASSWORD.MSG.PASSWORD_EMPTY').subscribe(msg =>  this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg }));
+                  this.translate.get('USER.PASSWORD.MSG.PASSWORD_EMPTY').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                   return;
               }
           }
@@ -121,11 +122,17 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                 this.user.tenant = this.authenticationService.getTenant();
           }
           if (this.editPassword) {
-             // user.setPassword(this.password);
+            this.user.password = this.password;
+            this.userService.password(this.user).subscribe(r => {
+                this.success(r);
+                this.user!.password = null;
+            });
           }
          else if (this.user.id > 0)
          {
-            this.userService.set(this.user).subscribe(r => this.success(r));
+            if (this.isEditPasword()) {
+                this.userService.set(this.user).subscribe(r => this.success(r));
+            } 
          }
          else
          {

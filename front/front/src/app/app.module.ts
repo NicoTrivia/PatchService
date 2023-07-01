@@ -36,6 +36,7 @@ import { MessageService } from 'primeng/api';
 
 // services
 import { AuthenticationService } from './auth/authentication-service/authentication-service';
+import { JwtInterceptor} from './auth/interceptor/jwt-inteceptor';
 import { LoginComponent } from './auth/login/login.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { TawkService} from './services/TawkService';
@@ -87,6 +88,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthenticationService,
     TawkService, BrandService, EcuService, MessageService,
     {provide: APP_BASE_HREF, useValue : '/front/' },
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     { provide: LOCALE_ID, useValue: navigator.language}
   ],
   bootstrap: [AppComponent]

@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'user_list', component: UserListComponent, canActivate: [AuthGuard]  },
   { path: 'edit_user', component: EditUserComponent, canActivate: [AuthGuard]  },
   { path: 'edit_user/:id', component: EditUserComponent, canActivate: [AuthGuard]  },
-  { path: 'password/:id', component: EditUserComponent, canActivate: [AuthGuard]  },
+  { path: 'edit_user/:password/:id', component: EditUserComponent, canActivate: [AuthGuard]  },
   
   { path: 'tenant_list', component: TenantListComponent, canActivate: [AuthGuard]  },
   { path: 'edit_tenant', component: EditTenantComponent, canActivate: [AuthGuard]  },

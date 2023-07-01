@@ -36,8 +36,6 @@ export class UserListComponent extends PatchSecured implements OnInit {
   }
 
   public activate(user: User, status: boolean): void {
-    console.log("id1=",this.authenticationService.getUser()?.id, "id2:%o", user);
-    console.log("id2: %o", user);
     if (this.authenticationService.getUser()?.id === user.id) {
         this.translate.get('WARNING.NOT_SELF').subscribe(msg => {
             this.messageService.add({ severity: 'warn', summary: 'Information', detail: msg });
@@ -56,6 +54,6 @@ export class UserListComponent extends PatchSecured implements OnInit {
   }
 
   public setPassword(user: User): void {
-      this.router.navigate([`/password/${user.id}`]);
+      this.router.navigate([`/edit_user/password/${user.id}`]);
   }
 }

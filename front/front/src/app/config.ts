@@ -39,10 +39,12 @@ export class Config {
 
     public static get API_ROUTES(): any {
         return {
+            authenticate: '/authenticate',
             request_patch: '/request_patch',
             ping: '/auth/ping',
             brand: '/brand',
             user: '/user',
+            password: '/password',
             tenant: '/tenant',
             ecu: '/ecu'
         };

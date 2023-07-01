@@ -7,11 +7,13 @@ public class UserEndPoints
         app.MapGet("/user", GetAll);
         app.MapGet("/user/tenant/{Tenant}", GetByTenant);
         app.MapGet("/user/{Id}", GetById);
-        app.MapGet("/user/login/{Tenant}/{Login}/{Password}", UserLogin);
+        app.MapPost("/authenticate", UserLogin);
         
         app.MapPost("/user", Create);
         
         app.MapPut("/user", Update);
+        app.MapPut("/password", Update);
+
     }
     
     public static IResult GetAll()
@@ -40,7 +42,7 @@ public class UserEndPoints
 
     public static IResult Create(User user)
     {
-        Console.WriteLine($"USER POST {user}");
+        Console.WriteLine($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
         
         var access = new UserAccess();
         access.Create(user);
@@ -57,13 +59,41 @@ public class UserEndPoints
         return Results.Ok(user);
     }
 
-    public static IResult UserLogin(string Tenant, string Login, string Password)
+    
+    public static IResult UpdatePassword(User user)
     {
-        Console.WriteLine($"Trying to login in tenant : : {Tenant} as : {Login} with password : {Password} ");
+        Console.WriteLine($"USER PASSWORD: {user.id}");
+       
+        var access = new UserAccess();
+        access.UpdatePassword(user);
+
+        return Results.Ok(user);
+    }
+
+
+    public static IResult UserLogin(HttpContext context)
+    {
+        Console.WriteLine("Authenticate :");
+        var Tenant = "";
+        var Login = "";
+        var Password = "";
+        foreach (var formPart in context.Request.Form) {
+            if (formPart.Key == "tenant") {
+               Tenant = formPart.Value;
+            }
+            else if (formPart.Key == "login") {
+               Login = formPart.Value;
+            }
+            else if (formPart.Key == "password") {
+            Password = formPart.Value;
+            }
+        }
+
+        Console.WriteLine($"Trying to login in tenant : : {Tenant} as : {Login} with password : ******** ");
         
         UserAccess access = new UserAccess();
         TenantAccess tenantAccess = new TenantAccess();
-        User user = access.Login(Tenant,Login,Password);
+        User? user = access.Login(Tenant,Login,Password);
 
         string level = tenantAccess.GetTenantByCode(user.tenant).level;
         user.jwt = User.GenerateJwtToken(user.login, user.tenant, level);

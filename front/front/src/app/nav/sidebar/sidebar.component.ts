@@ -76,7 +76,13 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
     }
 
     public setPassword(): void {
-      
+        const user = this.authenticationService.getUser();
+        if (user && user.id) {
+            const id = user.id;
+            this.router.navigate([`/edit_user/password/${id}`]);
+        } else {
+            this.router.navigate([`/logout`]);
+        }
     }
        
 
