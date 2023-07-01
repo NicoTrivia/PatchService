@@ -50,7 +50,7 @@ export class UserService extends PSCommonService {
   public create(user: User): Observable<User> {
     const url = `${Config.APP_URL}${Config.API_ROUTES.user}`;
   
-    return this.http.put(url, user).pipe(map(p => {
+    return this.http.post(url, user).pipe(map(p => {
       return new User(p);
     }));
   }

@@ -45,7 +45,7 @@ public class UserEndPoints
         var access = new UserAccess();
         access.Create(user);
 
-        return Results.Ok();
+        return Results.Ok(user);
     }
     public static IResult Update(User user)
     {
@@ -54,7 +54,7 @@ public class UserEndPoints
         var access = new UserAccess();
         access.Update(user);
 
-        return Results.Ok();
+        return Results.Ok(user);
     }
 
     public static IResult UserLogin(string Tenant, string Login, string Password)

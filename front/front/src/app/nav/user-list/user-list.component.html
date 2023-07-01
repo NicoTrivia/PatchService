@@ -1,8 +1,11 @@
 <section class='patch-container-sidebar'>
-    <app-sidebar [title]="'USER_LIST.TITLE'"></app-sidebar>
+    <app-sidebar [title]="'USER_LIST.TITLE.SIDEBAR'"></app-sidebar>
     <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
-        <form #parameterForm="ngForm">
-            <p-table #userTable [value]="userList" [paginator]="true" [rows]="25" [resizableColumns]="true" tableStyleClass="prime-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">
+        <div class="patch-form-title-main">{{'USER_LIST.TITLE.MAIN' | translate}}</div>
+            <p-table #userTable [value]="userList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
+                [globalFilterFields]="['tenant', 'login', 'firstname', 'name', 'email']"
+                [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
+                [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'tenant'" pResizableColumn>{{'USER.FLD.TENANT'| translate}}<p-sortIcon [field]="'fileName'"></p-sortIcon></th>
@@ -14,36 +17,35 @@
                             <th>#</th>
                         </tr>
                         <tr>
-                            <th><input pInputText type="text" (input)="userTable.filter($event.target, 'tenant', 'contains')"></th>
-                            <th><input pInputText type="text" (input)="userTable.filter($event.target, 'login', 'contains')"></th>
-                            <th><input pInputText type="text" (input)="userTable.filter($event.target, 'firstname', 'contains')"></th>
-                            <th><input pInputText type="text" (input)="userTable.filter($event.target, 'name', 'contains')"></th>
-                            <th><input pInputText type="text" (input)="userTable.filter($event.target, 'email', 'contains')"></th>
+                            <th><p-columnFilter type="text" field="tenant"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="login"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="firstname"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="name"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="email"></p-columnFilter></th>
                             <th><p-triStateCheckbox (onChange)="userTable.filter($event.value, 'active', 'equals')"></p-triStateCheckbox></th>
                             <th></th>
                         </tr>     
                     </ng-template>
                     <ng-template pTemplate="body" let-u>
                         <tr>
-                            <td>{{u.tenant.name}}</td>
+                            <td>{{u.tenant}}</td>
                             <td>{{u.login}}</td>
                             <td>{{u.firstname}}</td>
                             <td>{{u.lastname}}</td>
                             <td>{{u.email}}</td>
-                            <td><em [hidden]="!u.getActive()" (click)="activate(u.id, false)" id="emUnactivateUser" class="fa-solid fa-check" style='cursor: pointer' title="{{'BTN.UNACTIVATE' | translate}}"></em>
-                                <em [hidden]="u.getActive()" (click)="activate(u.id, true)" id="emActivateUser" class="fa-solid fa-times" style='cursor: pointer;color:red' title="{{'BTN.ACTIVATE' | translate}}"></em>
+                            <td><em [hidden]="!u.active" (click)="activate(u, false)" id="emUnactivateUser" class="fa-solid fa-check" style='cursor: pointer' title="{{'BTN.UNACTIVATE' | translate}}"></em>
+                                <em [hidden]="u.active" (click)="activate(u, true)" id="emActivateUser" class="fa-solid fa-times" style='cursor: pointer;color:red' title="{{'BTN.ACTIVATE' | translate}}"></em>
                             </td>
                             <td>
-                                <em (click)="set(u.id)" id="emSetUser" class="fa-solid fa-pen-to-square" style="cursor: pointer;" title="{{'BTN.SET' | translate}}"></em>
+                                <em (click)="set(u)" id="emSetUser" class="fa-solid fa-pen-to-square" style="cursor: pointer;" title="{{'BTN.SET' | translate}}"></em>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                <em (click)="setPassword(u.id)" id="emSetPasswordUser" class="fa-solid fa-lock" style="cursor: pointer;" title="{{'BTN.SET_PASSWORD' | translate}}"></em>
+                                <em (click)="setPassword(u)" id="emSetPasswordUser" class="fa-solid fa-lock" style="cursor: pointer;" title="{{'BTN.SET_PASSWORD' | translate}}"></em>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                 <em id="emDeleteUser" class="fa-solid fa-trash-alt" style="cursor: pointer;" title="{{'BTN.DELETE' | translate}}"></em>
                             </td>
                         </tr>
                     </ng-template>
              </p-table>
-        </form>
 
         <div class="patch-form-buttonbar">
             <button pButton type="button" id="btnCreateUser" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/edit_user" label="{{'BTN.CREATE_USER' | translate}}"></button>

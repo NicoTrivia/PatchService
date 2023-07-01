@@ -73,8 +73,11 @@
     margin: 1rem;
 }
 
+.patch-card-form-top-small {
+    margin-top: 2rem;
+}
 .patch-card-form-top {
-    margin-top: 5rem;
+    margin-top: 3rem;
 }
 
 .patch-card {
@@ -158,4 +161,8 @@
     margin-top: 2rem;
     text-align: center;
     align-items: center;
+}
+
+.ps-table {
+    width11: 30rem;
 }

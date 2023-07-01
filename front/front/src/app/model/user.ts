@@ -10,6 +10,7 @@ export class User {
     private _tenant: string;
     private _active: boolean;
     private _jwt: string|null;
+    private _password: string|null = null;
 
     constructor(data: any) {
         this._id = data.id;
@@ -21,6 +22,7 @@ export class User {
         this._tenant = data.tenant;
         this._active = data.active;
         this._jwt = data.jwt; // on login return jwt token
+        // password is never read
     }
 
     public get id(): number {
@@ -92,6 +94,13 @@ export class User {
         return this._jwt;
     }
 
+    public set password(p: string|null) {
+        this._password = p;
+    }
+    public get password(): string|null {
+        return this._password;
+    }
+
     public clearJwtToken(): void {
         this._jwt = null;
     }
@@ -110,8 +119,13 @@ export class User {
     }
 
     toJSON(): any {
-        return { id: this.id, tenant: this.tenant, login: this.login, lastname: this.lastname,
-            firstname: this.firstname, active: this.active, email: this.email, profile: this.profile, 
-            jwt: this._jwt};
+       // console.log("this._password :"+this._password);
+       if (this._password != null) {
+            return { id: this.id, tenant: this.tenant, login: this.login, lastname: this.lastname,
+                firstname: this.firstname, active: this.active, email: this.email, profile: this.profile, password: this.password};
+        } else {
+            return { id: this.id, tenant: this.tenant, login: this.login, lastname: this.lastname,
+            firstname: this.firstname, active: this.active, email: this.email, profile: this.profile};
+        }
     }
 }

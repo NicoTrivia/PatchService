@@ -100,9 +100,7 @@ public class UserAccess : DbAccess
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, password)" +
-                                  $"VALUES (@id, @login, @email, @firstname, @active, @lastname, @tenant, @password);";
             
-            command.Parameters.AddWithValue("id", GetParam(user.id));
             command.Parameters.AddWithValue("login", GetParam(user.login));
             command.Parameters.AddWithValue("email", GetParam(user.email));
             command.Parameters.AddWithValue("firstname",GetParam(user.firstname));
@@ -129,8 +127,8 @@ public class UserAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_user" +
-                $"SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, password = @password," +
-                $"WHERE id = @id;";
+                $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, password = @password" +
+                $" WHERE id = @id;";
             
             command.Parameters.AddWithValue("id", GetParam(user.id));
             command.Parameters.AddWithValue("login", GetParam(user.login));

@@ -30,7 +30,7 @@ export class TenantListComponent extends PatchSecured implements OnInit {
   }
   reload() {
     // load list from server
-    this.tenantService.findAll().subscribe(list => {
+    this.tenantService.findAll(false).subscribe(list => {
       this.tenantList = list;
     });
   }

@@ -3,11 +3,19 @@
     <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
         <div class="row">
             <div class="col-6 mx-auto">
-                <form #userForm="ngForm" *ngIf="user" class="patch-card-area patch-card-form-top">
+                <div class="patch-card-area patch-card-form-top" *ngIf="user">
                     <!-- Create / set user  -->
                         <div class="patch-card">
                             <div class="patch-form-title-main">
                                 {{(user && user.id > 0 ? 'USER_FORM.TITLE.SET' :'USER_FORM.TITLE.CREATE') | translate}}
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="tenant" class="col-sm-4 patch-col-form-label">
+                                    {{'USER.FLD.TENANT' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <p-dropdown [options]="tenantList" [(ngModel)]="tenant" optionLabel="name"  [style]="{'width':'25rem'}" [readonly]="user && user.id > 0"></p-dropdown>
+                                </div>
                             </div>
                             <div class="patch-form-group row">
                                 <label for="login" class="col-sm-4 patch-col-form-label">
@@ -17,6 +25,28 @@
                                     <input [disabled]="isEditPasword()" pInputText class="form-control form-control-sm" [(ngModel)]='user.login' name='login'>
                                 </div>
                             </div>
+
+                            <div *ngIf="isEditPasword() || user.id<=0" class="patch-form-group row">
+                                <label for="Password" class="col-sm-4 patch-col-form-label">
+                                    {{'USER.FLD.PASSWORD' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    {{password}}
+                                    <input type="password" pPassword promptLabel="{{'USER.PASSWORD.PROMPT' | translate}}"
+                                        weakLabel="{{'USER.PASSWORD.WEAK' | translate}}" mediumLabel="{{'USER.PASSWORD.MEDIUM' | translate}}"
+                                        strongLabel="{{'USER.PASSWORD.STRONG' | translate}}" class="form-control form-control-sm" [(ngModel)]='password' name='Password'>
+                                </div>
+                            </div>
+                            <div *ngIf="isEditPasword()" class="patch-form-group row">
+                                <label for="Password2" class="col-sm-4 patch-col-form-label">
+                                    {{'USER.FLD.PASSWORD2' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="password" [feedback]='false' pPassword class="form-control form-control-sm" [(ngModel)]='password2' name='Password2'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="patch-card patch-card-form-top-small">
                             <div *ngIf="!isEditPasword()" class="patch-form-group row">
                                 <label for="firstname" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.FIRSTNAME' | translate}}&nbsp;:
@@ -42,24 +72,6 @@
                                 </div>
                             </div>
         
-                            <div *ngIf="isEditPasword() || user.id<=0" class="patch-form-group row">
-                                <label for="Password" class="col-sm-4 patch-col-form-label">
-                                    {{'USER.FLD.PASSWORD' | translate}}&nbsp;:
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="password" pPassword promptLabel="{{'USER.PASSWORD.PROMPT' | translate}}"
-                                        weakLabel="{{'USER.PASSWORD.WEAK' | translate}}" mediumLabel="{{'USER.PASSWORD.MEDIUM' | translate}}"
-                                        strongLabel="{{'USER.PASSWORD.STRONG' | translate}}" class="form-control form-control-sm" [(ngModel)]='Password' name='Password'>
-                                </div>
-                            </div>
-                            <div *ngIf="isEditPasword()" class="patch-form-group row">
-                                <label for="Password2" class="col-sm-4 patch-col-form-label">
-                                    {{'USER.FLD.PASSWORD2' | translate}}&nbsp;:
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="password" [feedback]='false' pPassword class="form-control form-control-sm" [(ngModel)]='Password2' name='Password2'>
-                                </div>
-                            </div>
                             <div *ngIf="!isEditPasword()" class="patch-form-group row">
                                 <label for="Active" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.ACTIVE' | translate}}&nbsp;:
@@ -74,7 +86,7 @@
                             </div>
                         </div>
                     
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -21,8 +21,7 @@ public class TenantAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant";
-
+            command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant ORDER BY name";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -47,8 +46,7 @@ public class TenantAccess : DbAccess
             var reader = command.ExecuteReader();
             if (reader.Read())
             {
-                Tenant current = new Tenant();
-                AddFromReader(reader, current);
+                AddFromReader(reader, tenant);
             }
         }
 
@@ -60,7 +58,7 @@ public class TenantAccess : DbAccess
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date)" +
-                                  $"VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date);";
+                                  $" VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date);";
             command.Parameters.AddWithValue("code", GetParam(tenant.code));
             command.Parameters.AddWithValue("name", GetParam(tenant.name));
             command.Parameters.AddWithValue("email", GetParam(tenant.email));
@@ -80,8 +78,8 @@ public class TenantAccess : DbAccess
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = 
-                "UPDATE ps_tenant " +
-                $"SET name = @name, email = @email, level = @level ,active = @active," +
+                "UPDATE ps_tenant" +
+                $" SET name = @name, email = @email, level = @level ,active = @active," +
                 $"expiration_date = @expiration_date WHERE code = @code;";
             
             command.Parameters.AddWithValue("code", tenant.code!);

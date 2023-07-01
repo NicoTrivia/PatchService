@@ -15,20 +15,22 @@ export class TenantService extends PSCommonService {
     super(logger);
   }
 
-    /**
+  /**
   * Get the list of available data
   */
-    public findAll(): Observable<Tenant[]> {
+  public findAll(activeOnly: boolean): Observable<Tenant[]> {
       const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}`;
       return this.http.get<Array<Tenant>>(url).pipe(map(resu => {
           const list: Tenant[] = [];
   
           for (const u of resu) {
-              list.push(new Tenant(u));
+            const tenant = new Tenant(u);
+            if (!activeOnly || tenant.active)
+              list.push(tenant);
           }
           return list;
       }));
-    }
+  }
   
     /**
   * Get

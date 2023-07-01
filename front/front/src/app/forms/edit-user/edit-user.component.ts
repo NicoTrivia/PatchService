@@ -11,6 +11,8 @@ import {Config} from '../../config';
 
 // data
 import {User} from '../../model/user';
+import {Tenant} from '../../model/tenant';
+
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
@@ -19,8 +21,11 @@ import {User} from '../../model/user';
 export class EditUserComponent extends PatchSecured  implements OnInit {
       private editPassword: boolean = false;
       user: User|null = null;
-      private password: string|null = null;
-      private password2: string|null = null;
+      password: string|null = null;
+      password2: string|null = null;
+      tenantList: Tenant[]=[];
+      tenant: Tenant|null = null;
+
       constructor(private readonly route: ActivatedRoute, private readonly tenantService: TenantService,
           private readonly userService: UserService, private readonly translate: TranslateService,
           override readonly router: Router,
@@ -30,23 +35,26 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
       }
   
       ngOnInit() {
-          this.route.params.subscribe(params => {
-              const cId:string = params['id'];
-              console.log("cId", cId);
-              if (!cId || parseInt(cId, 10) <= 0) {
+        this.route.params.subscribe(params => {
+            const cId:string = params['id'];
+
+            if (!cId || parseInt(cId, 10) <= 0) {
                   // creation form
                   this.user = new User('');
                   this.user.id = -1;
                   this.user.active = true;
-              } else {
-                  const cPassword = params['password'];
-                  if (cPassword) {
-                      this.editPassword = true;
-                  } else {
-                      this.editPassword = false;
-                  }
-                  // set form : get value
-                  this.userService.findById(parseInt(cId, 10)).subscribe((user) => {
+
+                  this.loadTenantList();
+                } else {
+                const cPassword = params['password'];
+                if (cPassword) {
+                    this.editPassword = true;
+                } else {
+                    this.editPassword = false;
+                }
+                
+                // set form : get value
+                this.userService.findById(parseInt(cId, 10)).subscribe((user) => {
                       if (user) {
                           this.user = user;
                       } else {
@@ -54,21 +62,38 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                         this.user.id = -1;
                         this.user.active = true;
                       }
+                      if (user!.tenant) {
+                        this.tenantService.findByCode(user!.tenant).subscribe(t => {
+                            this.tenant = t;
+                            if (this.tenant) {
+                                this.tenantList = [];
+                                this.tenantList.push(this.tenant);
+                            } else {
+                                this.loadTenantList();
+                            }
+                          });
+                      } else {
+                        this.loadTenantList();
+                      }
                   });
               }
           });
       }
   
+      loadTenantList() {
+        this.tenantService.findAll(true).subscribe(list => {
+            this.tenantList = list;
+          });
+      }
       /**
        * Validation of form : save
        */
       public validateForm(): void {
-          if (!this.user || !this.user.login || !this.user.lastname) {
+          if (!this.user || !this.user.login || !this.user.firstname || !this.user.lastname || !this.user.email || ((this.user.id <= 0 && !this.password))) {
               this.translate.get('WARNING.NO_VALUE').subscribe(msg => {
                 this.messageService.add({ severity: 'warning', summary: 'Attention', detail: msg });
-          });
+              });
 
-              
               return;
           }
           if (this.editPassword) {
@@ -89,22 +114,28 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                   return;
               }
           }
-       
+          if (!this.user.tenant) {
+            if (this.tenant && this.tenant.code)
+                this.user.tenant = this.tenant?.code;
+            else
+                this.user.tenant = this.authenticationService.getTenant();
+          }
           if (this.editPassword) {
              // user.setPassword(this.password);
           }
-         else if (this.user.id>0)
+         else if (this.user.id > 0)
          {
             this.userService.set(this.user).subscribe(r => this.success(r));
          }
          else
          {
+            this.user.password = this.password;
             this.userService.create(this.user).subscribe(r => this.success(r));
          }
       }
   
       public cancelForm(): void {
-        this.router.navigate(['/user/list']);
+        this.router.navigate(['/user_list']);
       }
   
       success(f: User): void {
@@ -116,22 +147,6 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
     
       public isEditPasword(): boolean {
           return this.editPassword;
-      }
-  
-      get Password(): string|null {
-          return this.password;
-      }
-  
-      set Password(p: string|null) {
-          this.password = p;
-      }
-  
-      get Password2(): string|null {
-          return this.password2;
-      }
-  
-      set Password2(p: string|null) {
-          this.password2 = p;
       }
   }
   

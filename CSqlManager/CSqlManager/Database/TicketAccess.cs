@@ -59,7 +59,6 @@ public class TicketAccess : DbAccess
 
     private void AddInCommand(NpgsqlCommand command, Ticket ticket)
     {
-        command.Parameters.AddWithValue("id", GetParam(ticket.id));
         command.Parameters.AddWithValue("tenant", GetParam(ticket.id));
         command.Parameters.AddWithValue("level", GetParam(ticket.id));
         command.Parameters.AddWithValue("user_id", GetParam(ticket.id));
@@ -160,7 +159,7 @@ public class TicketAccess : DbAccess
                                   $"brand_code, ecu_code, brand_name, dpf, egr, lambda, hotstart, flap, adblue, dtc, torqmonitor, speedlimit," +
                                   $"startstop, nox, tva, readiness, immo, maf, hardcut, displaycalibration, waterpump, tprot, o2, glowplugs," +
                                   $" y75, special, decata, vmax, stage1, stage2, flexfuel)" +
-                                  $"VALUES (@id, @tenant, @level, @user_id, @user_name, @date, " +
+                                  $" VALUES (nextval('ps_ticket_id_seq'), @tenant, @level, @user_id, @user_name, @date, " +
                                   $"@file_name, @file_size, @immatriculation, @fuel, " +
                                   $"@processed_file_name, @processed_file_size, @processed_user_name, @processed_user_id, @processed_date," +
                                   $"@brand_code, @ecu_code, @brand_name, @dpf, @egr, @lambda, @hotstart, @flap, @adblue, @dtc, @torqmonitor, @speedlimit," +
@@ -177,7 +176,7 @@ public class TicketAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_user" +
-                $"SET (tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
+                $" SET (tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
                 $"file_name = @file_name, file_size = @file_size, immatriculation = @immatriculation, fuel = @fuel, " +
                 $"processed_file_name = @processed_file_name, processed_file_size = @processed_file_size," +
                 $"processed_user_name = @processed_user_name, processed_user_id = @processed_user_id, processed_date = @processed_date," +
@@ -185,8 +184,8 @@ public class TicketAccess : DbAccess
                 $"hotstart = @hotstart, flap = @flap, adblue = @adblue, dtc = @dtc, torqmonitor = @torqmonitor, speedlimit = @speedlimit," +
                 $"startstop = @startstop, nox = @nox, tva = @tva, readiness = @readiness, immo = @immo, maf = @maf, hardcut= @hardcut," +
                 $"displaycalibration = @displaycalibration, waterpump = @waterpump, tprot = @tprot, o2 = @o2, glowplugs = @glowplugs," +
-                $"y75 = @y75, special = @special, decata = @decata, vmax = @vmax, stage1 = @stage1, stage2 = @stage2, flexfuel = @flexfuel)," +
-                $"WHERE id = @id;";
+                $"y75 = @y75, special = @special, decata = @decata, vmax = @vmax, stage1 = @stage1, stage2 = @stage2, flexfuel = @flexfuel) " +
+                $" WHERE id = @id;";
             
             AddInCommand(command, ticket);
             command.ExecuteNonQuery();

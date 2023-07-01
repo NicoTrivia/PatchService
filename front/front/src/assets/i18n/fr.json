@@ -84,7 +84,8 @@
     },
     "USER_LIST" : {
         "TITLE": {
-            "SIDEBAR": "Utilisateurs"
+            "SIDEBAR": "Utilisateurs",
+            "MAIN": "Liste des utilisateurs"
         }
     },
     "USER_FORM": {
