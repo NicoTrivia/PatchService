@@ -13,6 +13,7 @@ public class UserEndPoints
         
         app.MapPut("/user", Update);
         app.MapPut("/password", Update);
+        app.MapDelete("/user/{Id}", DeleteById);
 
     }
     
@@ -95,9 +96,22 @@ public class UserEndPoints
         TenantAccess tenantAccess = new TenantAccess();
         User? user = access.Login(Tenant,Login,Password);
 
-        string level = tenantAccess.GetTenantByCode(user.tenant).level;
-        user.jwt = User.GenerateJwtToken(user.login, user.tenant, level);
+        //string level = tenantAccess.GetTenantByCode(user.tenant).level;
+        if (user != null)
+        {
+            string profile = user.profile.ToString();
+            user.jwt = User.GenerateJwtToken(user.login, user.tenant, profile);
+        }
         
         return Results.Ok(user);
     }
+        
+    public static IResult DeleteById(int Id)
+    {
+        var access = new UserAccess();
+        var success = access.DeleteUserById(Id);
+
+        return Results.Ok(success);
+    }
+
 }

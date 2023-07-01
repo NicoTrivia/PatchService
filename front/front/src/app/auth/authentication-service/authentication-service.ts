@@ -177,9 +177,8 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         if (!user) {
             return null;
         }
-        this.logger.warn('1 setUser %o :', user);
+   
         // JWT token OR API Key
-
         this.jwtToken = user.jwt;
         const userObj: User = new User(user);
         userObj.password = null;
@@ -193,7 +192,6 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         userObj.clearJwtToken();
         this.updateUser(userObj);
         this.initTimeOut();
-        this.logger.warn('2 setUser %o :', this.user);
         return this.user;
     }
   

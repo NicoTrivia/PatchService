@@ -29,19 +29,24 @@
                     <ng-template pTemplate="body" let-u>
                         <tr>
                             <td>{{u.tenant}}</td>
-                            <td>{{u.login}}</td>
+                            <td>{{u.login}}
+                                <span *ngIf='u.profile == PROFILE.ADMIN'>&nbsp;<i class="fa-solid fa-medal" title="{{'USER.PROFILE.ADMIN' | translate}}"></i></span>
+                                <span *ngIf='u.profile == PROFILE.OPERATOR'>&nbsp;<i class="fa-solid fa-sun" title="{{'USER.PROFILE.OPERATOR' | translate}}"></i></span>
+                            </td>
                             <td>{{u.firstname}}</td>
                             <td>{{u.lastname}}</td>
                             <td>{{u.email}}</td>
-                            <td><em [hidden]="!u.active" (click)="activate(u, false)" id="emUnactivateUser" class="fa-solid fa-check" style='cursor: pointer' title="{{'BTN.UNACTIVATE' | translate}}"></em>
+                            <td><em [hidden]="!u.active || isMySelf(u) || u.profile == PROFILE.ADMIN" (click)="activate(u, false)" id="emUnactivateUser" class="fa-solid fa-check" style='cursor: pointer' title="{{'BTN.UNACTIVATE' | translate}}"></em>
                                 <em [hidden]="u.active" (click)="activate(u, true)" id="emActivateUser" class="fa-solid fa-times" style='cursor: pointer;color:red' title="{{'BTN.ACTIVATE' | translate}}"></em>
                             </td>
                             <td>
+                                <span *ngIf="u.profile == PROFILE.CUSTOMER || allow(PROFILE.ADMIN) || isMySelf(u)">
                                 <em (click)="set(u)" id="emSetUser" class="fa-solid fa-pen-to-square" style="cursor: pointer;" title="{{'BTN.SET' | translate}}"></em>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                 <em (click)="setPassword(u)" id="emSetPasswordUser" class="fa-solid fa-lock" style="cursor: pointer;" title="{{'BTN.SET_PASSWORD' | translate}}"></em>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                <em id="emDeleteUser" class="fa-solid fa-trash-alt" style="cursor: pointer;" title="{{'BTN.DELETE' | translate}}"></em>
+                                <em *ngIf="!isMySelf(u)" id="emDeleteUser" class="fa-solid fa-trash-alt" style="cursor: pointer;" title="{{'BTN.DELETE' | translate}}" (click)="delete(u)"></em>
+                                </span>
                             </td>
                         </tr>
                     </ng-template>
@@ -53,3 +58,11 @@
         </div>
     </div>
 </section>
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="footer">
+        <div class="patch-form-buttonbar">
+            <button type="button" pButton icon="pi pi-times"  class="ui-button-ps-hor p-button-rounded p-button-outlined" label="{{'GENERAL.CANCEL' | translate}}" (click)="cd.reject()"></button>
+            <button type="button" pButton icon="pi pi-check" class="ui-button-ps-hor p-button-rounded" label="{{'GENERAL.CONFIRM' | translate}}" (click)="cd.accept()"></button>
+        </div>
+    </ng-template>
+</p-confirmDialog>

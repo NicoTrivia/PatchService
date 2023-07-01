@@ -16,7 +16,7 @@
                                     {{'USER.FLD.TENANT' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    <p-dropdown [options]="tenantList" [(ngModel)]="tenant" optionLabel="name"  [style]="{'width':'25rem'}" [readonly]="isEditPasword() ||(user && user.id > 0)"></p-dropdown>
+                                    <p-dropdown [options]="tenantList" [(ngModel)]="tenant" optionLabel="name"  [style]="{'width':'22rem'}" [readonly]="isEditPasword() ||(user && user.id > 0)"></p-dropdown>
                                 </div>
                             </div>
                             <div class="patch-form-group row">
@@ -27,7 +27,27 @@
                                     <input [readonly]="isEditPasword()" pInputText class="form-control form-control-sm" [(ngModel)]='user.login' name='login'>
                                 </div>
                             </div>
-
+                            <div class="patch-form-group row" *ngIf="!isEditPasword()">
+                                <label for="profile" class="col-sm-4 patch-col-form-label">
+                                    {{'USER.FLD.PROFILE' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-8">
+                                    <div class="patch-form-radiobuttonbar">
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="profile" value="CUSTOMER" [(ngModel)]="profile" inputId="CUSTOMER"></p-radioButton>
+                                            &nbsp;<label for="CUSTOMER" class="ml-2">{{'USER.PROFILE.CUSTOMER' | translate}}</label>
+                                        </div>
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="profile" value="OPERATOR" [(ngModel)]="profile" inputId="OPERATOR"></p-radioButton>
+                                            &nbsp;<label for="OPERATOR" class="ml-2">{{'USER.PROFILE.OPERATOR' | translate}}</label>
+                                        </div>
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="profile" value="ADMIN" [(ngModel)]="profile" inputId="ADMIN" [disabled]="!allow(PROFILE.ADMIN)"></p-radioButton>
+                                            &nbsp;<label for="ADMIN" class="ml-2">{{'USER.PROFILE.ADMIN' | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div *ngIf="isEditPasword() || user.id<=0" class="patch-form-group row">
                                 <label for="Password" class="col-sm-4 patch-col-form-label">
                                     {{'USER.FLD.PASSWORD' | translate}}&nbsp;:

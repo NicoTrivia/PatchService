@@ -28,6 +28,7 @@ import {DialogModule} from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
@@ -47,6 +48,8 @@ import { UserListComponent } from './nav/user-list/user-list.component';
 import { EditUserComponent } from './forms/edit-user/edit-user.component';
 import { TenantListComponent } from './nav/tenant-list/tenant-list.component';
 import { EditTenantComponent } from './forms/edit-tenant/edit-tenant.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService} from 'primeng/api';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -69,7 +72,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
-    InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule,
+    InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule, RadioButtonModule, ConfirmDialogModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,
@@ -86,7 +89,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     AuthenticationService,
-    TawkService, BrandService, EcuService, MessageService,
+    TawkService, BrandService, EcuService, MessageService, ConfirmationService,
     {provide: APP_BASE_HREF, useValue : '/front/' },
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     { provide: LOCALE_ID, useValue: navigator.language}

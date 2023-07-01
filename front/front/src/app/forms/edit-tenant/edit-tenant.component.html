@@ -39,7 +39,20 @@
                                     {{'TENANT.FLD.LEVEL' | translate}}&nbsp;:
                                 </label>
                                 <div class="col-sm-8">
-                                    <input pInputText class="form-control form-control-sm" [(ngModel)]='tenant.level' name='Level'>
+                                    <div class="patch-form-radiobuttonbar">
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="level" value="Silver" [(ngModel)]="tenant.level" inputId="SILVER"></p-radioButton>
+                                            &nbsp;<label for="SILVER" class="ml-2">{{'TENANT.LEVEL.SILVER' | translate}}</label>
+                                        </div>
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="level" value="Gold" [(ngModel)]="tenant.level" inputId="GOLD"></p-radioButton>
+                                            &nbsp;<label for="GOLD" class="ml-2">{{'TENANT.LEVEL.GOLD' | translate}}</label>
+                                        </div>
+                                        <div class="patch-form-radiobutton">
+                                            <p-radioButton name="level" value="Platine" [(ngModel)]="tenant.level" inputId="PLATINE"></p-radioButton>
+                                            &nbsp;<label for="PLATINE" class="ml-2">{{'TENANT.LEVEL.PLATINE' | translate}}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="patch-form-group row">

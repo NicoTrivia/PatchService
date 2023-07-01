@@ -12,6 +12,7 @@ public class TenantEndPoints
         app.MapPost("/tenant", Create);
         
         app.MapPut("/tenant", Update);
+        app.MapDelete("/tenant/{code}", DeleteByCode);
     }
     
     public static IResult GetAll()
@@ -37,7 +38,7 @@ public class TenantEndPoints
         var access = new TenantAccess();
         access.Create(tenant);
 
-        return Results.Ok();
+        return Results.Ok(tenant);
     }
     public static IResult Update(Tenant tenant)
     {
@@ -46,37 +47,17 @@ public class TenantEndPoints
         var access = new TenantAccess();
         access.Update(tenant);
 
-        return Results.Ok();
+        return Results.Ok(tenant);
     }
-/*
-    public static async Task<string> getStringFromBody(HttpContext context) {
-        using (StreamReader reader = new StreamReader(context.Request.Body, System.Text.Encoding.UTF8))
-        {
-            //string queryKey = context.Request.RouteValues["queryKey"].ToString();
-            string jsonstring = await reader.ReadToEndAsync();
-        
-            return jsonstring;
-        }
-    }
+    public static IResult DeleteByCode(string code)
+    {
+        var access1 = new UserAccess();
+        var success1 = access1.DeleteUserByTenant(code);
 
-    public static Tenant MapJsonToObject(string jsonString) {
-            try
-            {
-                // Deserialize JSON string to object
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                var obj = JsonSerializer.Deserialize<Tenant>(jsonString, options);
-                 Console.WriteLine($"TENANT2 {obj}");
-                return obj;
-            }
-            catch (JsonException ex)
-            {
-                // Handle JSON deserialization error
-                Console.WriteLine("Invalid JSON data: " + ex.Message);
-            }
-            return null;
-    }*/
+        var access = new TenantAccess();
+        var success = access.DeleteTenantByCode(code);
+
+        return Results.Ok(success);
+    }
 }
 

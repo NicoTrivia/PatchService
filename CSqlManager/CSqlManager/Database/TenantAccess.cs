@@ -21,7 +21,7 @@ public class TenantAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant ORDER BY name";
+            command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant ORDER BY code";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -91,6 +91,18 @@ public class TenantAccess : DbAccess
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             
             command.ExecuteNonQuery();
+        }
+    }
+
+    public Boolean DeleteTenantByCode(string code) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_tenant WHERE code = @code";
+            
+            command.Parameters.AddWithValue("code", code);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
         }
     }
 }

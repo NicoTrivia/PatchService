@@ -14,6 +14,8 @@ public class UserAccess : DbAccess
         user.firstname = reader.GetString(reader.GetOrdinal("firstname"));
         user.lastname = reader.GetString(reader.GetOrdinal("lastname"));
         user.login = reader.GetString(reader.GetOrdinal("login"));
+        
+        user.profile = reader.GetString(reader.GetOrdinal("profile"));
     }
     
     public List<User> GetUsers()
@@ -22,7 +24,7 @@ public class UserAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user ORDER BY tenant, login";
             var reader = command.ExecuteReader();
             
             while (reader.Read())
@@ -42,7 +44,7 @@ public class UserAccess : DbAccess
         User user = new User();
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE id = @id";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user WHERE id = @id";
             
             command.Parameters.AddWithValue("id", id);
             var reader = command.ExecuteReader();
@@ -56,12 +58,36 @@ public class UserAccess : DbAccess
         return user;
     }
     
+    public Boolean DeleteUserById(int id) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_user WHERE id = @id";
+            
+            command.Parameters.AddWithValue("id", id);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
+        }
+    }
+
+    public Boolean DeleteUserByTenant(string tenant) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_user WHERE tenant = @tenant";
+            
+            command.Parameters.AddWithValue("tenant", tenant);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
+        }
+    }
+
     public List<User> GetUsersByTenant(string tenant)
     {
         List<User> requestResult = new List<User>();
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE tenant = @tenant";
+            command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user WHERE tenant = @tenant";
             
             command.Parameters.AddWithValue("tenant", tenant);
             var reader = command.ExecuteReader();
@@ -99,14 +125,15 @@ public class UserAccess : DbAccess
     {
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, password)" +
-             $" VALUES (nextval('ps_user_id_seq'), @login, @email, @firstname, @active, @lastname, @tenant, @password);";
+            command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, profile, password)" +
+             $" VALUES (nextval('ps_user_id_seq'), @login, @email, @firstname, @active, @lastname, @tenant, @profile, @password);";
             command.Parameters.AddWithValue("login", GetParam(user.login));
             command.Parameters.AddWithValue("email", GetParam(user.email));
             command.Parameters.AddWithValue("firstname",GetParam(user.firstname));
             command.Parameters.AddWithValue("active",GetParam(user.active));
             command.Parameters.AddWithValue("lastname", GetParam(user.lastname));
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
+            command.Parameters.AddWithValue("profile", GetParam(user.profile.ToString()));
             
             if (!string.IsNullOrEmpty(user.password))
             {
@@ -127,7 +154,7 @@ public class UserAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_user" +
-                $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant" +
+                $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, profile = @profile" +
                 $" WHERE id = @id;";
             
             command.Parameters.AddWithValue("id", GetParam(user.id));
@@ -137,7 +164,7 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("active",GetParam(user.active));
             command.Parameters.AddWithValue("lastname", GetParam(user.lastname));
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
-       
+            command.Parameters.AddWithValue("profile", GetParam(user.profile));
             command.ExecuteNonQuery();
         }
     }
@@ -169,7 +196,7 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("password", GetParam(encrypted));
             command.Parameters.AddWithValue("tenant", GetParam(tenant));
 
-            command.CommandText = "SELECT id,login,firstname,lastname,email,tenant,active FROM ps_user WHERE login = @login AND tenant = @tenant AND password = @password";
+            command.CommandText = "SELECT id, login, firstname, lastname, email, tenant ,active, profile FROM ps_user WHERE login = @login AND tenant = @tenant AND password = @password";
             var reader = command.ExecuteReader();
             
             if (reader.Read())

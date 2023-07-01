@@ -51,6 +51,8 @@
         }
     },
     "GENERAL": {
+        "CANCEL": "Annuler",
+        "CONFIRM": "Confirmer",
         "UNDEFINED": "Non défini",
         "GREETINGS": "Bonjour",
         "VERSION": "Version de l'application"
@@ -75,11 +77,18 @@
         "MISSING_VALUE": "Valeur requise manquante",
         "NO_CNX": "Attention : connexion au serveur non disponible. Vérifiez le lancement du service.",
         "SLOW_CNX": "Requête en cours, veuillez patienter.",
+        "DATA_DELETED": "Donnée supprimée",
         "DATA_SAVED": "Données enregistrées"
     },
     "TAWK": {
         "TITLE": {
             "SIDEBAR": "Assistance"
+        }
+    },
+    "TENANT_LIST" : {
+        "TITLE": {
+            "SIDEBAR": "Clients",
+            "MAIN": "Liste des clients"
         }
     },
     "USER_LIST" : {
@@ -110,6 +119,11 @@
             "ACTIVE": "Actif",
             "CREATION_DATE": "Creation",
             "EXPIRATION_DATE": "Expiration"
+        },
+        "LEVEL": {
+            "SILVER": "Silver",
+            "GOLD": "Gold",
+            "PLATINE": "Platine"
         }
     },
     "USER": {
@@ -135,6 +149,11 @@
                 "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas",
                 "PASSWORD_EMPTY": "Le mot de passe ne peut être vide"
             }
+        },
+        "PROFILE": {
+            "CUSTOMER": "Client",
+            "OPERATOR": "Opérateur",
+            "ADMIN": "Admin"
         }
     }
 }

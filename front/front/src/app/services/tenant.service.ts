@@ -48,10 +48,10 @@ export class TenantService extends PSCommonService {
   /**
   * Update
   */
-  public create(user: Tenant): Observable<Tenant> {
+  public create(tenant: Tenant): Observable<Tenant> {
       const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}`;
   
-      return this.http.post(url, user).pipe(map(p => {
+      return this.http.post(url, tenant).pipe(map(p => {
         return new Tenant(p);
       }));
   }
@@ -60,11 +60,22 @@ export class TenantService extends PSCommonService {
   /**
   * Update
   */
-  public set(user: Tenant): Observable<Tenant> {
+  public set(tenant: Tenant): Observable<Tenant> {
     const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}`;
 
-    return this.http.put(url, user).pipe(map(p => {
+    return this.http.put(url, tenant).pipe(map(p => {
       return new Tenant(p);
     }));
+  }
+
+ /**
+  * delete
+  */
+    public delete(code: string): Observable<boolean> {
+      const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}/${code}`;
+  
+      return this.http.delete<boolean>(url).pipe(map(p => {
+        return true;
+      }));
   }
 }

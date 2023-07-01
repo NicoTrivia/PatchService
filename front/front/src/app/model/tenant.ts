@@ -11,7 +11,10 @@ export class Tenant {
         this._code = data.code;
         this._name = data.name;
         this._email = data.email;
-        this._level = data.level;
+        if (data.level)
+            this._level = data.level;
+        else
+            this._level = "Silver";
         this._active = data.active;
         this._creation_date = data.creation_date;
         this._expiration_date = data.expiration_date;

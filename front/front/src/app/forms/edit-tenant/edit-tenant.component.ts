@@ -79,7 +79,7 @@ export class EditTenantComponent extends PatchSecured  implements OnInit {
   success(f: Tenant): void {
     this.cancelForm(); // check where we go now
     this.translate.get('WARNING.DATA_SAVED').subscribe(msg => {
-      this.messageService.add({ severity: 'info', summary: 'Informarion', detail: msg })
+      this.messageService.add({ severity: 'info', summary: 'Information', detail: msg })
     });
 }
 }

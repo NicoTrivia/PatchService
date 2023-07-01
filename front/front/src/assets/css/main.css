@@ -163,6 +163,17 @@
     align-items: center;
 }
 
+.patch-form-radiobuttonbar{
+    padding: 0.5rem;
+    display: flex;
+    justify-content: flex-start;
+    text-align: start;
+}
+.patch-form-radiobutton {
+    padding-right: 1rem;
+    display: flex;
+}
+
 .ps-control-witdh{
     width: 100%;
 }

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 
-import { MessageService } from 'primeng/api';
-
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import {User} from '../../model/user';
 import { PatchSecured } from '../../auth/patchSecured';
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
@@ -19,7 +18,8 @@ export class UserListComponent extends PatchSecured implements OnInit {
 
   constructor(override readonly authenticationService: AuthenticationService,
     override readonly router: Router, private readonly userService: UserService,
-    private readonly translate: TranslateService, private messageService: MessageService
+    private readonly translate: TranslateService, private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ) {
     super(authenticationService, router);
   }
@@ -55,5 +55,30 @@ export class UserListComponent extends PatchSecured implements OnInit {
 
   public setPassword(user: User): void {
       this.router.navigate([`/edit_user/password/${user.id}`]);
+  }
+
+  delete(user: User) {
+
+    this.confirmationService.confirm({
+      message: 'Confirmez-vous la suppression de l\'utilisateur '+user.login+' du client '+user.tenant+' ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.userService.delete(user.id).subscribe(s =>  this.reload());
+        this.translate.get('WARNING.DATA_DELETED').subscribe(msg => {
+          this.messageService.add({ severity: 'info', summary: 'Information', detail: msg });
+        });
+        },
+      reject: () => {
+       
+      }
+  });
+  }
+
+  isMySelf(user: User|null): boolean{
+    if (user == null || this.authenticationService.getUser() == null) {
+      return false;
+    }
+    return (user.id == this.authenticationService.getUser()!.id);
   }
 }

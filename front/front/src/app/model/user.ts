@@ -13,16 +13,19 @@ export class User {
     private _password: string|null = null;
 
     constructor(data: any) {
+        this._profile = PROFILE.CUSTOMER;
         this._id = data.id;
         this._login = data.login;
         this._lastname = data.lastname;
         this._firstname = data.firstname;
         this._email = data.email;
-        this._profile = data.profile;
         this._tenant = data.tenant;
         this._active = data.active;
         this._jwt = data.jwt; // on login return jwt token
         // password is never read
+        if (data.profile) {
+            this._profile = PROFILE[data.profile as keyof typeof PROFILE]; 
+        }
     }
 
     public get id(): number {
@@ -118,13 +121,14 @@ export class User {
     }
 
     toJSON(): any {
-       // console.log("this._password :"+this._password);
+       const profileName: string = PROFILE[this.profile]; 
+
        if (this._password != null) {
             return { id: this.id, tenant: this.tenant, login: this.login, lastname: this.lastname,
-                firstname: this.firstname, active: this.active, email: this.email, profile: this.profile, password: this.password};
+                firstname: this.firstname, active: this.active, email: this.email, profile: profileName, password: this.password};
         } else {
             return { id: this.id, tenant: this.tenant, login: this.login, lastname: this.lastname,
-            firstname: this.firstname, active: this.active, email: this.email, profile: this.profile};
+            firstname: this.firstname, active: this.active, email: this.email, profile: profileName};
         }
     }
 }

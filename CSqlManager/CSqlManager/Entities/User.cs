@@ -18,11 +18,12 @@ public class User
     public string password { get; set; } // encrypted 
     public string tenant  { get; set; }
     public bool active  { get; set; }
-    
+    public string profile { get; set; }
+
     public string? jwt  { get; set; }
     private static readonly string jwtKey = "&32DEFIPd=";
     
-    public static string GenerateJwtToken(string userId, string tenant, string level)
+    public static string GenerateJwtToken(string userId, string tenant, string profile)
     {
         byte[] keyBytes = Encoding.UTF8.GetBytes(jwtKey);
         byte[] hashedKeyBytes;
@@ -37,7 +38,7 @@ public class User
             new Claim("APP", "Patch Services"),
             new Claim("User", userId),
             new Claim("Tenant", tenant),
-            new Claim("Level", level)
+            new Claim("Profile", profile)
         };
 
         var key = new SymmetricSecurityKey(hashedKeyBytes);
@@ -45,7 +46,7 @@ public class User
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1), // Set the token expiration time
+            expires: DateTime.UtcNow.AddHours(2), // Set the token expiration time
             signingCredentials: credentials
         );
 

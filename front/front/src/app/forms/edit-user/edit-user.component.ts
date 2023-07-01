@@ -12,6 +12,7 @@ import {Config} from '../../config';
 // data
 import {User} from '../../model/user';
 import {Tenant} from '../../model/tenant';
+import { PROFILE } from 'src/app/auth/profile.enum';
 
 @Component({
   selector: 'app-edit-user',
@@ -23,6 +24,7 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
       user: User|null = null;
       password: string|null = null;
       password2: string|null = null;
+      profile: string = "CUSTOMER";
       tenantList: Tenant[]=[];
       tenant: Tenant|null = null;
 
@@ -56,14 +58,14 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                 // set form : get value
                 const id = parseInt(cId, 10);
                 this.userService.findById(id).subscribe((user) => {
-                      if (user) {
+                    if (user) {
                           this.user = user;
-                      } else {
+                    } else {
                         this.user = new User('');
                         this.user.id = -1;
                         this.user.active = true;
-                      }
-                      if (user!.tenant) {
+                    }
+                    if (user!.tenant) {
                         this.tenantService.findByCode(user!.tenant).subscribe(t => {
                             this.tenant = t;
                             if (this.tenant) {
@@ -72,10 +74,11 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                             } else {
                                 this.loadTenantList();
                             }
-                          });
-                      } else {
+                        });
+                    } else {
                         this.loadTenantList();
-                      }
+                    }
+                    this.profile = PROFILE[user!.profile];
                   });
               }
           });
@@ -90,15 +93,15 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
        * Validation of form : save
        */
       public validateForm(): void {
-          if (!this.user || !this.user.login || !this.user.firstname || !this.user.lastname || !this.user.email || ((this.user.id <= 0 && !this.password))) {
+        if (!this.user || !this.user.login || !this.user.firstname || !this.user.lastname || !this.user.email || ((this.user.id <= 0 && !this.password))) {
               this.translate.get('WARNING.NO_VALUE').subscribe(msg => {
                 this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg });
               });
 
               return;
-          }
-          if (this.editPassword) {
-              if (this.password && this.password2) {
+        }
+        if (this.editPassword) {
+            if (this.password && this.password2) {
                   const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})');
                   if (this.password.length < 8)  {
                       this.translate.get('USER.PASSWORD.MSG.PASSWORD_TOO_SHORT').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
@@ -110,40 +113,42 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
                       this.translate.get('USER.PASSWORD.MSG.PASSWORD_MISMATCH').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                       return;
                   }
-              } else {
+            } else {
                   this.translate.get('USER.PASSWORD.MSG.PASSWORD_EMPTY').subscribe(msg =>  this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg }));
                   return;
-              }
-          }
-          if (!this.user.tenant) {
+            }
+        } else {
+            if (this.profile == 'OPERATOR')
+                this.user.profile = this.PROFILE.OPERATOR;
+            else if (this.profile == 'ADMIN')
+                this.user.profile = this.PROFILE.ADMIN;
+            else
+                this.user.profile = this.PROFILE.CUSTOMER;
+        }
+
+        if (!this.user.tenant) {
             if (this.tenant && this.tenant.code)
                 this.user.tenant = this.tenant?.code;
             else
                 this.user.tenant = this.authenticationService.getTenant();
-          }
-          if (this.editPassword) {
+        }          
+        if (this.editPassword) {
             this.user.password = this.password;
             this.userService.password(this.user).subscribe(r => {
                 this.success(r);
                 this.user!.password = null;
             });
-          }
-         else if (this.user.id > 0)
-         {
-            if (this.isEditPasword()) {
-                this.userService.set(this.user).subscribe(r => this.success(r));
-            } 
-         }
-         else
-         {
+        } else if (this.user.id > 0) {
+            this.userService.set(this.user).subscribe(r => this.success(r));
+        } else {
             this.user.password = this.password;
             this.userService.create(this.user).subscribe(r => this.success(r));
-         }
-      }
+        }
+    }
   
-      public cancelForm(): void {
+    public cancelForm(): void {
         this.router.navigate(['/user_list']);
-      }
+    }
   
       success(f: User): void {
           this.cancelForm(); // check where we go now

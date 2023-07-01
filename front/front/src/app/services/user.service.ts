@@ -76,4 +76,15 @@ export class UserService extends PSCommonService {
       return new User(p);
     }));
   }
+
+  /**
+  * delete
+  */
+  public delete(id: number): Observable<boolean> {
+      const url = `${Config.APP_URL}${Config.API_ROUTES.user}/${id}`;
+  
+      return this.http.delete<boolean>(url).pipe(map(p => {
+        return true;
+      }));
+  }
 }
