@@ -53,7 +53,7 @@ export class TenantListComponent extends PatchSecured implements OnInit {
   }
   
   public set(code: string): void {
-    this.router.navigate([`/tenant/${code}`]);
+    this.router.navigate([`/edit_tenant/${code}`]);
   }
 
   isMySelf(tenant: Tenant|null): boolean{

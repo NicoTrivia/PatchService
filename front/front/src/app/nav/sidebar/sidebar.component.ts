@@ -96,7 +96,10 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
         localStorage.setItem(Config.STORAGE_PS_SIDEBAR_ITEM, dest);
         if (dest === 'home') {
             this.router.navigate([`/request_patch`]);
-        } else if (dest === 'user_list') {
+        } 
+        else if (dest === 'viewHistory') {
+            this.router.navigate([`/ticket`]);
+        }else if (dest === 'user_list') {
             this.router.navigate([`/user_list`]);
         } else if (dest === 'selectPassword') {
             this.setPassword();

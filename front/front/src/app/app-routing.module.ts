@@ -4,6 +4,7 @@ import {RequestPatchComponent} from './nav/request-patch/request-patch.component
 import {UserListComponent} from './nav/user-list/user-list.component';
 import {EditUserComponent} from './forms/edit-user/edit-user.component';
 import {TenantListComponent} from './nav/tenant-list/tenant-list.component';
+import {TicketListComponent} from './nav/ticket-list/ticket-list.component';
 import {EditTenantComponent} from './forms/edit-tenant/edit-tenant.component';
 import {AuthGuard} from './auth/auth-guard/authGuard';
 import {LoginComponent} from './auth/login/login.component';
@@ -21,6 +22,8 @@ const routes: Routes = [
   { path: 'tenant_list', component: TenantListComponent, canActivate: [AuthGuard]  },
   { path: 'edit_tenant', component: EditTenantComponent, canActivate: [AuthGuard]  },
   { path: 'edit_tenant/:code', component: EditTenantComponent, canActivate: [AuthGuard]  },
+  { path: 'ticket', component: TicketListComponent, canActivate: [AuthGuard]  },
+  
   { path: 'login', component: LoginComponent  },
   { path: 'logout', component: LogoutComponent  },
 

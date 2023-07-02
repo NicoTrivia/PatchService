@@ -1,6 +1,9 @@
 import {Ecu} from './ecu';
 
 export class Ticket {
+
+    constructor(data?: any) {
+    }
     id: number = -1;
     
     // Processing info

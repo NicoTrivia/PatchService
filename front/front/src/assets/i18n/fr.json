@@ -155,5 +155,21 @@
             "OPERATOR": "Opérateur",
             "ADMIN": "Admin"
         }
+    },
+    "TICKET": {
+        "FLD": {
+            "ID": "N°",
+            "TENANT": "Code client",
+            "LEVEL": "Abonnement",
+            "USER_NAME": "Emis par",
+            "DATE": "Date d'émission",
+            "PROCESSED_USER_NAME": "Traité par",
+            "PROCESSED_DATE": "Date de traitement",
+            "IMMATRICULATION": "Immatriculation",
+            "BRAND":"Marque véhicule",
+            "ECU": "Calculateur",
+            "PROCESSING": "Traitements appliqués",
+            "FILES": "Fichiers"
+        }
     }
 }

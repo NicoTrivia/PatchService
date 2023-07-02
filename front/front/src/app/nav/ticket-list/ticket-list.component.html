@@ -1,0 +1,51 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="'TICKET_LIST.TITLE.SIDEBAR'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <div class="patch-form-title-main">{{'TICKET_LIST.TITLE.MAIN' | translate}}</div>
+            <p-table #ticketTable [value]="ticketList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
+            [globalFilterFields]="['code', 'name', 'email', 'level']"
+            [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
+            [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">    
+                <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="'id'" pResizableColumn>{{'TICKET.FLD.ID'| translate}}<p-sortIcon [field]="'id'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'tenant'" pResizableColumn>{{'TICKET.FLD.TENANT' | translate}}<p-sortIcon [field]="'tenant'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'user_name'" pResizableColumn>{{'TICKET.FLD.PROCESSED_USER_NAME' | translate}}<p-sortIcon [field]="'user_name'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'date'" pResizableColumn>{{'TICKET.FLD.DATE'| translate}}<p-sortIcon [field]="'date'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'processed_user_name'" pResizableColumn>{{'TICKET.FLD.PROCESSED_USER_NAME'| translate}}<p-sortIcon [field]="'processed_user_name'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'processed_date'" pResizableColumn>{{'TICKET.FLD.PROCESSED_DATE'| translate}}<p-sortIcon [field]="'processed_date'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'brand'" pResizableColumn>{{'TICKET.FLD.BRAND'| translate}}<p-sortIcon [field]="'brand'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'ecu'" pResizableColumn>{{'TICKET.FLD.ECU'| translate}}<p-sortIcon [field]="'ecu'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'immatriculation'" pResizableColumn>{{'TICKET.FLD.IMMATRICULATION'| translate}}<p-sortIcon [field]="'immatriculation'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'processing'" pResizableColumn>{{'TICKET.FLD.PROCESSING'| translate}}<p-sortIcon [field]="'processing'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'files'" pResizableColumn>{{'TICKET.FLD.FILES'| translate}}<p-sortIcon [field]="'files'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'level'" pResizableColumn>{{'TICKET.FLD.LEVEL'| translate}}<p-sortIcon [field]="'level'"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-u>
+                        <tr>
+                            <td>{{u.id}}</td>
+                            <td>{{u.tenant}}</td>
+                            <td>{{u.user_dame}}</td>
+                            <td>{{u.date | date:'dd/MM/yyyy'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </ng-template>
+             </p-table>
+    </div>
+</section>
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="footer">
+        <div class="patch-form-buttonbar">
+            <button type="button" pButton icon="pi pi-times"  class="ui-button-ps-hor p-button-rounded p-button-outlined" label="{{'GENERAL.CANCEL' | translate}}" (click)="cd.reject()"></button>
+            <button type="button" pButton icon="pi pi-check" class="ui-button-ps-hor p-button-rounded" label="{{'GENERAL.CONFIRM' | translate}}" (click)="cd.accept()"></button>
+        </div>
+    </ng-template>
+</p-confirmDialog>
