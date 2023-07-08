@@ -10,13 +10,13 @@ export class Ticket {
             this.user_id = data.user_id;
             this.user_name = data.user_name;
             this.date = data.date;
-            this.filename = data.filename;
+            this.file_name = data.file_name;
             this.file_id = data.file_id;
             this.file_size = data.file_size;
             this.immatriculation = data.immatriculation;
             this.fuel = data.fuel;
 
-            this.processed_filename = data.processed_filename;
+            this.processed_file_name = data.processed_file_name;
             this.processed_file_size = data.processed_file_size;
             this.processed_user_name = data.processed_user_name;
             this.processed_user_id = data.processed_user_id;
@@ -64,14 +64,14 @@ export class Ticket {
     user_id: number = 0;
     user_name: string = '';
     date: Date = new Date();
-    filename: string  = '';
+    file_name: string  = '';
     file_size: number  = -1
     file_id: string|null  = null;
     immatriculation: string = '';
     fuel: string = '';
 
     // When ticket is processed
-    processed_filename: string|null  = null;
+    processed_file_name: string|null  = null;
     processed_file_size: number  = -1;
     processed_user_name: string|null  = null;
     processed_user_id: number = 0;

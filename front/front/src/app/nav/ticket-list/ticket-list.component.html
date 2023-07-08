@@ -44,8 +44,11 @@
                             <td>{{u.ecu_code}}</td>
                             <td>{{u.immatriculation}}</td>
                             <td>{{u.processing}}</td>
-                            <td></td>
-                            <td>{{u.processed_date | date:'dd/MM/yyyy'}}</td>
+                            <td>
+                                <span *ngIf="u.file_id && u.file_name" class="request-patch-file-item"><i class="fa-regular fa-file" tooltipPosition="bottom" pTooltip="Original: {{u.file_name}} ({{u.file_size}} Ko)"></i></span>
+                            </td>
+                            <td *ngIf="u.processed_date">{{u.processed_date | date:'dd/MM/yyyy'}}</td>
+                            <td *ngIf="!u.processed_date">{{'TICKET.STATE.IN_PROGRESS'| translate}}</td>
                             <td *ngIf="allow(PROFILE.OPERATOR)">{{u.customer_level}}</td>
                         </tr>
                     </ng-template>

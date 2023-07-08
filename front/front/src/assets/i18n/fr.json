@@ -171,6 +171,9 @@
             "ECU": "Calculateur",
             "PROCESSING": "Traitements appliqués",
             "FILES": "Fichiers"
+        },
+        "STATE": {
+            "IN_PROGRESS": "En cours de traitement"
         }
     },
     "TICKET_LIST": {

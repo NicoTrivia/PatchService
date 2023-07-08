@@ -29,7 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
-
+import { TooltipModule } from 'primeng/tooltip';
 import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
@@ -75,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
     InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule, RadioButtonModule, ConfirmDialogModule,
+    TooltipModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,

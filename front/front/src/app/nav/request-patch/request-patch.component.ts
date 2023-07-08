@@ -79,9 +79,9 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
       { name: 'Essence', code: 'P' }
     ];
     this.fuelSelected = this.fuelList[0];
-    if (Config.APP_URL.includes('5000')) {
+/*    if (Config.APP_URL.includes('5000')) {
       this.fileName="dev_test.zip"
-    }
+    }*/
     this.getNextFileId(true);
   }
 
@@ -134,7 +134,7 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
       this.ticket.user_id = user == null ? -1 : user.id;
       this.ticket.user_name = user == null ? '' : user.firstname + ' ' + user.lastname;
       this.ticket.date = new Date();
-      this.ticket.filename = this.fileName!;
+      this.ticket.file_name = this.fileName!;
       this.ticket.file_id = this.file_id;
       this.ticket.file_size = this.fileSize;
       this.ticket.immatriculation = this.immatriculation;

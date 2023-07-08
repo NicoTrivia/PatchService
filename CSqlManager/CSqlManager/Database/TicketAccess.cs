@@ -116,7 +116,7 @@ public class TicketAccess : DbAccess
         
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT * FROM ps_ticket";
+            command.CommandText = $"SELECT * FROM ps_ticket ORDER BY id DESC";
             var reader = command.ExecuteReader();
             
             while (reader.Read())
@@ -136,7 +136,7 @@ public class TicketAccess : DbAccess
         List<Ticket> requestResult = new List<Ticket>();
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"SELECT * FROM ps_ticket WHERE tenant = @tenant";
+            command.CommandText = $"SELECT * FROM ps_ticket WHERE tenant = @tenant ORDER BY id DESC";
             
             command.Parameters.AddWithValue("tenant", tenant);
             var reader = command.ExecuteReader();
