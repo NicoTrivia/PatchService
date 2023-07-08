@@ -9,33 +9,44 @@
                 <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'id'" pResizableColumn>{{'TICKET.FLD.ID'| translate}}<p-sortIcon [field]="'id'"></p-sortIcon></th>
-                            <th [pSortableColumn]="'tenant'" pResizableColumn>{{'TICKET.FLD.TENANT' | translate}}<p-sortIcon [field]="'tenant'"></p-sortIcon></th>
-                            <th [pSortableColumn]="'user_name'" pResizableColumn>{{'TICKET.FLD.PROCESSED_USER_NAME' | translate}}<p-sortIcon [field]="'user_name'"></p-sortIcon></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)" [pSortableColumn]="'tenant'" pResizableColumn>{{'TICKET.FLD.TENANT' | translate}}<p-sortIcon [field]="'tenant'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'user_name'" pResizableColumn>{{'TICKET.FLD.USER_NAME' | translate}}<p-sortIcon [field]="'user_name'"></p-sortIcon></th>
                             <th [pSortableColumn]="'date'" pResizableColumn>{{'TICKET.FLD.DATE'| translate}}<p-sortIcon [field]="'date'"></p-sortIcon></th>
-                            <th [pSortableColumn]="'processed_user_name'" pResizableColumn>{{'TICKET.FLD.PROCESSED_USER_NAME'| translate}}<p-sortIcon [field]="'processed_user_name'"></p-sortIcon></th>
-                            <th [pSortableColumn]="'processed_date'" pResizableColumn>{{'TICKET.FLD.PROCESSED_DATE'| translate}}<p-sortIcon [field]="'processed_date'"></p-sortIcon></th>
                             <th [pSortableColumn]="'brand'" pResizableColumn>{{'TICKET.FLD.BRAND'| translate}}<p-sortIcon [field]="'brand'"></p-sortIcon></th>
                             <th [pSortableColumn]="'ecu'" pResizableColumn>{{'TICKET.FLD.ECU'| translate}}<p-sortIcon [field]="'ecu'"></p-sortIcon></th>
                             <th [pSortableColumn]="'immatriculation'" pResizableColumn>{{'TICKET.FLD.IMMATRICULATION'| translate}}<p-sortIcon [field]="'immatriculation'"></p-sortIcon></th>
                             <th [pSortableColumn]="'processing'" pResizableColumn>{{'TICKET.FLD.PROCESSING'| translate}}<p-sortIcon [field]="'processing'"></p-sortIcon></th>
                             <th [pSortableColumn]="'files'" pResizableColumn>{{'TICKET.FLD.FILES'| translate}}<p-sortIcon [field]="'files'"></p-sortIcon></th>
-                            <th [pSortableColumn]="'level'" pResizableColumn>{{'TICKET.FLD.LEVEL'| translate}}<p-sortIcon [field]="'level'"></p-sortIcon></th>
+                            <th [pSortableColumn]="'processed_date'" pResizableColumn>{{'TICKET.FLD.PROCESSED_DATE'| translate}}<p-sortIcon [field]="'processed_date'"></p-sortIcon></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)" [pSortableColumn]="'customer_level'" pResizableColumn>{{'TICKET.FLD.LEVEL'| translate}}<p-sortIcon [field]="'customer_level'"></p-sortIcon></th>
                         </tr>
+                        <tr>
+                            <th><p-columnFilter type="numeric" field="id"></p-columnFilter></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)"><p-columnFilter type="text" field="tenant"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="user_name"></p-columnFilter></th>
+                            <th><p-columnFilter type="date" field="date"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="brand_name"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="ecu_code"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="immatriculation"></p-columnFilter></th>
+                            <th><p-columnFilter type="text" field="processing"></p-columnFilter></th>
+                            <th></th>
+                            <th><p-columnFilter type="date" field="processed_date"></p-columnFilter></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)"><p-columnFilter type="text" field="customer_level"></p-columnFilter></th>
+                        </tr>    
                     </ng-template>
                     <ng-template pTemplate="body" let-u>
                         <tr>
                             <td>{{u.id}}</td>
-                            <td>{{u.tenant}}</td>
-                            <td>{{u.user_dame}}</td>
+                            <td *ngIf="allow(PROFILE.OPERATOR)">{{u.tenant}}</td>
+                            <td>{{u.user_name}}</td>
                             <td>{{u.date | date:'dd/MM/yyyy'}}</td>
+                            <td>{{u.brand_name}}</td>
+                            <td>{{u.ecu_code}}</td>
+                            <td>{{u.immatriculation}}</td>
+                            <td>{{u.processing}}</td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{u.processed_date | date:'dd/MM/yyyy'}}</td>
+                            <td *ngIf="allow(PROFILE.OPERATOR)">{{u.customer_level}}</td>
                         </tr>
                     </ng-template>
              </p-table>

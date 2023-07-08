@@ -3,6 +3,56 @@ import {Ecu} from './ecu';
 export class Ticket {
 
     constructor(data?: any) {
+        if (data) {
+            this.id = data.id;
+            this.tenant = data.tenant;
+            this.customer_level = data.customer_level;
+            this.user_name = data.user_name;
+            this.date = data.date;
+            this.filename = data.filename;
+            this.file_size = data.file_size;
+            this.immatriculation = data.immatriculation;
+            this.fuel = data.fuel;
+
+            this.processed_filename = data.processed_filename;
+            this.processed_file_size = data.processed_file_size;
+            this.processed_user_name = data.processed_user_name;
+            this.processed_user_id = data.processed_user_id;
+            this.processed_date = data.processed_date;
+
+            this.brand_code = data.brand_code;
+            this.ecu_code = data.ecu_code;
+            this.brand_name = data.brand_name;
+
+
+            this.dpf = data.dpf;
+            this.egr = data.egr;
+            this.lambda = data.lambda;
+            this.hotstart = data.hotstart;
+            this.dtc = data.dtc;
+            this.torqmonitor = data.torqmonitor;
+            this.speedlimit = data.speedlimit;
+            this.startstop = data.startstop;
+            this.nox = data.nox;
+            this.tva = data.tva;
+            this.readiness = data.readiness;
+            this.immo = data.immo;
+            this.maf = data.maf;
+            this.hardcut = data.hardcut;
+            this.displaycalibration = data.displaycalibration;
+            this.waterpump = data.waterpump;
+            this.tprot = data.tprot;
+            this.o2 = data.o2;
+
+            this.glowplugs = data.glowplugs;
+            this.y75 = data.y75;
+            this.special = data.special;
+            this.decata = data.decata;
+            this.vmax = data.vmax;
+            this.stage1 = data.stage1;
+            this.stage2 = data.stage2;
+            this.flexfuel = data.flexfuel;
+        }
     }
     id: number = -1;
     
@@ -57,6 +107,9 @@ export class Ticket {
     stage1: boolean = false;
     stage2: boolean = false;
     flexfuel: boolean = false;
+
+    // cache
+    processing: string|null = null;
 
     updateFromEcu(ecu: Ecu) {
         this.dpf= ecu.dpf;

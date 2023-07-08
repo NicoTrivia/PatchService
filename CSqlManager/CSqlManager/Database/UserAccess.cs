@@ -7,15 +7,15 @@ public class UserAccess : DbAccess
 {
     private void AddFromReader(NpgsqlDataReader reader, User user)
     {
-        user.id = reader.GetInt32(reader.GetOrdinal("id"));
-        user.tenant = reader.GetString(reader.GetOrdinal("tenant"));
-        user.active = reader.GetBoolean(reader.GetOrdinal("active"));
-        user.email = reader.GetString(reader.GetOrdinal("email"));
-        user.firstname = reader.GetString(reader.GetOrdinal("firstname"));
-        user.lastname = reader.GetString(reader.GetOrdinal("lastname"));
-        user.login = reader.GetString(reader.GetOrdinal("login"));
+        user.id = (int)getInt(reader,"id", true)!;
+        user.tenant =  getString(reader, "tenant", true)!;
+        user.active =  (bool)getBoolean(reader, "active", true)!;
+        user.email = getString(reader, "email");
+        user.firstname = getString(reader, "firstname");
+        user.lastname = getString(reader, "lastname");
+        user.login = getString(reader, "login", true)!;
         
-        user.profile = reader.GetString(reader.GetOrdinal("profile"));
+        user.profile = getString(reader, "profile");
     }
     
     public List<User> GetUsers()

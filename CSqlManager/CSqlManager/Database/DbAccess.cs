@@ -82,15 +82,36 @@ public class DbAccess
         }
     }
 
-
-    public string? getString(NpgsqlDataReader reader, string code) {
+    public bool? getBoolean(NpgsqlDataReader reader, string code, bool? defaultValue = false) {
         if (!reader.IsDBNull(reader.GetOrdinal(code)))
-            return reader.GetString(reader.GetOrdinal(code));
+            return reader.GetBoolean(reader.GetOrdinal(code));
+        if (defaultValue != null)
+            return defaultValue;
         return null;
     }
-    public DateTime? getDateTime(NpgsqlDataReader reader, string code) {
+
+    public int? getInt(NpgsqlDataReader reader, string code, Boolean notNull = false) {
+        if (!reader.IsDBNull(reader.GetOrdinal(code)))
+            return reader.GetInt32(reader.GetOrdinal(code));
+        if (notNull)
+            return 0;
+        return null;
+    }
+
+
+    public string? getString(NpgsqlDataReader reader, string code, Boolean notNull = false) {
+        if (!reader.IsDBNull(reader.GetOrdinal(code)))
+            return reader.GetString(reader.GetOrdinal(code));
+        if (notNull)
+            return "";
+        return null;
+    }
+
+    public DateTime? getDateTime(NpgsqlDataReader reader, string code, Boolean notNull = false) {
         if (!reader.IsDBNull(reader.GetOrdinal(code)))
             return reader.GetDateTime(reader.GetOrdinal(code));
+        if (notNull)
+            return new DateTime();
         return null;
     }
 }

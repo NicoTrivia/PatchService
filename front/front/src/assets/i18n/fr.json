@@ -171,5 +171,10 @@
             "PROCESSING": "Traitements appliqués",
             "FILES": "Fichiers"
         }
+    },
+    "TICKET_LIST": {
+        "TITLE": {
+            "MAIN": "Historique des tickets"
+        }
     }
 }

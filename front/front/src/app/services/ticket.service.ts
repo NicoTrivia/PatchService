@@ -15,12 +15,12 @@ export class TicketService extends PSCommonService {
   }
 
 
-    /**
+ /**
   * Get the list of available data
   */
-    public findAll(): Observable<Ticket[]> {
-      const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}`;
-      return this.http.get<Array<Ticket>>(url).pipe(map(resu => {
+  public findAll(): Observable<Ticket[]> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ticket}`;
+    return this.http.get<Array<Ticket>>(url).pipe(map(resu => {
           const list: Ticket[] = [];
   
           for (const u of resu) {
@@ -28,6 +28,20 @@ export class TicketService extends PSCommonService {
             list.push(tenant);
           }
           return list;
-      }));
+    }));
   }
+
+  /**
+  * Get the list of available data
+  */
+  public create(t: Ticket): Observable<Ticket|null> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ticket}`;
+    return this.http.post<Ticket>(url, t).pipe(map(resu => {
+      if (resu == null) {
+        return null;
+      }
+      return new Ticket(t);
+    }));
+  }
+
 }

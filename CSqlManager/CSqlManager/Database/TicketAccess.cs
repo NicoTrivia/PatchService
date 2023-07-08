@@ -5,105 +5,105 @@ public class TicketAccess : DbAccess
 {
     private void AddFromReader(NpgsqlDataReader reader, Ticket ticket)
     {
-        ticket.id =  reader.GetInt32(reader.GetOrdinal("id"));
-        ticket.tenant = reader.GetString(reader.GetOrdinal("tenant"));
-        ticket.user_level = reader.GetString(reader.GetOrdinal("level"));
-        ticket.user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
-        ticket.user_name = reader.GetString(reader.GetOrdinal("user_name"));
-        ticket.date = reader.GetDateTime(reader.GetOrdinal("date"));
-        ticket.file_name = reader.GetString(reader.GetOrdinal("file_name"));
-        ticket.file_size = reader.GetInt32(reader.GetOrdinal("file_size"));
-        ticket.immatriculation = reader.GetString(reader.GetOrdinal("immatriculation"));
-        ticket.fuel = reader.GetString(reader.GetOrdinal("fuel"));
+        ticket.id = (int)getInt(reader, "id", true);
+        ticket.tenant = getString(reader, "tenant");
+        ticket.user_level = getString(reader, "level");
+        ticket.user_id = getInt(reader, "user_id");
+        ticket.user_name = getString(reader, "user_name");
+        ticket.date = getDateTime(reader, "date");
+        ticket.file_name = getString(reader, "file_name");
+        ticket.file_size = getInt(reader, "file_size");
+        ticket.immatriculation = getString(reader, "immatriculation");
+        ticket.fuel = getString(reader, "fuel");
         
-        ticket.processed_file_name = reader.GetString(reader.GetOrdinal("processed_file_name"));
-        ticket.processed_file_size = reader.GetInt32(reader.GetOrdinal("processed_file_size"));
-        ticket.processed_user_name = reader.GetString(reader.GetOrdinal("rocessed_user_name"));
-        ticket.processed_user_id = reader.GetInt32(reader.GetOrdinal("processed_user_id"));
-        ticket.processed_date = reader.GetDateTime(reader.GetOrdinal("processed_date"));
+        ticket.processed_file_name = getString(reader, "processed_file_name");
+        ticket.processed_file_size = getInt(reader, "processed_file_size");
+        ticket.processed_user_name = getString(reader, "processed_user_name");
+        ticket.processed_user_id = getInt(reader, "processed_user_id");
+        ticket.processed_date = getDateTime(reader, "processed_date");
         
-        ticket.brand_code = reader.GetString(reader.GetOrdinal("brand_code"));
-        ticket.ecu_code = reader.GetString(reader.GetOrdinal("ecu_code"));
-        ticket.brand_name = reader.GetString(reader.GetOrdinal("brand_name"));
+        ticket.brand_code = getString(reader, "brand_code");
+        ticket.ecu_code = getString(reader, "ecu_code");
+        ticket.brand_name = getString(reader, "brand_name");
     
-        ticket.dpf =  reader.GetBoolean(reader.GetOrdinal("dpf"));
-        ticket.egr =  reader.GetBoolean(reader.GetOrdinal("egr"));
-        ticket.lambda =  reader.GetBoolean(reader.GetOrdinal("lambda"));
-        ticket.hotstart =  reader.GetBoolean(reader.GetOrdinal("hotstart"));
-        ticket.flap =  reader.GetBoolean(reader.GetOrdinal("flap"));
-        ticket.dtc =  reader.GetBoolean(reader.GetOrdinal("dtc"));
-        ticket.adblue =  reader.GetBoolean(reader.GetOrdinal("adblue"));
-        ticket.torqmonitor =  reader.GetBoolean(reader.GetOrdinal("torqmonitor"));
-        ticket.speedlimit =  reader.GetBoolean(reader.GetOrdinal("speedlimit"));
-        ticket.startstop =  reader.GetBoolean(reader.GetOrdinal("startstop"));
-        ticket.nox =  reader.GetBoolean(reader.GetOrdinal("nox"));
-        ticket.tva =  reader.GetBoolean(reader.GetOrdinal("tva"));
-        ticket.readiness =  reader.GetBoolean(reader.GetOrdinal("readiness"));
-        ticket.immo =  reader.GetBoolean(reader.GetOrdinal("immo"));
-        ticket.maf =  reader.GetBoolean(reader.GetOrdinal("maf"));
-        ticket.hardcut =  reader.GetBoolean(reader.GetOrdinal("hardcut"));
-        ticket.displaycalibration =  reader.GetBoolean(reader.GetOrdinal("displaycalibration"));
-        ticket.waterpump =  reader.GetBoolean(reader.GetOrdinal("waterpump"));
-        ticket.tprot =  reader.GetBoolean(reader.GetOrdinal("tprot"));
-        ticket.o2 =  reader.GetBoolean(reader.GetOrdinal("o2"));
-        ticket.glowplugs =  reader.GetBoolean(reader.GetOrdinal("glowplugs"));
-        ticket.y75 =  reader.GetBoolean(reader.GetOrdinal("y75"));
-        ticket.special =  reader.GetBoolean(reader.GetOrdinal("special"));
-        ticket.decata =  reader.GetBoolean(reader.GetOrdinal("decata"));
-        ticket.vmax =  reader.GetBoolean(reader.GetOrdinal("vmax"));
-        ticket.stage1 =  reader.GetBoolean(reader.GetOrdinal("stage1"));
-        ticket.stage2 =  reader.GetBoolean(reader.GetOrdinal("stage2"));
-        ticket.flexfuel =  reader.GetBoolean(reader.GetOrdinal("flexfuel"));
+        ticket.dpf = (bool)getBoolean(reader, "dpf", false)!;
+        ticket.egr = (bool)getBoolean(reader, "egr", false)!;
+        ticket.lambda = (bool)getBoolean(reader, "lambda", false)!;
+        ticket.hotstart = (bool)getBoolean(reader, "hotstart", false)!;
+        ticket.flap = (bool)getBoolean(reader, "flap", false)!;
+        ticket.dtc = (bool)getBoolean(reader, "dtc", false)!;
+        ticket.adblue = (bool)getBoolean(reader, "adblue", false)!;
+        ticket.torqmonitor = (bool)getBoolean(reader, "torqmonitor", false)!;
+        ticket.speedlimit = (bool)getBoolean(reader, "speedlimit", false)!;
+        ticket.startstop = (bool)getBoolean(reader, "startstop", false)!;
+        ticket.nox = (bool)getBoolean(reader, "nox", false)!;
+        ticket.tva = (bool)getBoolean(reader, "tva", false)!;
+        ticket.readiness = (bool)getBoolean(reader, "readiness", false)!;
+        ticket.immo = (bool)getBoolean(reader, "immo", false)!;
+        ticket.maf = (bool)getBoolean(reader, "maf", false)!;
+        ticket.hardcut = (bool)getBoolean(reader, "hardcut", false)!;
+        ticket.displaycalibration = (bool)getBoolean(reader, "displaycalibration", false)!;
+        ticket.waterpump = (bool)getBoolean(reader, "waterpump", false)!;
+        ticket.tprot = (bool)getBoolean(reader, "tprot", false)!;
+        ticket.o2 = (bool)getBoolean(reader, "o2", false)!;
+        ticket.glowplugs = (bool)getBoolean(reader, "glowplugs", false)!;
+        ticket.y75 = (bool)getBoolean(reader, "y75", false)!;
+        ticket.special = (bool)getBoolean(reader, "special", false)!;
+        ticket.decata = (bool)getBoolean(reader, "decata", false)!;
+        ticket.vmax = (bool)getBoolean(reader, "vmax", false)!;
+        ticket.stage1 = (bool)getBoolean(reader, "stage1", false)!;
+        ticket.stage2 = (bool)getBoolean(reader, "stage2", false)!;
+        ticket.flexfuel = (bool)getBoolean(reader, "flexfuel", false)!;
         
     }
 
     private void AddInCommand(NpgsqlCommand command, Ticket ticket)
     {
-        command.Parameters.AddWithValue("tenant", GetParam(ticket.id));
-        command.Parameters.AddWithValue("level", GetParam(ticket.id));
-        command.Parameters.AddWithValue("user_id", GetParam(ticket.id));
-        command.Parameters.AddWithValue("user_name", GetParam(ticket.id));
-        command.Parameters.AddWithValue("date", GetParam(ticket.id));
-        command.Parameters.AddWithValue("file_name", GetParam(ticket.id));
-        command.Parameters.AddWithValue("file_size", GetParam(ticket.id));
-        command.Parameters.AddWithValue("immatriculation", GetParam(ticket.id));
-        command.Parameters.AddWithValue("fuel", GetParam(ticket.id));
-        command.Parameters.AddWithValue("processed_file_name", GetParam(ticket.id));
-        command.Parameters.AddWithValue("processed_file_size", GetParam(ticket.id));
-        command.Parameters.AddWithValue("processed_user_name", GetParam(ticket.id));
-        command.Parameters.AddWithValue("processed_user_id", GetParam(ticket.id));
-        command.Parameters.AddWithValue("processed_date", GetParam(ticket.id));
-        command.Parameters.AddWithValue("brand_code", GetParam(ticket.id));
-        command.Parameters.AddWithValue("ecu_code", GetParam(ticket.id));
-        command.Parameters.AddWithValue("brand_name", GetParam(ticket.id));
-        command.Parameters.AddWithValue("dpf", GetParam(ticket.id));
-        command.Parameters.AddWithValue("egr", GetParam(ticket.id));
-        command.Parameters.AddWithValue("lambda", GetParam(ticket.id));
-        command.Parameters.AddWithValue("hotstart", GetParam(ticket.id));
-        command.Parameters.AddWithValue("flap", GetParam(ticket.id));
-        command.Parameters.AddWithValue("adblue", GetParam(ticket.id));
-        command.Parameters.AddWithValue("dtc", GetParam(ticket.id));
-        command.Parameters.AddWithValue("torqmonitor", GetParam(ticket.id));
-        command.Parameters.AddWithValue("speedlimit", GetParam(ticket.id));
-        command.Parameters.AddWithValue("startstop", GetParam(ticket.id));
-        command.Parameters.AddWithValue("nox", GetParam(ticket.id));
-        command.Parameters.AddWithValue("tva", GetParam(ticket.id));
-        command.Parameters.AddWithValue("readiness", GetParam(ticket.id));
-        command.Parameters.AddWithValue("immo", GetParam(ticket.id));
-        command.Parameters.AddWithValue("maf", GetParam(ticket.id));
-        command.Parameters.AddWithValue("hardcut", GetParam(ticket.id));
-        command.Parameters.AddWithValue("displaycalibration", GetParam(ticket.id));
-        command.Parameters.AddWithValue("waterpump", GetParam(ticket.id));
-        command.Parameters.AddWithValue("tprot", GetParam(ticket.id));
-        command.Parameters.AddWithValue("o2", GetParam(ticket.id));
-        command.Parameters.AddWithValue("glowplugs", GetParam(ticket.id));
-        command.Parameters.AddWithValue("y75", GetParam(ticket.id));
-        command.Parameters.AddWithValue("special", GetParam(ticket.id));
-        command.Parameters.AddWithValue("decata", GetParam(ticket.id));
-        command.Parameters.AddWithValue("vmax", GetParam(ticket.id));
-        command.Parameters.AddWithValue("stage1", GetParam(ticket.id));
-        command.Parameters.AddWithValue("stage2", GetParam(ticket.id));
-        command.Parameters.AddWithValue("flexfuel", GetParam(ticket.id));
+        command.Parameters.AddWithValue("tenant", GetParam(ticket.tenant));
+        command.Parameters.AddWithValue("level", GetParam(ticket.user_level));
+        command.Parameters.AddWithValue("user_id", GetParam(ticket.user_id));
+        command.Parameters.AddWithValue("user_name", GetParam(ticket.user_name));
+        command.Parameters.AddWithValue("date", GetParam(ticket.date));
+        command.Parameters.AddWithValue("file_name", GetParam(ticket.file_name));
+        command.Parameters.AddWithValue("file_size", GetParam(ticket.file_size));
+        command.Parameters.AddWithValue("immatriculation", GetParam(ticket.immatriculation));
+        command.Parameters.AddWithValue("fuel", GetParam(ticket.fuel));
+        command.Parameters.AddWithValue("processed_file_name", GetParam(ticket.processed_file_name));
+        command.Parameters.AddWithValue("processed_file_size", GetParam(ticket.processed_file_size));
+        command.Parameters.AddWithValue("processed_user_name", GetParam(ticket.processed_user_name));
+        command.Parameters.AddWithValue("processed_user_id", GetParam(ticket.processed_user_id));
+        command.Parameters.AddWithValue("processed_date", GetParam(ticket.processed_date));
+        command.Parameters.AddWithValue("brand_code", GetParam(ticket.brand_code));
+        command.Parameters.AddWithValue("ecu_code", GetParam(ticket.ecu_code));
+        command.Parameters.AddWithValue("brand_name", GetParam(ticket.brand_name));
+        command.Parameters.AddWithValue("dpf", GetParam(ticket.dpf));
+        command.Parameters.AddWithValue("egr", GetParam(ticket.egr));
+        command.Parameters.AddWithValue("lambda", GetParam(ticket.lambda));
+        command.Parameters.AddWithValue("hotstart", GetParam(ticket.hotstart));
+        command.Parameters.AddWithValue("flap", GetParam(ticket.flap));
+        command.Parameters.AddWithValue("adblue", GetParam(ticket.adblue));
+        command.Parameters.AddWithValue("dtc", GetParam(ticket.dtc));
+        command.Parameters.AddWithValue("torqmonitor", GetParam(ticket.torqmonitor));
+        command.Parameters.AddWithValue("speedlimit", GetParam(ticket.torqmonitor));
+        command.Parameters.AddWithValue("startstop", GetParam(ticket.startstop));
+        command.Parameters.AddWithValue("nox", GetParam(ticket.nox));
+        command.Parameters.AddWithValue("tva", GetParam(ticket.tva));
+        command.Parameters.AddWithValue("readiness", GetParam(ticket.readiness));
+        command.Parameters.AddWithValue("immo", GetParam(ticket.immo));
+        command.Parameters.AddWithValue("maf", GetParam(ticket.maf));
+        command.Parameters.AddWithValue("hardcut", GetParam(ticket.hardcut));
+        command.Parameters.AddWithValue("displaycalibration", GetParam(ticket.displaycalibration));
+        command.Parameters.AddWithValue("waterpump", GetParam(ticket.waterpump));
+        command.Parameters.AddWithValue("tprot", GetParam(ticket.tprot));
+        command.Parameters.AddWithValue("o2", GetParam(ticket.o2));
+        command.Parameters.AddWithValue("glowplugs", GetParam(ticket.glowplugs));
+        command.Parameters.AddWithValue("y75", GetParam(ticket.y75));
+        command.Parameters.AddWithValue("special", GetParam(ticket.special));
+        command.Parameters.AddWithValue("decata", GetParam(ticket.decata));
+        command.Parameters.AddWithValue("vmax", GetParam(ticket.vmax));
+        command.Parameters.AddWithValue("stage1", GetParam(ticket.stage1));
+        command.Parameters.AddWithValue("stage2", GetParam(ticket.stage2));
+        command.Parameters.AddWithValue("flexfuel", GetParam(ticket.flexfuel));
     }
     
     public List<Ticket> GetTickets()
@@ -153,7 +153,7 @@ public class TicketAccess : DbAccess
     {
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"INSERT INTO ps_user (id, tenant, level, user_id, user_name, date, " +
+            command.CommandText = $"INSERT INTO ps_ticket (id, tenant, level, user_id, user_name, date, " +
                                   $"file_name, file_size, immatriculation, fuel, " +
                                   $"processed_file_name, processed_file_size, processed_user_name, processed_user_id, processed_date," +
                                   $"brand_code, ecu_code, brand_name, dpf, egr, lambda, hotstart, flap, adblue, dtc, torqmonitor, speedlimit," +
@@ -175,7 +175,7 @@ public class TicketAccess : DbAccess
         using (NpgsqlCommand command = CreateCommand())
         {
             command.CommandText = 
-                "UPDATE ps_user" +
+                "UPDATE ps_ticket" +
                 $" SET (tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
                 $"file_name = @file_name, file_size = @file_size, immatriculation = @immatriculation, fuel = @fuel, " +
                 $"processed_file_name = @processed_file_name, processed_file_size = @processed_file_size," +

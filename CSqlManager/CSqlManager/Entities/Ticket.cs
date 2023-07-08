@@ -5,18 +5,18 @@ public class Ticket
     public int id { get; set; }
     
     // information 
-    public string tenant { get; set; }
+    public string? tenant { get; set; }
     
-    public string user_level { get; set; }
-    public int user_id { get; set; }
-    public string user_name { get; set; }
+    public string? user_level { get; set; }
+    public int? user_id { get; set; }
+    public string? user_name { get; set; }
     
-    public DateTime date { get; set; }
-    public string file_name { get; set; }
-    public int file_size { get; set; }
+    public DateTime? date { get; set; }
+    public string? file_name { get; set; }
+    public int? file_size { get; set; }
     
-    public string immatriculation { get; set; }
-    public string fuel { get; set; }
+    public string? immatriculation { get; set; }
+    public string? fuel { get; set; }
     
     // processed 
     public string? processed_file_name { get; set; }
@@ -26,9 +26,9 @@ public class Ticket
     public string? processed_user_name { get; set; }
     
     // parameters 
-    public string brand_code { get; set; }
-    public string ecu_code { get; set; }
-    public string brand_name { get; set; }
+    public string? brand_code { get; set; }
+    public string? ecu_code { get; set; }
+    public string? brand_name { get; set; }
     
     public bool dpf { get; set; }
     public bool egr { get; set; }

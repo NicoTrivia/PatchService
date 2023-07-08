@@ -44,6 +44,7 @@ export class Config {
             ping: '/auth/ping',
             brand: '/brand',
             user: '/user',
+            ticket: '/ticket',
             password: '/password',
             tenant: '/tenant',
             ecu: '/ecu'
