@@ -2,7 +2,7 @@
 namespace CSqlManager;
 
 
-public class EcuEndPoints
+public class EcuEndPoints: SecureEnpoint
 {
     public static void MapEndPoints(WebApplication app)
     {

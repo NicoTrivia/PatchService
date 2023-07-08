@@ -53,18 +53,40 @@ public class TenantAccess : DbAccess
         return tenant;
     }
 
+    public int GetNextFileId(string code)
+    {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"SELECT next_file_id FROM ps_tenant WHERE code = @Code";
+            
+            command.Parameters.AddWithValue("Code", code);
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                  int id = (int)getInt(reader, "next_file_id", true)!;
+                  return id;
+            }
+        }
+
+        return 0;
+    }
+
+
+
     public void Create(Tenant tenant)
     {
         using (NpgsqlCommand command = CreateCommand())
         {
-            command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date)" +
-                                  $" VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date);";
+            command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date, next_file_id)" +
+                                  $" VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date, @next_file_id);";
             command.Parameters.AddWithValue("code", GetParam(tenant.code));
             command.Parameters.AddWithValue("name", GetParam(tenant.name));
             command.Parameters.AddWithValue("email", GetParam(tenant.email));
             command.Parameters.AddWithValue("level",GetParam(tenant.level));
             command.Parameters.AddWithValue("active",GetParam(tenant.active));
             command.Parameters.AddWithValue("creation_date", DateTime.Today);
+            command.Parameters.AddWithValue("next_file_id", 1);
+
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             command.ExecuteNonQuery();
         }
@@ -89,6 +111,22 @@ public class TenantAccess : DbAccess
             command.Parameters.AddWithValue("level",GetParam(tenant.level));
             command.Parameters.AddWithValue("active",GetParam(tenant.active));
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
+            
+            command.ExecuteNonQuery();
+        }
+    }
+    
+    public void nextFileId(string tenant)
+    {
+        if (tenant == null) {
+            return;
+        }
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = 
+                "UPDATE ps_tenant SET next_file_id = (next_file_id + 1) WHERE code = @code;";
+            
+            command.Parameters.AddWithValue("code", tenant);
             
             command.ExecuteNonQuery();
         }

@@ -8,6 +8,7 @@ import {Ticket} from '../../model/ticket';
 import { PatchSecured } from '../../auth/patchSecured';
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
 import { TicketService } from '../../services/ticket.service';
+import { PROFILE } from 'src/app/auth/profile.enum';
 
 @Component({
   selector: 'app-ticket-list',
@@ -31,12 +32,21 @@ export class TicketListComponent extends PatchSecured implements OnInit {
   }
   reload() {
     // load list from server
-    this.ticketService.findAll().subscribe(list => {
-      this.ticketList = list;
-      for(const t of this.ticketList) {
-        this.getProcessing(t);
-      }
-    });
+    if (this.allow(PROFILE.OPERATOR)) {
+      this.ticketService.findAll().subscribe(list => {
+        this.ticketList = list;
+        for(const t of this.ticketList) {
+          this.getProcessing(t);
+        }
+      });
+    } else {
+      this.ticketService.findByTenant(this.authenticationService.getTenant()).subscribe(list => {
+        this.ticketList = list;
+        for(const t of this.ticketList) {
+          this.getProcessing(t);
+        }
+      });
+    }
   }
 
   getProcessing(t: Ticket): string {
@@ -78,7 +88,7 @@ export class TicketListComponent extends PatchSecured implements OnInit {
       if (s.length > 0) {
         s = s + ', ';
       }
-      s = s + p.toUpperCase();
+      s = s + p;
     }
     t.processing = s;
     return s;

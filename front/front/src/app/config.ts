@@ -47,7 +47,9 @@ export class Config {
             ticket: '/ticket',
             password: '/password',
             tenant: '/tenant',
-            ecu: '/ecu'
+            ecu: '/ecu',
+            files: '/files',
+            next_file_id: '/next_file_id'
         };
     }
 }

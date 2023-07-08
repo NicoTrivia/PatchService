@@ -78,4 +78,14 @@ export class TenantService extends PSCommonService {
         return true;
       }));
   }
+
+  public getNextFileId(): Observable<number> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.next_file_id}`;
+    return this.http.get<number>(url).pipe(map(resu => {
+      if (resu) {
+          return resu;
+      }
+      return 0;
+    }));
+  }
 }

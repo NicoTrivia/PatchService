@@ -1,12 +1,12 @@
 ﻿
 namespace CSqlManager;
 
-public class FileTransfers
+public class FileTransfers: SecureEnpoint
 {
     public static void MapEndPoints(WebApplication app)
     {
         app.MapGet("/files/{fileName}", GetFile);
-        app.MapPost("/files", PostFile);
+        app.MapPost("/files/{id}", PostFile);
     }
     
     // To change depending on the context
@@ -35,8 +35,14 @@ public class FileTransfers
         return Task.CompletedTask;
     }
 
-    static Task PostFile(HttpContext context)
+    static Task PostFile(HttpContext context, int id)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid) {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            Console.WriteLine("ERROR 401 : Invalid JWT");
+            return Task.CompletedTask;
+        }
         Console.WriteLine("Post treatment of a file :");
         var file = context.Request.Form.Files.FirstOrDefault();
 
@@ -46,10 +52,20 @@ public class FileTransfers
             Console.WriteLine("ERROR 400 : No file was found");
             return Task.CompletedTask;
         }
+        // increase counter
+        var tenant = claims.Tenant;
+        var access = new TenantAccess();
+        access.nextFileId(tenant);
         var fileName = "file.bin";
-        var tenant = "";
-        var ticket_id = "";
-        foreach (var formPart in context.Request.Form) {
+ 
+        foreach (var file1 in context.Request.Form.Files)
+        {
+            if (file1.FileName != null)
+            {
+                fileName = file1.FileName;
+            }
+        }
+/*        foreach (var formPart in context.Request.Form) {
             if (formPart.Key == "filename") {
                fileName = formPart.Value;
             }
@@ -63,10 +79,10 @@ public class FileTransfers
             {
                 Console.WriteLine("WARNING UNKNOWN PARAMETER :" + formPart.Key + " with value :" + formPart.Value);
             }
-        }
-        Console.WriteLine("file informations : " + fileName+" "+ticket_id+" "+tenant);
+        }*/
+        Console.WriteLine("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
         
-        string fileLocation = BuildDirectory(tenant, ticket_id, fileName);
+        string fileLocation = BuildDirectory(tenant, id);
         var filePath = Path.Combine(fileLocation, fileName);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -81,14 +97,45 @@ public class FileTransfers
         return Task.CompletedTask;
     }
 
-    public static string BuildDirectory(string tenant, string ticketID, string filename)
+    public static string BuildDirectory(string tenant, int id)
     {
-        string Dlocation = $"{UploadDirectory}/{tenant}/{ticketID}";
-        if (!Path.Exists(Dlocation))
+        string fileId = BuildFileId(tenant, id);
+        string Dlocation = $"{UploadDirectory}/{fileId}";
+        CreateDirectoryTree(Dlocation);
+        Console.WriteLine("Writing to : "+Dlocation);
+        return Dlocation;
+    }
+
+     public static string BuildFileId(string tenant, int id)
+    {
+        DateTime currentDate = DateTime.Now;
+        int monthNumber = currentDate.Month;
+        string monthFolder = monthNumber < 10 ? "0"+monthNumber : monthNumber.ToString();
+        string key = $"{monthFolder}/{id}";
+
+        return key;
+    }
+
+    public static void CreateDirectoryTree(string path)
+    {
+        if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(Dlocation);
+            // Create the directory
+            Directory.CreateDirectory(path);
+        }
+        else
+        {
+            // Directory already exists, exit recursion
+            return;
         }
 
-        return Dlocation + $"/{filename}";
+        // Get the parent directory
+        string parentDirectory = Path.GetDirectoryName(path);
+
+        // Recursively create parent directories
+        if (!string.IsNullOrEmpty(parentDirectory))
+        {
+            CreateDirectoryTree(parentDirectory);
+        }
     }
 }

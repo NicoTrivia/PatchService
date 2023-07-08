@@ -13,6 +13,7 @@ public class Ticket
     
     public DateTime? date { get; set; }
     public string? file_name { get; set; }
+    public string? file_id { get; set; }
     public int? file_size { get; set; }
     
     public string? immatriculation { get; set; }
@@ -20,6 +21,7 @@ public class Ticket
     
     // processed 
     public string? processed_file_name { get; set; }
+    public string? processed_file_id { get; set; }
     public int? processed_file_size { get; set; }
     public DateTime? processed_date { get; set; }
     public int? processed_user_id { get; set; }

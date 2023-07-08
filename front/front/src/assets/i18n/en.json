@@ -23,18 +23,28 @@
         "MSG": {
             "UPLOAD": "Le fichier a été soumis avec succès : sélectionnez un calculateur",
             "SELECT_BRAND": "Marque du véhicule",
-            "SELECT_DEVICE": "Type de calculateur"
+            "SELECT_DEVICE": "Type de calculateur",
+            "CREATED": "Ticket créé avec le n° {{id}}"
         }
     },
     "BTN": {
         "CANCEL": "Annuler",
+        "CREATE_USER": "Ajouter un utilisateur",
+        "CREATE_TENANT": "Ajouter un client",
+        "TENANT_LIST": "Voir les clients",
+        "USER_LIST": "Voir les utilisateurs",
         "SUBMIT": "Soumettre",
         "CONTINUE": "Continuer",
         "HISTORY_VIEW": "Historique",
         "INFORMATION": "Information",
         "LOGOUT": "Déconnexion",
         "SUBMIT_TICKET": "Soumettre la demande",
-        "SET_PASSWORD": "Mot de passe"
+        "SET_PASSWORD": "Mot de passe",
+        "VALIDATE": "Valider",
+        "SET": "Modifier",
+        "DELETE": "Supprimer",
+        "ACTIVATE": "Activer",
+        "UNACTIVATE": "Désactiver"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -42,6 +52,8 @@
         }
     },
     "GENERAL": {
+        "CANCEL": "Annuler",
+        "CONFIRM": "Confirmer",
         "UNDEFINED": "Non défini",
         "GREETINGS": "Bonjour",
         "VERSION": "Version de l'application"
@@ -65,11 +77,105 @@
     "WARNING": {
         "MISSING_VALUE": "Valeur requise manquante",
         "NO_CNX": "Attention : connexion au serveur non disponible. Vérifiez le lancement du service.",
-        "SLOW_CNX": "Requête en cours, veuillez patienter."
+        "SLOW_CNX": "Requête en cours, veuillez patienter.",
+        "DATA_DELETED": "Donnée supprimée",
+        "DATA_SAVED": "Données enregistrées"
     },
     "TAWK": {
         "TITLE": {
             "SIDEBAR": "Assistance"
+        }
+    },
+    "TENANT_LIST" : {
+        "TITLE": {
+            "SIDEBAR": "Clients",
+            "MAIN": "Liste des clients"
+        }
+    },
+    "USER_LIST" : {
+        "TITLE": {
+            "SIDEBAR": "Utilisateurs",
+            "MAIN": "Liste des utilisateurs"
+        }
+    },
+    "USER_FORM": {
+        "TITLE": {
+            "CREATE": "Ajouter un utilisateur",
+            "SET": "Modifier un utilisateur",
+            "PASSWORD": "Modifier le mot de passe"
+        }
+    },
+    "TENANT_FORM": {
+        "TITLE": {
+            "CREATE": "Ajouter un client",
+            "SET": "Modifier un client"
+        }
+    },
+    "TENANT": {
+        "FLD" : {
+            "CODE": "Code",
+            "NAME": "Nom / Libellé",
+            "EMAIL": "Email",
+            "LEVEL": "Niveau d'abonnement",
+            "ACTIVE": "Actif",
+            "CREATION_DATE": "Creation",
+            "EXPIRATION_DATE": "Expiration"
+        },
+        "LEVEL": {
+            "SILVER": "Silver",
+            "GOLD": "Gold",
+            "PLATINE": "Platine"
+        }
+    },
+    "USER": {
+        "FLD" : {
+            "LOGIN": "Login",
+            "FIRSTNAME": "Prénom",
+            "NAME": "Nom",
+            "EMAIL": "Email",
+            "PROFILE": "Profil",
+            "TENANT": "Client",
+            "ACTIVE": "Actif",
+            "PASSWORD": "Mot de passe",
+            "PASSWORD2": "Mot de passe (confirmer)"
+        },
+        "PASSWORD": {
+            "PROMPT": "Sécurité du mot de passe",
+            "WEAK": "Faible",
+            "MEDIUM": "Bonne",
+            "STRONG": "Forte",
+            "MSG" : {
+                "PASSWORD_STRENGTH": "Le mot de passe doit contenir : une minuscule, une majuscule, un char. spécial !@#$%^&* ",
+                "PASSWORD_TOO_SHORT": "Le mot de passe est trop court (8 mini)",
+                "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas",
+                "PASSWORD_EMPTY": "Le mot de passe ne peut être vide"
+            }
+        },
+        "PROFILE": {
+            "CUSTOMER": "Client",
+            "OPERATOR": "Opérateur",
+            "ADMIN": "Admin"
+        }
+    },
+    "TICKET": {
+        "FLD": {
+            "ID": "N°",
+            "TENANT": "Code client",
+            "LEVEL": "Abonnement",
+            "USER_NAME": "Emis par",
+            "DATE": "Date d'émission",
+            "PROCESSED_USER_NAME": "Traité par",
+            "PROCESSED_DATE": "Date de traitement",
+            "IMMATRICULATION": "Immatriculation",
+            "BRAND":"Marque véhicule",
+            "ECU": "Calculateur",
+            "PROCESSING": "Traitements appliqués",
+            "FILES": "Fichiers"
+        }
+    },
+    "TICKET_LIST": {
+        "TITLE": {
+            "MAIN": "Historique des tickets"
         }
     }
 }

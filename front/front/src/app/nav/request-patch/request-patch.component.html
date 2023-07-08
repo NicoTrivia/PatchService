@@ -6,7 +6,7 @@
                 <div class="patch-form-title"><span class="patch-form-title-number">1</span>&nbsp;{{'REQUEST_PATCH.TITLE.UPLOAD_FILE' | translate}}</div>
                 <div class="patch-form-title-desc">{{'REQUEST_PATCH.DESC.UPLOAD_FILE' | translate}}</div>
                 <div class="request-patch-file-area"> 
-                    <p-fileUpload mode="basic" name="upload-patch-file" url="https://www.primefaces.org/cdn/api/upload.php"  [maxFileSize]="5000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="{{'REQUEST_PATCH.BTN.UPLOAD_FILE' | translate}}"></p-fileUpload>
+                    <p-fileUpload mode="basic" name="upload-patch-file" [url]="getUploadUrl()"  [maxFileSize]="5000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="{{'REQUEST_PATCH.BTN.UPLOAD_FILE' | translate}}"></p-fileUpload>
                     <div *ngIf="fileName" class="request-patch-file-item"><i class="fa-regular fa-file"></i>&nbsp;<span class="patch-form-title-desc">{{fileName}} ({{fileSize}} Ko)</span></div>
                 </div>
             </div>

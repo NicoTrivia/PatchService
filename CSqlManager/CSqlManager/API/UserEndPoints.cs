@@ -1,6 +1,6 @@
 ﻿namespace CSqlManager;
 
-public class UserEndPoints
+public class UserEndPoints: SecureEnpoint
 {
     public static void MapEndPoints(WebApplication app)
     {
@@ -17,32 +17,52 @@ public class UserEndPoints
 
     }
     
-    public static IResult GetAll()
+    public static IResult GetAll(HttpContext context)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
         var access = new UserAccess();
         var list = access.GetUsers();
 
         return Results.Ok(list);
     }
 
-    public static IResult GetByTenant(string Tenant)
+    public static IResult GetByTenant(HttpContext context, string Tenant)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || claims.Tenant != Tenant && claims.Profile != "ADMIN" && claims.Profile != "OPERATOR") {
+            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            return Results.Unauthorized();
+        }
         var access = new UserAccess();
         var list = access.GetUsersByTenant(Tenant);
 
         return Results.Ok(list);
     }
     
-    public static IResult GetById(int Id)
+    public static IResult GetById(HttpContext context, int Id)
     {
         var access = new UserAccess();
         var user = access.GetUserById(Id);
-
+        JwtClaims claims = getJwtClaims(context);
+        if ((user != null) && (!claims.Valid || claims.Tenant != user.tenant && claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            return Results.Unauthorized();
+        }
+     
         return Results.Ok(user);
     }
 
-    public static IResult Create(User user)
+    public static IResult Create(HttpContext context, User user)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
         Console.WriteLine($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
         
         var access = new UserAccess();
@@ -50,8 +70,13 @@ public class UserEndPoints
 
         return Results.Ok(user);
     }
-    public static IResult Update(User user)
+    public static IResult Update(HttpContext context, User user)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" && (user.login != claims.User || user.tenant != claims.Tenant))) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
         Console.WriteLine($"USER PUT {user}");
        
         var access = new UserAccess();
@@ -61,8 +86,13 @@ public class UserEndPoints
     }
 
     
-    public static IResult UpdatePassword(User user)
+    public static IResult UpdatePassword(HttpContext context, User user)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" && (user.login != claims.User || user.tenant != claims.Tenant))) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
         Console.WriteLine($"USER PASSWORD: {user.id}");
        
         var access = new UserAccess();
@@ -106,8 +136,13 @@ public class UserEndPoints
         return Results.Ok(user);
     }
         
-    public static IResult DeleteById(int Id)
+    public static IResult DeleteById(HttpContext context, int Id)
     {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
         var access = new UserAccess();
         var success = access.DeleteUserById(Id);
 

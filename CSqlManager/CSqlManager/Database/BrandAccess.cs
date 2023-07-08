@@ -15,9 +15,7 @@ public class BrandAccess : DbAccess
             while (reader.Read())
             {
                 requestResult.Add(new Brand(reader.GetString(reader.GetOrdinal("code")), reader.GetString(reader.GetOrdinal("name"))));
-                
             }
-
         }
         
         return requestResult;

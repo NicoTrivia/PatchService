@@ -23,7 +23,8 @@
         "MSG": {
             "UPLOAD": "Le fichier a été soumis avec succès : sélectionnez un calculateur",
             "SELECT_BRAND": "Marque du véhicule",
-            "SELECT_DEVICE": "Type de calculateur"
+            "SELECT_DEVICE": "Type de calculateur",
+            "CREATED": "Ticket créé avec le n° {{id}}"
         }
     },
     "BTN": {

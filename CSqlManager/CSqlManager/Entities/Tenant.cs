@@ -12,6 +12,8 @@ public class Tenant
     public DateTime?  expiration_date { get; set; }
     public bool active  { get; set; } = true;
 
+    public int next_file_id{ get; set; }
+
     public override string ToString()
     {
         return JsonSerializer.Serialize(this);

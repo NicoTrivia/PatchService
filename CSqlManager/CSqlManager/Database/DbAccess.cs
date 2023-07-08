@@ -5,7 +5,7 @@ namespace CSqlManager;
 
 public class DbAccess
 {
-    static readonly string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
+    static readonly string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;MaxPoolSize=500;";
 
     private NpgsqlConnection? Connection = null;
     protected object GetParam(object? param) => param == null ? DBNull.Value : param;
@@ -13,6 +13,7 @@ public class DbAccess
     {
         if (Connection == null || Connection.State != ConnectionState.Open)
         {
+            Console.WriteLine("Npgsq OPEN new connecion since former state is "+(Connection == null ? "null": Connection.State.ToString()));
             Connection = new NpgsqlConnection(connString);
             Connection.Open();
         }

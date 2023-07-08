@@ -31,6 +31,23 @@ export class TicketService extends PSCommonService {
     }));
   }
 
+   /**
+  * Get the list of available data
+  */
+   public findByTenant(tenant: string): Observable<Ticket[]> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ticket}/${tenant}`;
+    return this.http.get<Array<Ticket>>(url).pipe(map(resu => {
+          const list: Ticket[] = [];
+  
+          for (const u of resu) {
+            const tenant = new Ticket(u);
+            list.push(tenant);
+          }
+          return list;
+    }));
+  }
+
+
   /**
   * Get the list of available data
   */

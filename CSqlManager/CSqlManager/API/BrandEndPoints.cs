@@ -2,7 +2,7 @@
 namespace CSqlManager;
 
 
-public class BrandEndPoints
+public class BrandEndPoints: SecureEnpoint
 {
     public static void MapEndPoints(WebApplication app)
     {

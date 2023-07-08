@@ -7,9 +7,11 @@ export class Ticket {
             this.id = data.id;
             this.tenant = data.tenant;
             this.customer_level = data.customer_level;
+            this.user_id = data.user_id;
             this.user_name = data.user_name;
             this.date = data.date;
             this.filename = data.filename;
+            this.file_id = data.file_id;
             this.file_size = data.file_size;
             this.immatriculation = data.immatriculation;
             this.fuel = data.fuel;
@@ -63,7 +65,8 @@ export class Ticket {
     user_name: string = '';
     date: Date = new Date();
     filename: string  = '';
-    file_size: number  = -1;
+    file_size: number  = -1
+    file_id: string|null  = null;
     immatriculation: string = '';
     fuel: string = '';
 
