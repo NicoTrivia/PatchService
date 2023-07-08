@@ -131,7 +131,7 @@ public class TicketAccess : DbAccess
         return requestResult;
     }
 
-    public List<Ticket> GetTicketByTenant(string tenant)
+    public List<Ticket> GetByTenant(string tenant)
     {
         List<Ticket> requestResult = new List<Ticket>();
         using (NpgsqlCommand command = CreateCommand())
@@ -146,6 +146,26 @@ public class TicketAccess : DbAccess
                 Ticket current = new Ticket();
                 AddFromReader(reader, current);
                 requestResult.Add(current);
+            }
+        }
+
+        return requestResult;
+    }
+
+    public Ticket? GetById(int id)
+    {
+        Ticket? requestResult = null;
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"SELECT * FROM ps_ticket WHERE id = @id";
+            
+            command.Parameters.AddWithValue("id", id);
+            var reader = command.ExecuteReader();
+            
+            if (reader.Read())
+            {
+                requestResult = new Ticket();
+                AddFromReader(reader, requestResult);
             }
         }
 

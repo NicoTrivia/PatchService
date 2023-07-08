@@ -5,7 +5,7 @@ public class FileTransfers: SecureEnpoint
 {
     public static void MapEndPoints(WebApplication app)
     {
-        app.MapGet("/files/{fileName}", GetFile);
+        app.MapGet("/files/{id}", GetFile);
         app.MapPost("/files/{id}", PostFile);
     }
     
@@ -13,23 +13,42 @@ public class FileTransfers: SecureEnpoint
     private static readonly string UploadDirectory = "C:/temp" ;
 
     // Needs an update 
-    static Task GetFile(HttpContext context, string fileName)
+    static async Task<Task> GetFile(HttpContext context, int id)
     {
-        string? name = context.Request.RouteValues[fileName] as string;
-        var filePath = Path.Combine(UploadDirectory, name);
-        
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid) {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            Console.WriteLine("ERROR 401 : Invalid JWT");
+            return Task.CompletedTask;
+        }
+        var access = new TicketAccess();
+        var ticket = access.GetById(id);
+        if ((ticket == null) || (ticket.tenant == null) || 
+            (ticket.file_id == null) || (ticket.file_name == null)  || ((claims.Tenant != ticket.tenant) && (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR"))) {
+     
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            Console.WriteLine("ERROR 401 : Invalid JWT");
+            return Task.CompletedTask;
+        }
+
+        // get the file
+        String directory = FileTransfers.BuildDirectory(ticket.tenant!, ticket.file_id);
+        var filePath = Path.Combine(directory, ticket.file_name);
+
+        //context.Response.Headers["Content-Disposition"] = $"attachment; filename=\"{ticket.file_name}\"";
+        context.Response.ContentType = "application/octet-stream";
+        FileInfo fileInfo = new FileInfo(filePath);
+        context.Response.ContentLength = fileInfo.Length;
         if (!File.Exists(filePath))
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             return Task.CompletedTask;
         }
         
-        context.Response.ContentType = "application/octet-stream";
-        context.Response.Headers["Content-Disposition"] = $"attachment; filename=\"{name}\"";
-
         using (var fileStream = File.OpenRead(filePath))
         {
-            fileStream.CopyTo(context.Response.Body);
+            await fileStream.CopyToAsync(context.Response.Body);
+            //fileStream.CopyTo(context.Response.Body);
         }
         
         return Task.CompletedTask;
@@ -100,9 +119,15 @@ public class FileTransfers: SecureEnpoint
     public static string BuildDirectory(string tenant, int id)
     {
         string fileId = BuildFileId(tenant, id);
-        string Dlocation = $"{UploadDirectory}/{fileId}";
+        string Dlocation = BuildDirectory(tenant, fileId);
         CreateDirectoryTree(Dlocation);
         Console.WriteLine("Writing to : "+Dlocation);
+        return Dlocation;
+    }
+
+      public static string BuildDirectory(string tenant, string fileId)
+    {
+        string Dlocation = $"{UploadDirectory}/{fileId}";
         return Dlocation;
     }
 

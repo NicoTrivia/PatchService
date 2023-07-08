@@ -31,9 +31,27 @@ public class TicketEndPoints: SecureEnpoint
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
-        var list = access.GetTicketByTenant(Tenant);
+        var list = access.GetByTenant(Tenant);
 
         return Results.Ok(list);
+    }
+
+    
+    public static IResult GetById(HttpContext context, int id)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid) {
+            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            return Results.Unauthorized();
+        }
+        var access = new TicketAccess();
+        var ticket = access.GetById(id);
+
+        if (ticket != null && (claims.Tenant != ticket.tenant) && (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid tenant : "+ claims);
+            return Results.Unauthorized();
+        }
+        return Results.Ok(ticket);
     }
 
     public static IResult Create(HttpContext context, Ticket ticket)

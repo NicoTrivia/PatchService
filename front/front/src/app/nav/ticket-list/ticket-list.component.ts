@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-
+import { saveAs } from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
+import {HttpClient} from '@angular/common/http';
 import {Ticket} from '../../model/ticket';
 import { PatchSecured } from '../../auth/patchSecured';
 import { AuthenticationService } from '../../auth/authentication-service/authentication-service';
 import { TicketService } from '../../services/ticket.service';
 import { PROFILE } from 'src/app/auth/profile.enum';
 
+import {Config} from '../../config';
 @Component({
   selector: 'app-ticket-list',
   templateUrl: './ticket-list.component.html',
@@ -22,7 +23,7 @@ export class TicketListComponent extends PatchSecured implements OnInit {
   constructor(override readonly authenticationService: AuthenticationService,
     override readonly router: Router, private readonly ticketService: TicketService,
     private readonly translate: TranslateService, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private http: HttpClient
     ) {
     super(authenticationService, router);
   }
@@ -92,5 +93,14 @@ export class TicketListComponent extends PatchSecured implements OnInit {
     }
     t.processing = s;
     return s;
+  }
+
+  
+  downloadFile(id: number, fileName: string): void {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.files}/${id}`;
+  
+    this.http.get(url, { responseType: 'blob' }).subscribe((response: Blob) => {
+      saveAs(response, fileName); 
+    });
   }
 }

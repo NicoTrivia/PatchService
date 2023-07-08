@@ -177,3 +177,7 @@
 .ps-control-witdh{
     width: 100%;
 }
+.ps-download-file{
+    font-size: 1.3rem;
+    cursor: pointer;
+}
