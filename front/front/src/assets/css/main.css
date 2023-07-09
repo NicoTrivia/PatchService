@@ -177,7 +177,68 @@
 .ps-control-witdh{
     width: 100%;
 }
-.ps-download-file{
+.ps-download-file {
+    color:  var(--bluegray-400);
     font-size: 1.3rem;
     cursor: pointer;
 }
+
+.ps-download-info {
+    color:  var(--yellow-100);
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding-left: 1rem;
+}
+.ps-download-patch {
+    color:  var(--yellow-100);
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.ps-download-patch-failed {
+    color:  var(--red-100);
+    font-size: 1.3rem;
+    margin-right: 1rem;
+}
+
+.ticket-view-field{
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: right;
+    flex-basis: 40%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
+    padding-right: 1rem;
+ }
+ 
+ .ticket-view-value{
+     font-size: 1rem;
+     display: flex;
+     flex-wrap: nowrap;
+     white-space: nowrap;
+     align-items: center;
+     justify-content: left;
+     flex-grow: 0;
+     flex-shrink: 0;
+     align-self: flex-start;
+     flex-basis: 60%;
+  }
+  
+ .ticket-blank{
+     flex-grow: 1;
+     flex-shrink: 1;
+     align-self: flex-start;
+     flex-basis: 90%;
+  }
+ 
+  .ticket-view-fullsize {
+     width: 99%;
+  }
+  .ticket-view-btnbar {
+     margin-top: 1rem;
+     padding-bottom: 10px;
+  }

@@ -46,7 +46,13 @@ public class SecureEnpoint
                     result.Tenant = claim.Value;
                 }  else if (claim.Type == "Profile") {
                     result.Profile = claim.Value;
+                } else if (claim.Type == "UserId") {
+                    int r = 0;
+                    if (int.TryParse(claim.Value, out r)) {
+                        result.UserId = r;
+                    }
                 }
+                
             }
             result.Valid = (result.APP == "Patch Services") && (result.Tenant != null) && (result.Profile != null) && (result.User != null);
         }

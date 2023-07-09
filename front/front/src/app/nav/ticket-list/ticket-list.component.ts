@@ -18,19 +18,44 @@ import {Config} from '../../config';
 })
 export class TicketListComponent extends PatchSecured implements OnInit {
   
-  public ticketList:Ticket[] = [];
+  ticketList:Ticket[] = [];
+  // opens confirm upload dialog
+  currentUploadTicket:Ticket|null = null;
+  uploadDialogVisible = false;
+  currentComment: string|null = null;
 
   constructor(override readonly authenticationService: AuthenticationService,
-    override readonly router: Router, private readonly ticketService: TicketService,
-    private readonly translate: TranslateService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private http: HttpClient
+    override readonly router: Router, protected readonly ticketService: TicketService,
+    protected readonly translate: TranslateService, protected messageService: MessageService,
+    protected confirmationService: ConfirmationService, protected http: HttpClient
     ) {
     super(authenticationService, router);
   }
-  
+
+  inProgressView(): boolean {
+    return false;
+  }
+
+  getTitle(): string {
+    return 'TICKET_LIST.TITLE.MAIN';
+  }
+
   ngOnInit() {
     this.reload();
   }
+
+  canAckProcessing(t: Ticket): boolean {
+    return false;
+  }
+
+  ackProcessing(t: Ticket) {
+    // NO OP :overriden
+  }
+  
+  uploadPatch(t: Ticket): void {
+    // NO OP :overriden
+  }
+
   reload() {
     // load list from server
     if (this.allow(PROFILE.OPERATOR)) {
@@ -102,5 +127,20 @@ export class TicketListComponent extends PatchSecured implements OnInit {
     this.http.get(url, { responseType: 'blob' }).subscribe((response: Blob) => {
       saveAs(response, fileName); 
     });
+  }
+
+  confirmUpload(event: any) {
+    this.uploadDialogVisible = false;
+
+    if (this.currentUploadTicket) {
+      this.ticketService.set(this.currentUploadTicket).subscribe(t => {
+        this.translate.get("IN_PROGRESS_VIEW.MSG.PROCESS_TICKET_PROCESSED", {'operator': this.currentUploadTicket!.processed_user_name}).subscribe(msg => {
+          this.messageService.add({ severity: 'success', summary: 'Information', detail: msg });
+        });
+        this.currentUploadTicket = null;
+
+        this.reload();    
+      })
+    }
   }
 }

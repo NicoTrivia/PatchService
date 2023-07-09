@@ -5,7 +5,9 @@ public class TicketEndPoints: SecureEnpoint
     public static void MapEndPoints(WebApplication app)
     {
         app.MapGet("/ticket", GetAll);
-        app.MapGet("/ticket/{Tenant}", GetByTenant);
+        app.MapGet("/ticket/{id}", GetById);
+        app.MapGet("/ticket_in_progress", GetInProgress);
+        app.MapGet("/ticket_list/{Tenant}", GetByTenant);
         app.MapPost("/ticket", Create);
         app.MapPut("/ticket", Update);
     }
@@ -23,6 +25,18 @@ public class TicketEndPoints: SecureEnpoint
         return Results.Ok(list);
     }
 
+    public static IResult GetInProgress(HttpContext context)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
+            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
+        var access = new TicketAccess();
+        var list = access.GetInProgress(claims.UserId);
+
+        return Results.Ok(list);
+    }
     public static IResult GetByTenant(HttpContext context, string Tenant)
     {
         JwtClaims claims = getJwtClaims(context);
@@ -36,7 +50,6 @@ public class TicketEndPoints: SecureEnpoint
         return Results.Ok(list);
     }
 
-    
     public static IResult GetById(HttpContext context, int id)
     {
         JwtClaims claims = getJwtClaims(context);

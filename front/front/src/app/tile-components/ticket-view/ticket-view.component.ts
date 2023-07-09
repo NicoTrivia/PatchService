@@ -14,6 +14,7 @@ import { AuthenticationService } from '../../auth/authentication-service/authent
 })
 export class TicketViewComponent extends PatchSecured implements OnInit {
   @Input() public ticket: Ticket|null = null;
+  @Input() public buttonBar: boolean = true;
   @Output() confirmTicketEvent = new EventEmitter<string>();
 
   constructor(override readonly authenticationService: AuthenticationService,

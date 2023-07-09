@@ -34,7 +34,9 @@ import { AppComponent } from './app.component';
 import { RequestPatchComponent } from './nav/request-patch/request-patch.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { MessageService } from 'primeng/api';
-
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CheckboxModule } from 'primeng/checkbox';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 // services
 import { AuthenticationService } from './auth/authentication-service/authentication-service';
 import { JwtInterceptor} from './auth/interceptor/jwt-inteceptor';
@@ -51,6 +53,8 @@ import { EditTenantComponent } from './forms/edit-tenant/edit-tenant.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService} from 'primeng/api';
 import { TicketListComponent } from './nav/ticket-list/ticket-list.component';
+import { TicketInProgressComponent } from './nav/ticket-in-progress/ticket-in-progress.component';
+import { UploadDialogComponent } from './tile-components/upload-dialog/upload-dialog.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -69,13 +73,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditUserComponent,
     TenantListComponent,
     EditTenantComponent,
-    TicketListComponent
+    TicketListComponent,
+    TicketInProgressComponent,
+    UploadDialogComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
     InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule, RadioButtonModule, ConfirmDialogModule,
-    TooltipModule,
+    InputTextareaModule, TooltipModule, CheckboxModule, OverlayPanelModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,

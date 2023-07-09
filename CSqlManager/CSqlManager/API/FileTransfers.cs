@@ -7,6 +7,7 @@ public class FileTransfers: SecureEnpoint
     {
         app.MapGet("/files/{id}", GetFile);
         app.MapPost("/files/{id}", PostFile);
+        app.MapPost("/files_patched/{month}/{id}", PostFilePatched);
     }
     
     // To change depending on the context
@@ -102,6 +103,56 @@ public class FileTransfers: SecureEnpoint
         Console.WriteLine("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
         
         string fileLocation = BuildDirectory(tenant, id);
+        var filePath = Path.Combine(fileLocation, fileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            file.CopyTo(fileStream);
+        }
+
+        context.Response.StatusCode = StatusCodes.Status201Created;
+        context.Response.Headers["Location"] = fileLocation;
+        Console.WriteLine("File Saved in : " + fileLocation);
+        Console.WriteLine();
+        return Task.CompletedTask;
+    }
+
+    
+    static Task PostFilePatched(HttpContext context, string month, string id)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" )) {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            Console.WriteLine("ERROR 401 : Invalid JWT");
+            return Task.CompletedTask;
+        }
+        string fileId = month+'/'+id;
+        Console.WriteLine("Post treatment of patched file : "+fileId);
+        var file = context.Request.Form.Files.FirstOrDefault();
+
+        if (file == null || file.Length == 0)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            Console.WriteLine("ERROR 400 : No file was found");
+            return Task.CompletedTask;
+        }
+        // increase counter
+        var tenant = claims.Tenant;
+        var access = new TenantAccess();
+        access.nextFileId(tenant);
+        var fileName = "patched.bin";
+ 
+        foreach (var file1 in context.Request.Form.Files)
+        {
+            if (file1.FileName != null)
+            {
+                fileName = "patched_"+file1.FileName;
+            }
+        }
+
+        Console.WriteLine("file informations : " + fileName+" "+fileId+" "+tenant+" CLAIMS: "+claims);
+        
+        string fileLocation = BuildDirectory(tenant, fileId);
         var filePath = Path.Combine(fileLocation, fileName);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))

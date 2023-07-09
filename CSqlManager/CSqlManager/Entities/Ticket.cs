@@ -7,7 +7,7 @@ public class Ticket
     // information 
     public string? tenant { get; set; }
     
-    public string? user_level { get; set; }
+    public string? level { get; set; }
     public int? user_id { get; set; }
     public string? user_name { get; set; }
     
@@ -21,11 +21,11 @@ public class Ticket
     
     // processed 
     public string? processed_file_name { get; set; }
-    public string? processed_file_id { get; set; }
     public int? processed_file_size { get; set; }
     public DateTime? processed_date { get; set; }
     public int? processed_user_id { get; set; }
     public string? processed_user_name { get; set; }
+    public string? comment { get; set; }
     
     // parameters 
     public string? brand_code { get; set; }

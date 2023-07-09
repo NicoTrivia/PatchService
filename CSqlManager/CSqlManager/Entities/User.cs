@@ -23,7 +23,7 @@ public class User
     public string? jwt  { get; set; }
     private static readonly string jwtKey = "&32DEFIPd=";
     
-    public static string GenerateJwtToken(string userId, string tenant, string profile)
+    public static string GenerateJwtToken(string userLogin, int userId, string tenant, string profile)
     {
         byte[] keyBytes = Encoding.UTF8.GetBytes(jwtKey);
         byte[] hashedKeyBytes;
@@ -36,7 +36,8 @@ public class User
         var claims = new[]
         {
             new Claim("APP", "Patch Services"),
-            new Claim("User", userId),
+            new Claim("User", userLogin),
+            new Claim("UserId", userId.ToString()),
             new Claim("Tenant", tenant),
             new Claim("Profile", profile)
         };

@@ -116,7 +116,7 @@ public class UserEndPoints: SecureEnpoint
                Login = formPart.Value;
             }
             else if (formPart.Key == "password") {
-            Password = formPart.Value;
+               Password = formPart.Value;
             }
         }
 
@@ -130,7 +130,7 @@ public class UserEndPoints: SecureEnpoint
         if (user != null)
         {
             string profile = user.profile.ToString();
-            user.jwt = User.GenerateJwtToken(user.login, user.tenant, profile);
+            user.jwt = User.GenerateJwtToken(user.login, user.id, user.tenant, profile);
         }
         
         return Results.Ok(user);

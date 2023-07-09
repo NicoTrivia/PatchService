@@ -96,20 +96,20 @@ export class SidebarComponent extends PatchSecured implements OnInit, OnChanges,
         localStorage.setItem(Config.STORAGE_PS_SIDEBAR_ITEM, dest);
         if (dest === 'home') {
             this.router.navigate([`/request_patch`]);
-        } 
-        else if (dest === 'viewHistory') {
+        } else if (dest === 'viewInProgress') {
+            this.router.navigate([`/ticket_in_progress`]);
+        } else if (dest === 'viewHistory') {
             this.router.navigate([`/ticket`]);
-        }else if (dest === 'user_list') {
+        } else if (dest === 'user_list') {
             this.router.navigate([`/user_list`]);
         } else if (dest === 'selectPassword') {
             this.setPassword();
-        } 
-        else if (dest === 'tawk') {
+        } else if (dest === 'tawk') {
             window.open("https://dashboard.tawk.to/#/dashboard", "tawk_to");
         } else {
           this.router.navigate([`/`]);
         }
-
+        
     }
 
     public isSelected(item: string): boolean {

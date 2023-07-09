@@ -1,0 +1,22 @@
+.upload-width-half {
+    width: 50%;
+}
+
+.upload-dialog-box-container {
+    display: block;
+}
+
+.upload-view-field{
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: left;
+    flex-basis: 40%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+ }

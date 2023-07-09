@@ -7,7 +7,7 @@ public class TicketAccess : DbAccess
     {
         ticket.id = (int)getInt(reader, "id", true);
         ticket.tenant = getString(reader, "tenant");
-        ticket.user_level = getString(reader, "level");
+        ticket.level = getString(reader, "level");
         ticket.user_id = getInt(reader, "user_id");
         ticket.user_name = getString(reader, "user_name");
         ticket.date = getDateTime(reader, "date");
@@ -18,9 +18,9 @@ public class TicketAccess : DbAccess
         ticket.fuel = getString(reader, "fuel");
         
         ticket.processed_file_name = getString(reader, "processed_file_name");
-        ticket.processed_file_id = getString(reader, "processed_file_id");
         ticket.processed_file_size = getInt(reader, "processed_file_size");
         ticket.processed_user_name = getString(reader, "processed_user_name");
+        ticket.comment = getString(reader, "comment");
         ticket.processed_user_id = getInt(reader, "processed_user_id");
         ticket.processed_date = getDateTime(reader, "processed_date");
         
@@ -62,7 +62,7 @@ public class TicketAccess : DbAccess
     private void AddInCommand(NpgsqlCommand command, Ticket ticket)
     {
         command.Parameters.AddWithValue("tenant", GetParam(ticket.tenant));
-        command.Parameters.AddWithValue("level", GetParam(ticket.user_level));
+        command.Parameters.AddWithValue("level", GetParam(ticket.level));
         command.Parameters.AddWithValue("user_id", GetParam(ticket.user_id));
         command.Parameters.AddWithValue("user_name", GetParam(ticket.user_name));
         command.Parameters.AddWithValue("date", GetParam(ticket.date));
@@ -72,9 +72,9 @@ public class TicketAccess : DbAccess
         command.Parameters.AddWithValue("immatriculation", GetParam(ticket.immatriculation));
         command.Parameters.AddWithValue("fuel", GetParam(ticket.fuel));
         command.Parameters.AddWithValue("processed_file_name", GetParam(ticket.processed_file_name));
-        command.Parameters.AddWithValue("processed_file_id", GetParam(ticket.processed_file_id));
         command.Parameters.AddWithValue("processed_file_size", GetParam(ticket.processed_file_size));
         command.Parameters.AddWithValue("processed_user_name", GetParam(ticket.processed_user_name));
+        command.Parameters.AddWithValue("comment", GetParam(ticket.comment));
         command.Parameters.AddWithValue("processed_user_id", GetParam(ticket.processed_user_id));
         command.Parameters.AddWithValue("processed_date", GetParam(ticket.processed_date));
         command.Parameters.AddWithValue("brand_code", GetParam(ticket.brand_code));
@@ -131,6 +131,28 @@ public class TicketAccess : DbAccess
         return requestResult;
     }
 
+    public List<Ticket> GetInProgress(int userId)
+    {
+        List<Ticket> requestResult = new List<Ticket>();
+        
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"SELECT * FROM ps_ticket where processed_file_name is NULL and (processed_user_id IS NULL OR processed_user_id = 0 OR processed_user_id = @userId) ORDER BY CASE level " +
+            $" WHEN 'Platine' THEN 1 WHEN 'Gold' THEN 2 WHEN 'Silver' THEN 3 ELSE 4 END, id DESC";
+            command.Parameters.AddWithValue("userId", userId);
+            var reader = command.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                Ticket current = new Ticket();
+                AddFromReader(reader, current);
+                requestResult.Add(current);
+            }
+
+        }
+        
+        return requestResult;
+    }
     public List<Ticket> GetByTenant(string tenant)
     {
         List<Ticket> requestResult = new List<Ticket>();
@@ -179,13 +201,13 @@ public class TicketAccess : DbAccess
         {
             command.CommandText = $"INSERT INTO ps_ticket (id, tenant, level, user_id, user_name, date, " +
                                   $"file_name, file_id, file_size, immatriculation, fuel, " +
-                                  $"processed_file_name, processed_file_id, processed_file_size, processed_user_name, processed_user_id, processed_date," +
+                                  $"processed_file_name, processed_file_size, processed_user_name, comment, processed_user_id, processed_date," +
                                   $"brand_code, ecu_code, brand_name, dpf, egr, lambda, hotstart, flap, adblue, dtc, torqmonitor, speedlimit," +
                                   $"startstop, nox, tva, readiness, immo, maf, hardcut, displaycalibration, waterpump, tprot, o2, glowplugs," +
                                   $" y75, special, decata, vmax, stage1, stage2, flexfuel)" +
                                   $" VALUES (nextval('ps_ticket_id_seq'), @tenant, @level, @user_id, @user_name, @date, " +
                                   $"@file_name, @file_id, @file_size, @immatriculation, @fuel, " +
-                                  $"@processed_file_name, @processed_file_id, @processed_file_size, @processed_user_name, @processed_user_id, @processed_date," +
+                                  $"@processed_file_name, @processed_file_size, @processed_user_name, @comment, @processed_user_id, @processed_date," +
                                   $"@brand_code, @ecu_code, @brand_name, @dpf, @egr, @lambda, @hotstart, @flap, @adblue, @dtc, @torqmonitor, @speedlimit," +
                                   $"@startstop, @nox, @tva, @readiness, @immo, @maf, @hardcut, @displaycalibration, @waterpump, @tprot, @o2, @glowplugs," +
                                   $" @y75, @special, @decata, @vmax, @stage1, @stage2, @flexfuel)";
@@ -200,18 +222,22 @@ public class TicketAccess : DbAccess
         {
             command.CommandText = 
                 "UPDATE ps_ticket" +
-                $" SET (tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
+                $" SET tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
                 $"file_name = @file_name, file_size = @file_size, immatriculation = @immatriculation, fuel = @fuel, " +
-                $"processed_file_name = @processed_file_name, processed_file_id = @processed_file_id, processed_file_size = @processed_file_size," +
-                $"processed_user_name = @processed_user_name, processed_user_id = @processed_user_id, processed_date = @processed_date," +
+                $"processed_file_name = @processed_file_name, processed_file_size = @processed_file_size," +
+                $"processed_user_name = @processed_user_name, comment = @comment, processed_user_id = @processed_user_id, processed_date = @processed_date," +
                 $"brand_code = @brand_code, ecu_code = @ecu_code, brand_name = @brand_name, dpf = @dpf, egr = @egr, lambda = @lambda," +
                 $"hotstart = @hotstart, flap = @flap, adblue = @adblue, dtc = @dtc, torqmonitor = @torqmonitor, speedlimit = @speedlimit," +
                 $"startstop = @startstop, nox = @nox, tva = @tva, readiness = @readiness, immo = @immo, maf = @maf, hardcut= @hardcut," +
                 $"displaycalibration = @displaycalibration, waterpump = @waterpump, tprot = @tprot, o2 = @o2, glowplugs = @glowplugs," +
-                $"y75 = @y75, special = @special, decata = @decata, vmax = @vmax, stage1 = @stage1, stage2 = @stage2, flexfuel = @flexfuel) " +
-                $" WHERE id = @id;";
-            
+                $"y75 = @y75, special = @special, decata = @decata, vmax = @vmax, stage1 = @stage1, stage2 = @stage2, flexfuel = @flexfuel " +
+                $" WHERE id = @id";
+        
+             Console.WriteLine($"command.CommandText: {command.CommandText}");
+        
             AddInCommand(command, ticket);
+            command.Parameters.AddWithValue("id", ticket.id);
+             Console.WriteLine($"command.CommandText 2: {command.ToString}");
             command.ExecuteNonQuery();
         }
         

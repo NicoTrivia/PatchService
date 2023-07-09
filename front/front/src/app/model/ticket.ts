@@ -6,7 +6,7 @@ export class Ticket {
         if (data) {
             this.id = data.id;
             this.tenant = data.tenant;
-            this.customer_level = data.customer_level;
+            this.level = data.level;
             this.user_id = data.user_id;
             this.user_name = data.user_name;
             this.date = data.date;
@@ -21,6 +21,7 @@ export class Ticket {
             this.processed_user_name = data.processed_user_name;
             this.processed_user_id = data.processed_user_id;
             this.processed_date = data.processed_date;
+            this.comment = data.comment;
 
             this.brand_code = data.brand_code;
             this.ecu_code = data.ecu_code;
@@ -60,7 +61,7 @@ export class Ticket {
     
     // Processing info
     tenant: string = '';
-    customer_level: string = '';
+    level: string = '';
     user_id: number = 0;
     user_name: string = '';
     date: Date = new Date();
@@ -76,6 +77,7 @@ export class Ticket {
     processed_user_name: string|null  = null;
     processed_user_id: number = 0;
     processed_date: Date|null = null;
+    comment: string|null = null;
     
     // Parameters
     brand_code: string = '';

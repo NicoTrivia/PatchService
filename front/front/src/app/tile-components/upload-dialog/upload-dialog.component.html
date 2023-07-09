@@ -1,0 +1,28 @@
+<div *ngIf='ticket' class="patch-no-scroll-container">
+
+    <app-ticket-view [ticket]="ticket" [buttonBar]="false"></app-ticket-view>
+
+    <div class="patch-dialog-flow">
+        <div class="patch-dialog-box upload-dialog-box-container  upload-width-half">
+            <div class="upload-view-field">{{'IN_PROGRESS_VIEW.BTN.UPLOAD_PATCH' | translate}}</div>
+            <div class="request-patch-file-area"> 
+                <p-fileUpload [disabled]='failedPatch' mode="basic" name="upload-patch-file" [url]="getUploadUrl()"  [maxFileSize]="5000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="{{'REQUEST_PATCH.BTN.UPLOAD_FILE' | translate}}"></p-fileUpload>
+                <br>
+                <div *ngIf="fileName" class="request-patch-file-item"><i class="fa-regular fa-file"></i>&nbsp;<span class="patch-form-title-desc">{{fileName}} ({{fileSize}} Ko)</span></div>
+            </div>
+            <div class="upload-view-field">{{'IN_PROGRESS_VIEW.MSG.FAILED_PATCH' | translate}}</div>
+            <p-checkbox [disabled]='fileName != null' inputId="failedPatchId" [binary]="true"  label="{{'IN_PROGRESS_VIEW.MSG.FAILED_PATCH_LABEL' | translate}}" [(ngModel)]="failedPatch"></p-checkbox>
+        </div>
+        <div class="patch-dialog-box upload-dialog-box-container upload-width-half">
+            <div class="upload-view-field">{{'IN_PROGRESS_VIEW.MSG.PATCH_COMMENT' | translate}}<span *ngIf="failedPatch">&nbsp;&nbsp;*</span></div>
+            <div class="request-patch-file-area"> 
+                <textarea rows="4" cols="50" pInputTextarea [(ngModel)]="ticket.comment" [maxlength]="MAX_CHARS_COMMENT" ></textarea>
+            </div>
+            <div>{{(ticket.comment && ticket.comment.length ? (MAX_CHARS_COMMENT - ticket.comment.length) : MAX_CHARS_COMMENT)}} / {{'IN_PROGRESS_VIEW.MSG.MAX_EXTRA_INFO_LENGTH' | translate: {max_chars: MAX_CHARS_COMMENT} }}</div>
+        </div>
+    </div>
+    <div class="patch-align-right ticket-view-btnbar">
+        <button pButton id="cancel" class="ui-button-ps p-button-rounded p-button-outlined ui-button-ps-hor" (click)="validate(false)" label="{{'BTN.CANCEL' | translate}}"></button>
+        <button [disabled]='(!failedPatch || (failedPatch && (ticket.comment == null || ticket.comment.length == 0))) && fileName == null' pButton id="submit" class="ui-button-ps p-button-rounded ui-button-ps-hor" (click)="validate(true)" label="{{'BTN.SUBMIT' | translate}}"></button>
+    </div>
+</div>

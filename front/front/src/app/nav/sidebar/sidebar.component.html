@@ -19,6 +19,13 @@
             <tr>
                 <td class="sidebar-options-td-top">
                     <div class='sidebar-options-top'>
+                        <div class='sidebar-link-row' *ngIf="allow(PROFILE.OPERATOR)" >
+                            <div id="divInProgressView" class='sidebar-link sidebar-hover' [ngClass]="{'sidebar-item-selected': isSelected('viewInProgress')}" (click)="select('viewInProgress')">
+                                <em class="fa-solid fa-screwdriver-wrench" style='cursor: pointer' title="{{'IN_PROGRESS_VIEW.TITLE.MAIN' | translate}}"></em>
+                                <span id="spanInProgressView" class='sidebar-label' [ngClass]="{'sidebar-label-bold': isSelected('viewInProgress')}" *ngIf="!sidebarSmall">{{'BTN.IN_PROGRESS_VIEW' | translate}}</span>
+                            </div>
+                            <div class="sidebar-item-rightborder" [ngClass]="{'sidebar-item-rightborder-selected': isSelected('viewInProgress')}"></div>
+                        </div>
                         <div class='sidebar-link-row'>
                             <div id="divPatch" *ngIf="allow(PROFILE.CUSTOMER)" class='sidebar-link sidebar-hover' (click)="select('requestPatch')" [ngClass]="{'sidebar-item-selected': isSelected('requestPatch')}">
                                 <em  class="fa-solid fa-gears" title="{{'REQUEST_PATCH.TITLE.SIDEBAR' | translate}}"></em>

@@ -1,7 +1,7 @@
 <section class='patch-container-sidebar'>
     <app-sidebar [title]="'TICKET_LIST.TITLE.SIDEBAR'"></app-sidebar>
     <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
-        <div class="patch-form-title-main">{{'TICKET_LIST.TITLE.MAIN' | translate}}</div>
+        <div class="patch-form-title-main">{{getTitle() | translate}}</div>
             <p-table #ticketTable [value]="ticketList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
             [globalFilterFields]="['code', 'name', 'email', 'level']"
             [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
@@ -10,6 +10,7 @@
                         <tr>
                             <th [pSortableColumn]="'id'" pResizableColumn>{{'TICKET.FLD.ID'| translate}}<p-sortIcon [field]="'id'"></p-sortIcon></th>
                             <th *ngIf="allow(PROFILE.OPERATOR)" [pSortableColumn]="'tenant'" pResizableColumn>{{'TICKET.FLD.TENANT' | translate}}<p-sortIcon [field]="'tenant'"></p-sortIcon></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)" [pSortableColumn]="'level'" pResizableColumn>{{'TICKET.FLD.LEVEL'| translate}}<p-sortIcon [field]="'level'"></p-sortIcon></th>
                             <th [pSortableColumn]="'user_name'" pResizableColumn>{{'TICKET.FLD.USER_NAME' | translate}}<p-sortIcon [field]="'user_name'"></p-sortIcon></th>
                             <th [pSortableColumn]="'date'" pResizableColumn>{{'TICKET.FLD.DATE'| translate}}<p-sortIcon [field]="'date'"></p-sortIcon></th>
                             <th [pSortableColumn]="'brand'" pResizableColumn>{{'TICKET.FLD.BRAND'| translate}}<p-sortIcon [field]="'brand'"></p-sortIcon></th>
@@ -18,11 +19,11 @@
                             <th [pSortableColumn]="'processing'" pResizableColumn>{{'TICKET.FLD.PROCESSING'| translate}}<p-sortIcon [field]="'processing'"></p-sortIcon></th>
                             <th [pSortableColumn]="'files'" pResizableColumn>{{'TICKET.FLD.FILES'| translate}}<p-sortIcon [field]="'files'"></p-sortIcon></th>
                             <th [pSortableColumn]="'processed_date'" pResizableColumn>{{'TICKET.FLD.PROCESSED_DATE'| translate}}<p-sortIcon [field]="'processed_date'"></p-sortIcon></th>
-                            <th *ngIf="allow(PROFILE.OPERATOR)" [pSortableColumn]="'customer_level'" pResizableColumn>{{'TICKET.FLD.LEVEL'| translate}}<p-sortIcon [field]="'customer_level'"></p-sortIcon></th>
                         </tr>
                         <tr>
                             <th><p-columnFilter type="numeric" field="id"></p-columnFilter></th>
                             <th *ngIf="allow(PROFILE.OPERATOR)"><p-columnFilter type="text" field="tenant"></p-columnFilter></th>
+                            <th *ngIf="allow(PROFILE.OPERATOR)"><p-columnFilter type="text" field="level"></p-columnFilter></th>
                             <th><p-columnFilter type="text" field="user_name"></p-columnFilter></th>
                             <th><p-columnFilter type="date" field="date"></p-columnFilter></th>
                             <th><p-columnFilter type="text" field="brand_name"></p-columnFilter></th>
@@ -31,27 +32,44 @@
                             <th><p-columnFilter type="text" field="processing"></p-columnFilter></th>
                             <th></th>
                             <th><p-columnFilter type="date" field="processed_date"></p-columnFilter></th>
-                            <th *ngIf="allow(PROFILE.OPERATOR)"><p-columnFilter type="text" field="customer_level"></p-columnFilter></th>
                         </tr>    
                     </ng-template>
                     <ng-template pTemplate="body" let-u>
                         <tr>
-                            <td>{{u.id}}</td>
+                            <td class="ticket-cell-container">
+                                <span class="ticket-cell-container-left">{{u.id}}</span>
+                                <span  *ngIf="canAckProcessing(u)" (click)="ackProcessing(u)" class="ticket-cell-container-right ticket-cell-process" tooltipPosition="bottom" pTooltip="{{'IN_PROGRESS_VIEW.BTN.PROCESS_TICKET' | translate}}"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></span>
+                                <span  *ngIf="inProgressView() && !canAckProcessing(u)" (click)="uploadPatch(u)" class="ticket-cell-container-right ticket-cell-upload-patch" tooltipPosition="bottom" pTooltip="{{'IN_PROGRESS_VIEW.BTN.UPLOAD_PATCH' | translate}}"><i class="fa-solid fa-upload"></i></span>
+                            </td>
                             <td *ngIf="allow(PROFILE.OPERATOR)">{{u.tenant}}</td>
+                            <td *ngIf="allow(PROFILE.OPERATOR)">{{u.level}}</td>
                             <td>{{u.user_name}}</td>
-                            <td>{{u.date | date:'dd/MM/yyyy'}}</td>
+                            <td>{{u.date | date:'dd/MM/yyyy HH:mm'}}</td>
                             <td>{{u.brand_name}}</td>
                             <td>{{u.ecu_code}}</td>
                             <td>{{u.immatriculation}}</td>
                             <td>{{u.processing}}</td>
-                            <td>
-                                <div *ngIf="u.file_id && u.file_name" class="ps-download-file" (click)="downloadFile(u.id, u.file_name)">
+                            <td class="ticket-cell-container">
+                                <span *ngIf="u.file_id && u.file_name" class="ticket-cell-container-left ps-download-file" (click)="downloadFile(u.id, u.file_name)">
                                     <i class="fa-regular fa-file" tooltipPosition="bottom" pTooltip="Original: {{u.file_name}} ({{u.file_size}} Ko)"></i>
-                                </div>
+                                </span>
+                                <span class="ticket-cell-container-left" *ngIf="!u.file_id || !u.file_name">&nbsp;</span>
+                                <span class="ticket-cell-container-right ticket-cell-info" *ngIf="u.processed_user_name && u.processed_file_name == null" tooltipPosition="bottom" pTooltip="{{'IN_PROGRESS_VIEW.MSG.IN_PROCESSED_BY' | translate: {operator: u.processed_user_name} }}"><i class="fa-solid fa-user-clock"></i></span>
+                                <span *ngIf="u.processed_file_name && u.processed_file_name != 'failed'" class="ticket-cell-container-right ps-download-patch" (click)="downloadFile(u.id, u.processed_file_name)">
+                                    <i class="fa-solid fa-file-import" tooltipPosition="bottom" pTooltip="Traité: {{u.processed_file_name}} ({{u.processed_file_size}} Ko) par {{u.processed_user_name}}"></i>
+                                </span>
+                                <span *ngIf="u.processed_file_name == 'failed'" class="ticket-cell-container-right ps-download-patch-failed">
+                                    <i class="fa-solid fa-file-excel" tooltipPosition="bottom" pTooltip="Echec. Traité par {{u.processed_user_name}}"></i>
+                                </span>
                             </td>
-                            <td *ngIf="u.processed_date">{{u.processed_date | date:'dd/MM/yyyy'}}</td>
-                            <td *ngIf="!u.processed_date">{{'TICKET.STATE.IN_PROGRESS'| translate}}</td>
-                            <td *ngIf="allow(PROFILE.OPERATOR)">{{u.customer_level}}</td>
+                            <td *ngIf="inProgressView()">
+                                <span *ngIf="u.processed_date != null">{{u.processed_date | date:'dd/MM/yyyy HH:mm'}}</span>
+                            </td>
+                            <td *ngIf="!inProgressView()">
+                                <span *ngIf="u.processed_file_name == null">{{'TICKET.STATE.IN_PROGRESS'| translate}}</span>
+                                <span *ngIf="u.processed_file_name != null">{{u.processed_date | date:'dd/MM/yyyy HH:mm'}}</span>
+                                <span *ngIf="u.comment != null" tooltipPosition="bottom" pTooltip="{{u.comment}}" class="ps-download-info"><i (click)="currentComment=u.comment;info.toggle($event)" class="fa-solid fa-circle-info"></i></span>
+                            </td>
                         </tr>
                     </ng-template>
              </p-table>
@@ -65,3 +83,11 @@
         </div>
     </ng-template>
 </p-confirmDialog>
+
+<p-dialog id='upload-dialog' header="{{'IN_PROGRESS_VIEW.DIALOG.UPLOAD_DIALOG' | translate}}" [(visible)]="uploadDialogVisible" [modal]="true" [draggable]="true" [resizable]="false" styleClass="request-patch-dialog patch">
+    <app-upload-dialog [ticket]="currentUploadTicket" (confirmUpload)="confirmUpload($event)"></app-upload-dialog>
+</p-dialog>
+
+<p-overlayPanel #info>
+    <pre>{{currentComment}}</pre>
+</p-overlayPanel>

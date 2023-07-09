@@ -25,7 +25,7 @@
                     <p-dropdown [disabled]="!fileName" [options]="brandList" [(ngModel)]="brandSelected" [placeholder]="placeholderBrand"  optionLabel="name"  [style]="{'width':'60%'}" (onChange)="updateDevices()"></p-dropdown>
                 </div>
                 <div class="request-patch-sel">
-                    <p-dropdown [disabled]="!brandSelected || brandSelected.code==''" [options]="deviceList" [(ngModel)]="deviceSelected" [placeholder]="placeholderDevice"  optionLabel="code"  [style]="{'width':'60%'}"></p-dropdown>
+                    <p-dropdown [disabled]="!brandSelected || brandSelected.code==''" [filter]="true" filterBy="code" [options]="deviceList" [(ngModel)]="deviceSelected" [placeholder]="placeholderDevice"  optionLabel="code"  [style]="{'width':'60%'}"></p-dropdown>
                 </div>
             </div>
         </div>
@@ -198,5 +198,7 @@
 </section>
 
 <p-dialog id='confirm-ticket-dialog' header="{{'REQUEST_PATCH.TITLE.TICKET_CONFIRM' | translate}}" [(visible)]="ticketConfirmVisible" [modal]="true" [draggable]="true" [resizable]="false" styleClass="request-patch-dialog patch">
-    <app-ticket-view [ticket]="ticket" (confirmTicketEvent)="confirmTicketEvent($event)"></app-ticket-view>
+    <div *ngIf='ticket' class="patch-no-scroll-container">
+        <app-ticket-view [ticket]="ticket" (confirmTicketEvent)="confirmTicketEvent($event)"></app-ticket-view>
+    </div>
 </p-dialog>

@@ -44,7 +44,8 @@
         "SET": "Modifier",
         "DELETE": "Supprimer",
         "ACTIVATE": "Activer",
-        "UNACTIVATE": "Désactiver"
+        "UNACTIVATE": "Désactiver",
+        "IN_PROGRESS_VIEW": "A traiter"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -167,9 +168,11 @@
             "PROCESSED_USER_NAME": "Traité par",
             "PROCESSED_DATE": "Date de traitement",
             "IMMATRICULATION": "Immatriculation",
+            "ENGINE": "Motorisation",
             "BRAND":"Marque véhicule",
             "ECU": "Calculateur",
             "PROCESSING": "Traitements appliqués",
+            "SOURCE_FILE": "Fichier original",
             "FILES": "Fichiers"
         },
         "STATE": {
@@ -179,6 +182,28 @@
     "TICKET_LIST": {
         "TITLE": {
             "MAIN": "Historique des tickets"
+        }
+    },
+    "IN_PROGRESS_VIEW": {
+        "TITLE": {
+            "MAIN" : "Liste des tickets à traiter"
+        },
+        "BTN": {
+            "PROCESS_TICKET": "Prendre en charge le traitement de ce ticket",
+            "UPLOAD_PATCH": "Soumettre le fichier patché au client"
+        },
+        "MSG": {
+            "PROCESS_TICKET_OK": "Vous prenez en charge ce ticket",
+            "PROCESS_TICKET_ALREADY_TAKEN": "Le ticket a déjà été pris en charge par {{operator}}",
+            "IN_PROCESSED_BY": "Le ticket est pris en charge par {{operator}}",
+            "PATCH_COMMENT": "Complément d'information client ou de traitement",
+            "MAX_EXTRA_INFO_LENGTH": "{{max_chars}} caractères maximum",
+            "FAILED_PATCH": "Echec traitement ou fichier source invalide",
+            "FAILED_PATCH_LABEL": "Non traité",
+            "UPLOAD_PATCH_OK": "Fichier patch transmis avec succès"
+        },
+        "DIALOG": {
+            "UPLOAD_DIALOG": "Soumettre le fichier patch traité au client"
         }
     }
 }

@@ -44,7 +44,8 @@
         "SET": "Modifier",
         "DELETE": "Supprimer",
         "ACTIVATE": "Activer",
-        "UNACTIVATE": "Désactiver"
+        "UNACTIVATE": "Désactiver",
+        "IN_PROGRESS_VIEW": "A traiter"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -171,11 +172,31 @@
             "ECU": "Calculateur",
             "PROCESSING": "Traitements appliqués",
             "FILES": "Fichiers"
+        },
+        "STATE": {
+            "IN_PROGRESS": "En cours de traitement"
         }
     },
     "TICKET_LIST": {
         "TITLE": {
             "MAIN": "Historique des tickets"
+        }
+    },
+    "IN_PROGRESS_VIEW": {
+        "TITLE": {
+            "MAIN" : "Liste des tickets à traiter"
+        },
+        "BTN": {
+            "PROCESS_TICKET": "Prendre en charge le traitement de ce ticket",
+            "UPLOAD_PATCH": "Soumettre le fichier patché au client"
+        },
+        "MSG": {
+            "PROCESS_TICKET_OK": "Vous prenez en charge ce ticket",
+            "PROCESS_TICKET_ALREADY_TAKEN": "Le ticket a déjà été pris en charge par {{operator}}",
+            "IN_PROCESSED_BY": "Le ticket est pris en charge par {{operator}}"
+        },
+        "DIALOG": {
+            "UPLOAD_DIALOG": "Soumettre le fichier patch traité au client"
         }
     }
 }

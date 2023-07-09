@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
-import {map} from 'rxjs/operators';
 import { Router} from '@angular/router';
 
 import {Config} from '../../config';
@@ -19,7 +18,6 @@ import { BrandService } from '../../services/brand.service';
 import { EcuService } from '../../services/ecu.service';
 import { TicketService } from '../../services/ticket.service';
 import { TenantService } from '../../services/tenant.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-request-patch',
@@ -36,8 +34,8 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
   protected brandList: Brand[] = [];
   protected brandSelected: Brand|null = null;
 
-  protected deviceList: any[] = [];
-  protected deviceSelected: any|null = null;
+  protected deviceList: Ecu[] = [];
+  protected deviceSelected: Ecu|null = null;
 
   protected placeholderBrand: string = ' ';
   protected placeholderDevice: string = ' ';
@@ -130,7 +128,7 @@ export class RequestPatchComponent extends PatchSecured implements OnInit {
       this.ticket = new Ticket();
       this.ticket.updateFromEcu(this.ecu_sel);
       this.ticket.tenant = tenant != null ? tenant.code : this.authenticationService.getTenant();
-      this.ticket.customer_level =  tenant ? tenant.level : "Silver";
+      this.ticket.level =  tenant ? tenant.level : "Silver";
       this.ticket.user_id = user == null ? -1 : user.id;
       this.ticket.user_name = user == null ? '' : user.firstname + ' ' + user.lastname;
       this.ticket.date = new Date();

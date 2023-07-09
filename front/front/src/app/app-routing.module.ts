@@ -5,6 +5,7 @@ import {UserListComponent} from './nav/user-list/user-list.component';
 import {EditUserComponent} from './forms/edit-user/edit-user.component';
 import {TenantListComponent} from './nav/tenant-list/tenant-list.component';
 import {TicketListComponent} from './nav/ticket-list/ticket-list.component';
+import {TicketInProgressComponent} from './nav/ticket-in-progress/ticket-in-progress.component';
 import {EditTenantComponent} from './forms/edit-tenant/edit-tenant.component';
 import {AuthGuard} from './auth/auth-guard/authGuard';
 import {LoginComponent} from './auth/login/login.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'edit_tenant', component: EditTenantComponent, canActivate: [AuthGuard]  },
   { path: 'edit_tenant/:code', component: EditTenantComponent, canActivate: [AuthGuard]  },
   { path: 'ticket', component: TicketListComponent, canActivate: [AuthGuard]  },
+  { path: 'ticket_in_progress', component: TicketInProgressComponent, canActivate: [AuthGuard]  },
   
   { path: 'login', component: LoginComponent  },
   { path: 'logout', component: LogoutComponent  },

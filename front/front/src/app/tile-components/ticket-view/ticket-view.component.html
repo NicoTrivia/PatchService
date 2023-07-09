@@ -1,28 +1,26 @@
-<div *ngIf='ticket' class="patch-no-scroll-container">
-    <div class="patch-dialog-flow">
+    <div *ngIf='ticket' class="patch-dialog-flow">
         <div class="patch-dialog-box patch-dialog-box-container">
-            <span class="ticket-view-field">Client :</span><span class="ticket-view-value">{{ticket.tenant}}</span>
-            <span class="ticket-view-field">Utilisateur :</span><span class="ticket-view-value">{{ticket.user_name}}</span>
-            <span class="ticket-view-field">Fichier :</span><span class="ticket-view-value"><i class="fa-regular fa-file"></i>&nbsp;&nbsp;{{ticket.file_name}}&nbsp;&nbsp;({{ticket.file_size}} Ko)</span>
-            <span class="ticket-view-field">Date :</span><span class="ticket-view-value">{{ticket.date| date:'dd/MM/yyyy hh:mm'}}</span>
-            <span class="ticket-view-field">Abonnement :</span><span class="ticket-view-value">{{ticket.customer_level}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.TENANT' | translate}} :</span><span class="ticket-view-value">{{ticket.tenant}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.USER_NAME' | translate}} :</span><span class="ticket-view-value">{{ticket.user_name}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.SOURCE_FILE' | translate}} :</span><span class="ticket-view-value"><i class="fa-regular fa-file"></i>&nbsp;&nbsp;{{ticket.file_name}}&nbsp;&nbsp;({{ticket.file_size}} Ko)</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.DATE' | translate}} :</span><span class="ticket-view-value">{{ticket.date| date:'dd/MM/yyyy hh:mm'}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.LEVEL' | translate}} :</span><span class="ticket-view-value">{{ticket.level}}</span>
         </div>
         <div class="patch-dialog-box patch-dialog-box-container">
-            <span class="ticket-view-field">Immatriculation :</span><span class="ticket-view-value">{{ticket.immatriculation}} </span>
-            <span class="ticket-view-field">Motorisation :</span><span class="ticket-view-value">{{ticket.fuel}}</span>
-            <span class="ticket-view-field">Marque :</span><span class="ticket-view-value">{{ticket.brand_name}}</span>
-            <span class="ticket-view-field">Calculateur / ECU :</span><span class="ticket-view-value">{{ticket.ecu_code}}</span>
-            <span class="ticket-view-field">Traitements :</span><span class="ticket-view-value">{{getProcessing()}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.IMMATRICULATION' | translate}} :</span><span class="ticket-view-value">{{ticket.immatriculation}} </span>
+            <span class="ticket-view-field">{{'TICKET.FLD.ENGINE' | translate}} :</span><span class="ticket-view-value">{{ticket.fuel}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.BRAND' | translate}} :</span><span class="ticket-view-value">{{ticket.brand_name}}</span>
+            <span class="ticket-view-field">{{'TICKET.FLD.ECU' | translate}} :</span><span class="ticket-view-value">{{ticket.ecu_code}}</span>
+            <span class="ticket-view-field"> </span><span class="ticket-view-value"> </span>
         </div>
     </div>
-    <div class="patch-dialog-box ticket-view-fullsize">
+    <div *ngIf='ticket' class="patch-dialog-box ticket-view-fullsize">
             <div class="row">
                 <div class="col-sm-2"><span class="ticket-view-field">Traitements :</span></div>
                 <div class="col-sm-10"><span class="ticket-view-value">{{getProcessing()}}</span></div>
             </div>
     </div>
-    <div class="patch-align-right ticket-view-btnbar">
+    <div class="patch-align-right ticket-view-btnbar" *ngIf="ticket && buttonBar">
         <button pButton id="cancel" class="ui-button-ps p-button-rounded p-button-outlined ui-button-ps-hor" (click)="validate(false)" label="{{'BTN.CANCEL' | translate}}"></button>
         <button pButton id="submit" class="ui-button-ps p-button-rounded ui-button-ps-hor" (click)="validate(true)" label="{{'BTN.SUBMIT' | translate}}"></button>
     </div>
-</div>

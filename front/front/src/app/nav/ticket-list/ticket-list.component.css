@@ -1,0 +1,33 @@
+.ticket-cell-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket-cell-container-left {
+    align-self: flex-start;
+}
+  
+.ticket-cell-container-right {
+    align-self: flex-end;
+}
+
+.ticket-cell-process {
+    padding-right: 1rem;
+    padding-left: 2rem;
+    cursor: pointer;
+}
+
+.ticket-cell-info {
+    font-size: 1.3rem;
+    color:  var(--yellow-100);
+    padding-right: 1rem;
+    padding-left: 2rem;
+}
+
+.ticket-cell-upload-patch{
+    font-size: 1.3rem;
+    color:  var(--yellow-100);
+    padding-right: 1rem;
+    padding-left: 2rem;
+    cursor: pointer;
+}

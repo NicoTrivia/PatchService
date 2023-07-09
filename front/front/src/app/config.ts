@@ -45,10 +45,13 @@ export class Config {
             brand: '/brand',
             user: '/user',
             ticket: '/ticket',
+            ticket_ist: '/ticket_list',
+            ticket_in_progress: '/ticket_in_progress',
             password: '/password',
             tenant: '/tenant',
             ecu: '/ecu',
             files: '/files',
+            files_patched: '/files_patched',
             next_file_id: '/next_file_id'
         };
     }
