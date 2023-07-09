@@ -1,6 +1,6 @@
 export class Config {
 
-   //private static _appUrl = '/ps/api';
+    // private static _appUrl = '/ps/api';
     private static _appUrl = ':5000';
 
     public  static DATE_TIME_FORMAT = 'DD-MM-YYYY HH:mm';
@@ -45,7 +45,7 @@ export class Config {
             brand: '/brand',
             user: '/user',
             ticket: '/ticket',
-            ticket_ist: '/ticket_list',
+            ticket_list: '/ticket_list',
             ticket_in_progress: '/ticket_in_progress',
             password: '/password',
             tenant: '/tenant',
