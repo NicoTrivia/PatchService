@@ -11,7 +11,7 @@ public class FileTransfers: SecureEnpoint
     }
     
     // To change depending on the context
-    private static readonly string UploadDirectory = "C:/temp" ;
+    private static readonly string UploadDirectory = (string)Variables.RetrieveVariable("UploadDirectory");
 
     // Needs an update 
     static async Task<Task> GetFile(HttpContext context, int id)
@@ -19,7 +19,7 @@ public class FileTransfers: SecureEnpoint
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid) {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            Console.WriteLine("ERROR 401 : Invalid JWT");
+            MyLogManager.Error("ERROR 401 : Invalid JWT");
             return Task.CompletedTask;
         }
         var access = new TicketAccess();
@@ -28,7 +28,7 @@ public class FileTransfers: SecureEnpoint
             (ticket.file_id == null) || (ticket.file_name == null)  || ((claims.Tenant != ticket.tenant) && (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR"))) {
      
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            Console.WriteLine("ERROR 401 : Invalid JWT");
+            MyLogManager.Error("ERROR 401 : Invalid JWT");
             return Task.CompletedTask;
         }
 
@@ -60,16 +60,16 @@ public class FileTransfers: SecureEnpoint
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid) {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            Console.WriteLine("ERROR 401 : Invalid JWT");
+            MyLogManager.Error("ERROR 401 : Invalid JWT");
             return Task.CompletedTask;
         }
-        Console.WriteLine("Post treatment of a file :");
+        MyLogManager.Log("Post treatment of a file :");
         var file = context.Request.Form.Files.FirstOrDefault();
 
         if (file == null || file.Length == 0)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            Console.WriteLine("ERROR 400 : No file was found");
+            MyLogManager.Error("ERROR 400 : No file was found");
             return Task.CompletedTask;
         }
         // increase counter
@@ -100,7 +100,7 @@ public class FileTransfers: SecureEnpoint
                 Console.WriteLine("WARNING UNKNOWN PARAMETER :" + formPart.Key + " with value :" + formPart.Value);
             }
         }*/
-        Console.WriteLine("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
+        MyLogManager.Log("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
         
         string fileLocation = BuildDirectory(tenant, id);
         var filePath = Path.Combine(fileLocation, fileName);
@@ -112,8 +112,8 @@ public class FileTransfers: SecureEnpoint
 
         context.Response.StatusCode = StatusCodes.Status201Created;
         context.Response.Headers["Location"] = fileLocation;
-        Console.WriteLine("File Saved in : " + fileLocation);
-        Console.WriteLine();
+        MyLogManager.Log("File Saved in : " + fileLocation + "/n");
+        
         return Task.CompletedTask;
     }
 
@@ -123,17 +123,17 @@ public class FileTransfers: SecureEnpoint
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" )) {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            Console.WriteLine("ERROR 401 : Invalid JWT");
+            MyLogManager.Error("ERROR 401 : Invalid JWT");
             return Task.CompletedTask;
         }
         string fileId = month+'/'+id;
-        Console.WriteLine("Post treatment of patched file : "+fileId);
+        MyLogManager.Log("Post treatment of patched file : "+fileId);
         var file = context.Request.Form.Files.FirstOrDefault();
 
         if (file == null || file.Length == 0)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            Console.WriteLine("ERROR 400 : No file was found");
+            MyLogManager.Error("ERROR 400 : No file was found");
             return Task.CompletedTask;
         }
         // increase counter
@@ -150,7 +150,7 @@ public class FileTransfers: SecureEnpoint
             }
         }
 
-        Console.WriteLine("file informations : " + fileName+" "+fileId+" "+tenant+" CLAIMS: "+claims);
+        MyLogManager.Log("file informations : " + fileName+" "+fileId+" "+tenant+" CLAIMS: "+claims);
         
         string fileLocation = BuildDirectory(tenant, fileId);
         var filePath = Path.Combine(fileLocation, fileName);
@@ -162,8 +162,7 @@ public class FileTransfers: SecureEnpoint
 
         context.Response.StatusCode = StatusCodes.Status201Created;
         context.Response.Headers["Location"] = fileLocation;
-        Console.WriteLine("File Saved in : " + fileLocation);
-        Console.WriteLine();
+        MyLogManager.Log("File Saved in : " + fileLocation + '\n');
         return Task.CompletedTask;
     }
 
@@ -172,7 +171,7 @@ public class FileTransfers: SecureEnpoint
         string fileId = BuildFileId(tenant, id);
         string Dlocation = BuildDirectory(tenant, fileId);
         CreateDirectoryTree(Dlocation);
-        Console.WriteLine("Writing to : "+Dlocation);
+        MyLogManager.Log("Writing to : "+Dlocation);
         return Dlocation;
     }
 

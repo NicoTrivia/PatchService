@@ -5,7 +5,12 @@ namespace CSqlManager;
 
 public class DbAccess
 {
-    static readonly string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;MaxPoolSize=500;";
+    public static readonly string connString = "Server=" + Variables.RetrieveVariable("Server") +
+                                        "Port=" + Variables.RetrieveVariable("Port") +
+                                        "Database=" + Variables.RetrieveVariable("Database") +
+                                        "User Id=" + Variables.RetrieveVariable("User Id") +
+                                        "Password=" + Variables.RetrieveVariable("Password") +
+                                        "MaxPoolSize=" + Variables.RetrieveVariable("MaxPoolSize");
 
     private NpgsqlConnection? Connection = null;
     protected object GetParam(object? param) => param == null ? DBNull.Value : param;
@@ -13,7 +18,7 @@ public class DbAccess
     {
         if (Connection == null || Connection.State != ConnectionState.Open)
         {
-            Console.WriteLine("Npgsq OPEN new connecion since former state is "+(Connection == null ? "null": Connection.State.ToString()));
+            MyLogManager.Log("Npgsq OPEN new connecion since former state is "+(Connection == null ? "null": Connection.State.ToString()));
             Connection = new NpgsqlConnection(connString);
             Connection.Open();
         }
@@ -42,7 +47,7 @@ public class DbAccess
                
             command.CommandText = "DELETE FROM ps_brand";
             command.ExecuteNonQuery();
-            Console.WriteLine("Database content deleted");
+            MyLogManager.Log("Database content deleted");
         }
     
     }
@@ -52,7 +57,7 @@ public class DbAccess
         {
             command.CommandText = $"ALTER TABLE ps_brand DROP COLUMN {name}";
             command.ExecuteNonQuery();
-            Console.WriteLine($"Column {name} deleted from brands");
+            MyLogManager.Log($"Column {name} deleted from brands");
         }
     }
     
@@ -62,7 +67,7 @@ public class DbAccess
         {
             command.CommandText = $"ALTER TABLE ps_ecu DROP COLUMN {name}";
             command.ExecuteNonQuery();
-            Console.WriteLine($"Column {name} deleted from ecus");
+            MyLogManager.Log($"Column {name} deleted from ecus");
         }
     }
 
@@ -79,7 +84,7 @@ public class DbAccess
 
             command.CommandText += ")";
             command.ExecuteNonQuery();
-            Console.WriteLine($"Table {name} created");
+            MyLogManager.Log($"Table {name} created");
         }
     }
 

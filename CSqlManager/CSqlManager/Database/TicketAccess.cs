@@ -233,11 +233,11 @@ public class TicketAccess : DbAccess
                 $"y75 = @y75, special = @special, decata = @decata, vmax = @vmax, stage1 = @stage1, stage2 = @stage2, flexfuel = @flexfuel " +
                 $" WHERE id = @id";
         
-             Console.WriteLine($"command.CommandText: {command.CommandText}");
+            MyLogManager.Log($"command.CommandText: {command.CommandText}");
         
             AddInCommand(command, ticket);
             command.Parameters.AddWithValue("id", ticket.id);
-             Console.WriteLine($"command.CommandText 2: {command.ToString}");
+            MyLogManager.Log($"command.CommandText 2: {command}");
             command.ExecuteNonQuery();
         }
         

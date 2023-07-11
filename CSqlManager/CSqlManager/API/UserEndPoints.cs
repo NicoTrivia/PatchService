@@ -21,7 +21,7 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
         var access = new UserAccess();
@@ -34,7 +34,7 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || claims.Tenant != Tenant && claims.Profile != "ADMIN" && claims.Profile != "OPERATOR") {
-            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
         var access = new UserAccess();
@@ -49,7 +49,7 @@ public class UserEndPoints: SecureEnpoint
         var user = access.GetUserById(Id);
         JwtClaims claims = getJwtClaims(context);
         if ((user != null) && (!claims.Valid || claims.Tenant != user.tenant && claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
      
@@ -60,10 +60,10 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        Console.WriteLine($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
+        MyLogManager.Log($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
         
         var access = new UserAccess();
         access.Create(user);
@@ -74,10 +74,10 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" && (user.login != claims.User || user.tenant != claims.Tenant))) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        Console.WriteLine($"USER PUT {user}");
+        MyLogManager.Log($"USER PUT {user}");
        
         var access = new UserAccess();
         access.Update(user);
@@ -90,10 +90,10 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR" && (user.login != claims.User || user.tenant != claims.Tenant))) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        Console.WriteLine($"USER PASSWORD: {user.id}");
+        MyLogManager.Log($"USER PASSWORD: {user.id}");
        
         var access = new UserAccess();
         access.UpdatePassword(user);
@@ -104,7 +104,7 @@ public class UserEndPoints: SecureEnpoint
 
     public static IResult UserLogin(HttpContext context)
     {
-        Console.WriteLine("Authenticate :");
+        MyLogManager.Log("Authenticate :");
         var Tenant = "";
         var Login = "";
         var Password = "";
@@ -120,7 +120,7 @@ public class UserEndPoints: SecureEnpoint
             }
         }
 
-        Console.WriteLine($"Trying to login in tenant : : {Tenant} as : {Login} with password : ******** ");
+        MyLogManager.Log($"Trying to login in tenant : : {Tenant} as : {Login} with password : ******** ");
         
         UserAccess access = new UserAccess();
         TenantAccess tenantAccess = new TenantAccess();
@@ -140,7 +140,7 @@ public class UserEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
         var access = new UserAccess();

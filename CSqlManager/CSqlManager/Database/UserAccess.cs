@@ -203,12 +203,12 @@ public class UserAccess : DbAccess
             {
                 User user = new User();
                 AddFromReader(reader, user);
-                Console.WriteLine($"User with id {user.id} was found !");
+                MyLogManager.Log($"User with id {user.id} was found !");
                 return user;
             }
             else
             {
-                Console.WriteLine($"No user was found with the given informations");
+                MyLogManager.Error($"No user was found with the given informations");
             }
             
             return null;

@@ -16,7 +16,7 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
@@ -29,7 +29,7 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
@@ -41,7 +41,7 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || claims.Tenant != Tenant) {
-            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
@@ -54,14 +54,14 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid) {
-            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
         var ticket = access.GetById(id);
 
         if (ticket != null && (claims.Tenant != ticket.tenant) && (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid tenant : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid tenant : "+ claims);
             return Results.Unauthorized();
         }
         return Results.Ok(ticket);
@@ -71,7 +71,7 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || claims.Tenant != ticket.tenant) {
-            Console.WriteLine("ERROR 401 : Invalid JWT : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
 
@@ -88,7 +88,7 @@ public class TicketEndPoints: SecureEnpoint
     {
         JwtClaims claims = getJwtClaims(context);
         if (!claims.Valid || (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
-            Console.WriteLine("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
         var access = new TicketAccess();
@@ -106,7 +106,7 @@ public class TicketEndPoints: SecureEnpoint
                 {
                     ticket.file_id = FileTransfers.BuildFileId(ticket.tenant, fileId);
                 } else {
-                    Console.WriteLine("MISSING Read folder is : "+directory);
+                    MyLogManager.Warn("MISSING Read folder is : "+directory);
                 }
             }
             return true;

@@ -56,110 +56,13 @@ public class ExelReader
                     }
                 }
             }
-            Console.WriteLine("Exel document read");
+            MyLogManager.Log("Exel document read");
         }
     }
-
-    public void ShowInformations(string? brandrestriction = null)
-    {
-        Console.Write($"Brands {_brands.Count}: (");
-        foreach (var brand in _brands)
-        {
-            if (brandrestriction != null )
-            {
-                if( brand.Code == brandrestriction.ToLower())
-                    Console.Write(brand + ",  ");
-            }
-            else
-            {
-                Console.Write(brand + ",  ");
-            }
-        }
-        Console.WriteLine(")");
-        Console.WriteLine();
-        Console.Write($"ECUs {_ecus.Count}: (");
-        foreach (var ecu in _ecus)
-        {
-            if (brandrestriction != null)
-            {
-                if(ecu.Brand_code == brandrestriction.ToLower())
-                    Console.Write(ecu + ",  ");
-            }
-            else
-            {
-                Console.Write(ecu + ",  ");
-            }
-        }
-        Console.WriteLine(")");
-    }
-
-    public void CompareWithDatabase()
-    {
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
-        using (NpgsqlConnection connection = new NpgsqlConnection(connString))
-        {
-            connection.Open();
-
-            using (NpgsqlCommand command = connection.CreateCommand())
-            {
-                List<string> request1 = new List<string>(); 
-                command.CommandText = $"SELECT code FROM ps_brand";
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    request1.Add(reader.GetString(0));
-                }
-                reader.Close();
-                Console.WriteLine($"Brands // in Database : {request1.Count}, in Local {_brands.Count}");
-                if (request1.Count != _brands.Count)
-                {
-                    foreach(Brand brand in _brands)
-                    {
-                        if (!request1.Contains(brand.Code))
-                        {
-                            Console.WriteLine("differs :" +brand.Code);
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No differs found");
-                }
-                
-                
-                List<(string, string)> request2 = new List<(string,string)>(); 
-                command.CommandText = $"SELECT brand_code, code FROM ps_ecu";
-                var reader2 = command.ExecuteReader();
-                while (reader2.Read())
-                {
-                    var add = (reader.GetString(0), reader.GetString(1));
-                    request2.Add(add);
-                }
-                reader.Close();
-                Console.WriteLine($"Ecus // in Database : {request2.Count}, in Local {_ecus.Count}");
-                if (request2.Count != _ecus.Count)
-                {
-                    foreach(ECU ecu in _ecus)
-                    {
-                        if (!request2.Contains((ecu.Brand_code, ecu.code)))
-                        {
-                            Console.WriteLine($"differs :{ecu.Brand_code}, {ecu.code}");
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No differs found");
-                }
-                
-            }
-        }
-    }
-
     
     public void LinkWithDatabase()
     {
-        string connString = "Server=dev.triviatech.fr;Port=5432;Database=patch_services;User Id=patch_admin;Password=alvira2023!;";
+        string connString = DbAccess.connString;
         using (NpgsqlConnection connection = new NpgsqlConnection(connString))
         {
             connection.Open();
@@ -191,7 +94,7 @@ public class ExelReader
                         command.ExecuteNonQuery();
                     }
                 }
-                Console.WriteLine("ps_brand fields updated");
+                MyLogManager.Log("ps_brand fields updated");
                 // Set up ps_ecu fields 
                 foreach (var ecu in _ecus)
                 {
@@ -243,7 +146,7 @@ public class ExelReader
                     }
                     
                 }       
-                Console.WriteLine("ps_ecu fields updated");
+                MyLogManager.Log("ps_ecu fields updated");
             }
             connection.Close();
         }

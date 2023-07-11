@@ -21,8 +21,7 @@ public class User
     public string? profile { get; set; }
 
     public string? jwt  { get; set; }
-    private static readonly string jwtKey = "&32DEFIPd=";
-    
+    private static readonly string jwtKey = Variables.RetrieveVariable("jwtKey").ToString() ?? throw new InvalidOperationException();
     public static string GenerateJwtToken(string userLogin, int userId, string tenant, string profile)
     {
         byte[] keyBytes = Encoding.UTF8.GetBytes(jwtKey);

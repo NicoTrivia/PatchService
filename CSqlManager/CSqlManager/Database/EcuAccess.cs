@@ -33,10 +33,10 @@ public class EcuAccess : DbAccess
             }
             command.CommandText += $" ORDER BY code";
 
-            Console.WriteLine("BrandCode : "+BrandCode);
-            Console.WriteLine("Fuel : "+Fuel);
+            MyLogManager.Log("BrandCode : "+BrandCode);
+            MyLogManager.Log("Fuel : "+Fuel);
 
-            Console.WriteLine(command.CommandText);
+            MyLogManager.Log(command.CommandText);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
