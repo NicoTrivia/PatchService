@@ -8,6 +8,9 @@ public class EcuEndPoints: SecureEnpoint
     {
         app.MapGet("/ECU/{BrandCode}", GetByBrandCode);
         app.MapGet("/ECU/{BrandCode}/{Fuel}", GetByBrandCodeAndFuel);
+        app.MapPost("/ECU", Create);
+        app.MapPut("/ECU", Update);
+        app.MapDelete("/ECU/{brand_code}/{code}", DeleteByCode);
     }
     
     
@@ -25,5 +28,47 @@ public class EcuEndPoints: SecureEnpoint
         var list = access.GetEcuByBrandCode(BrandCode, Fuel);
 
         return Results.Ok(list);
+    }
+
+    public static IResult Create(HttpContext context, ECU ecu)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN")) {
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
+        MyLogManager.Log($"ECU POST {ecu}");
+       
+        var access = new EcuAccess();
+        access.Create(ecu);
+
+        return Results.Ok(ecu);
+    }
+    public static IResult Update(HttpContext context, ECU ecu)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN")) {
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
+        MyLogManager.Log($"ECU PUT {ecu}");
+        
+        var access = new EcuAccess();
+        access.Update(ecu);
+
+        return Results.Ok(ecu);
+    }
+    public static IResult DeleteByCode(HttpContext context, string brand_code, string code)
+    {
+        JwtClaims claims = getJwtClaims(context);
+        if (!claims.Valid || (claims.Profile != "ADMIN")) {
+            MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
+            return Results.Unauthorized();
+        }
+
+        var access = new EcuAccess();
+        var success = access.DeleteBrandByCode(brand_code, code);
+
+        return Results.Ok(success);
     }
 }

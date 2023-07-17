@@ -71,12 +71,12 @@ export class TenantService extends PSCommonService {
  /**
   * delete
   */
-    public delete(code: string): Observable<boolean> {
-      const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}/${code}`;
+  public delete(code: string): Observable<boolean> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.tenant}/${code}`;
   
-      return this.http.delete<boolean>(url).pipe(map(p => {
-        return true;
-      }));
+    return this.http.delete<boolean>(url).pipe(map(p => {
+      return true;
+    }));
   }
 
   public getNextFileId(): Observable<number> {

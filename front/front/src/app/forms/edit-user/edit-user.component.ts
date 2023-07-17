@@ -94,7 +94,7 @@ export class EditUserComponent extends PatchSecured  implements OnInit {
        */
       public validateForm(): void {
         if (!this.user || !this.user.login || !this.user.firstname || !this.user.lastname || !this.user.email || ((this.user.id <= 0 && !this.password))) {
-              this.translate.get('WARNING.NO_VALUE').subscribe(msg => {
+              this.translate.get('WARNING.MISSING_VALUE').subscribe(msg => {
                 this.messageService.add({ severity: 'warn', summary: 'Attention', detail: msg });
               });
 

@@ -5,7 +5,7 @@
             <p-table #userTable [value]="userList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
                 [globalFilterFields]="['tenant', 'login', 'firstname', 'name', 'email']"
                 [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
-                [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">
+                [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 15rem)">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'tenant'" pResizableColumn>{{'USER.FLD.TENANT'| translate}}<p-sortIcon [field]="'fileName'"></p-sortIcon></th>
@@ -55,6 +55,7 @@
         <div class="patch-form-buttonbar">
             <button pButton type="button" id="btnCreateUser" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/edit_user" label="{{'BTN.CREATE_USER' | translate}}"></button>
             <button pButton type="button" id="btnTenants" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/tenant_list" label="{{'BTN.TENANT_LIST' | translate}}"></button>
+            <button pButton type="button" id="btnBrand" class="ui-button-ps-hor p-button-rounded p-button-outlined"  routerLink="/brand_list" label="{{'BTN.BRAND_LIST' | translate}}"></button>
         </div>
     </div>
 </section>

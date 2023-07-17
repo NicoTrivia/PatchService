@@ -29,4 +29,53 @@ export class BrandService extends PSCommonService {
         return list;
     }));
   }
+
+  /**
+   * Get the list of available data
+   */
+  public findByCode(code: string): Observable<Brand|null> {
+      const url = `${Config.APP_URL}${Config.API_ROUTES.brand}/${code}`;
+      return this.http.get<Brand>(url).pipe(map(b => {
+          let resu:Brand|null = null;
+          if (b) {
+            resu = new Brand(b);
+          }
+          return resu;
+      }));
+  }
+  
+ /**
+  * Add
+  */
+  public create(tenant: Brand): Observable<Brand> {
+      const url = `${Config.APP_URL}${Config.API_ROUTES.brand}`;
+  
+      return this.http.post(url, tenant).pipe(map(p => {
+        return new Brand(p);
+      }));
+  }
+  
+
+ /**
+  * Update
+  */
+  public set(tenant: Brand): Observable<Brand> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.brand}`;
+
+    return this.http.put(url, tenant).pipe(map(p => {
+      return new Brand(p);
+    }));
+  }
+
+ /**
+  * delete
+  */
+   public delete(code: string): Observable<boolean> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.brand}/${code}`;
+  
+    return this.http.delete<boolean>(url).pipe(map(p => {
+      return true;
+    }));
+  }
+
 }

@@ -55,6 +55,9 @@ import { ConfirmationService} from 'primeng/api';
 import { TicketListComponent } from './nav/ticket-list/ticket-list.component';
 import { TicketInProgressComponent } from './nav/ticket-in-progress/ticket-in-progress.component';
 import { UploadDialogComponent } from './tile-components/upload-dialog/upload-dialog.component';
+import { BrandListComponent } from './nav/brand-list/brand-list.component';
+import { EditBrandComponent } from './forms/edit-brand/edit-brand.component';
+import { EditEcuComponent } from './forms/edit-ecu/edit-ecu.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,7 +78,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditTenantComponent,
     TicketListComponent,
     TicketInProgressComponent,
-    UploadDialogComponent
+    UploadDialogComponent,
+    BrandListComponent,
+    EditBrandComponent,
+    EditEcuComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,

@@ -83,5 +83,4 @@ export class TicketInProgressComponent extends TicketListComponent {
     this.currentUploadTicket = t;
     this.uploadDialogVisible = true;
   }
-
 }

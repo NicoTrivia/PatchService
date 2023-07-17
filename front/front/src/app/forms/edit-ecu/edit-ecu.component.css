@@ -1,0 +1,16 @@
+.edit-ecu-device-area {
+    padding: 10px;
+}
+
+.edit-ecu-device-item {
+    display: flex;
+    align-items: center;
+}
+.edit-ecu-device-label {
+    padding-left: 1.1rem;
+}
+
+.edit-ecu-desc-right {
+    margin-left: 2rem;
+}
+

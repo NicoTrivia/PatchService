@@ -1,0 +1,204 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="isCreation ? 'ECU_FORM.TITLE.CREATE' : 'ECU_FORM.TITLE.SET'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div *ngIf="ecu" class="patch-card-area patch-card-form-top">
+                    <!-- Create / set ecu  -->
+                        <div class="patch-card">
+                            <div class="patch-form-title-main">
+                                {{(isCreation ? 'ECU_FORM.TITLE.CREATE' :'ECU_FORM.TITLE.SET') | translate}}.
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="brand_code" class="col-sm-3 patch-col-form-label">
+                                    {{'ECU.FLD.BRAND' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-3">{{ecu.brand_code}}</div>
+                                <label for="code" class="col-sm-3 patch-col-form-label">
+                                    {{'ECU.FLD.CODE' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-3">
+                                    <input pInputText [readOnly]='!isCreation' class="form-control form-control-sm" [(ngModel)]='ecu.code' name='code'>
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="name" class="col-sm-3 patch-col-form-label">
+                                    {{'ECU.FLD.FUEL' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-3">
+                                    <p-dropdown class='edit-ecu-desc-right' [options]="fuelList" [(ngModel)]="fuelSelected" optionLabel="name"  [style]="{'width':'10rem'}"></p-dropdown>
+                                </div>
+                                <label for="brand_code" class="col-sm-6 patch-col-form-label">
+                                    {{'ECU.FLD.PROCESSING' | translate}}&nbsp;:
+                                </label>
+                            </div>
+                            <div class="row patch-card-area">
+                                <div class="col-12 patch-card">
+                                    <div class="row edit-ecu-device-area">
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.dpf"></p-inputSwitch>
+                                                 <span [class]="'edit-ecu-device-label'">DPF</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.egr"></p-inputSwitch> 
+                                                <span [class]="'edit-ecu-device-label'">EGR</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.lambda"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Lambda</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.hotstart"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Hotstart</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.flap"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Flap</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.adblue"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Adblue</span>
+                                            </span>
+                                        </div>
+                                    </div>    
+                                    <div class="row edit-ecu-device-area">
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.dtc"></p-inputSwitch> 
+                                                <span [class]="'edit-ecu-device-label'">DTC</span>
+                                            </span>
+                                    </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.torqmonitor"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">TorqMonitor</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.speedlimit"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Speed Limit</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.startstop"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Start Stop</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.nox"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">NOX</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.tva"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">TVA</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row edit-ecu-device-area">
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.readiness"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Readiness</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.immo"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Immo</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.maf"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">MAF</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.hardcut"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Hardcut</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.displaycalibration"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Display calibration</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.waterpump"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Water pump</span>
+                                            </span>
+                                        </div>                    
+                                    </div>
+                                    <div class="row edit-ecu-device-area">
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.tprot"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Tprot</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.o2"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">O2</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.glowplugs"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Glowplugs</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.y75"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Y75</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.special"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Special</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.decata"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Decata</span>
+                                            </span>
+                                        </div>                    
+                                    </div>
+                                    <div class="row edit-ecu-device-area">
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.vmax"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Vmax</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.stage1"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Stage1</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.stage2"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Stage2</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="edit-ecu-device-item"><p-inputSwitch [(ngModel)]="ecu.flexfuel"></p-inputSwitch>
+                                                <span [class]="'edit-ecu-device-label'">Flexfuel</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-2">
+                            
+                                        </div>
+                                        <div class="col-2">
+                       
+                                        </div>                    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="patch-form-buttonbar">
+                                <button pButton id="btnCancelEcu" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
+                                <button pButton type='submit' id="btnValidateEcu" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>

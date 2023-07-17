@@ -5,7 +5,7 @@
             <p-table #ticketTable [value]="ticketList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
             [globalFilterFields]="['code', 'name', 'email', 'level']"
             [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
-            [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">    
+            [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 15rem)">    
                 <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'id'" pResizableColumn>{{'TICKET.FLD.ID'| translate}}<p-sortIcon [field]="'id'"></p-sortIcon></th>

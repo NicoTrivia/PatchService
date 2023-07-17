@@ -194,6 +194,10 @@ public class FileTransfers: SecureEnpoint
 
     public static void CreateDirectoryTree(string path)
     {
+        if (path == null)
+        {
+            return;
+        }
         if (!Directory.Exists(path))
         {
             // Create the directory
@@ -206,7 +210,7 @@ public class FileTransfers: SecureEnpoint
         }
 
         // Get the parent directory
-        string parentDirectory = Path.GetDirectoryName(path);
+        string? parentDirectory = Path.GetDirectoryName(path);
 
         // Recursively create parent directories
         if (!string.IsNullOrEmpty(parentDirectory))

@@ -40,4 +40,44 @@ public class BrandAccess : DbAccess
         }
         return null;
     }
+
+    
+    public void Create(Brand brand)
+    {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"INSERT INTO ps_brand (code, name) VALUES (@code, @name)";
+            command.Parameters.AddWithValue("code", GetParam(brand.Code));
+            command.Parameters.AddWithValue("name", GetParam(brand.Name));
+
+            command.ExecuteNonQuery();
+        }
+    }
+    
+    public void Update(Brand brand)
+    {
+        if (brand == null) {
+            return;
+        }
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = "UPDATE ps_brand SET name = @name WHERE code = @code";
+            
+            command.Parameters.AddWithValue("code", brand.Code!);
+            command.Parameters.AddWithValue("name", GetParam(brand.Name)); 
+            command.ExecuteNonQuery();
+        }
+    }
+
+    public Boolean DeleteBrandByCode(string code) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_brand WHERE code = @code";
+            
+            command.Parameters.AddWithValue("code", code);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
+        }
+    }
 }

@@ -1,0 +1,77 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="isCreation ? 'BRAND_FORM.TITLE.CREATE' : 'BRAND_FORM.TITLE.SET'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <form #userForm="ngForm" *ngIf="brand" class="patch-card-area patch-card-form-top">
+                    <!-- Create / set brand  -->
+                    <div class="patch-card">
+                            <div class="patch-form-title-main">
+                                {{(isCreation ? 'BRAND_FORM.TITLE.CREATE' :'BRAND_FORM.TITLE.SET') | translate}}
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="code" class="col-sm-2 patch-col-form-label">
+                                    {{'BRAND.FLD.CODE' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input pInputText [readOnly]='!isCreation' class="form-control form-control-sm" [(ngModel)]='brand.code' name='code'>
+                                </div>
+                                <label for="name" class="col-sm-2 patch-col-form-label">
+                                    {{'BRAND.FLD.NAME' | translate}}&nbsp;:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input pInputText class="form-control form-control-sm" [(ngModel)]='brand.name' name='name'>
+                                </div>
+                            </div>
+                            <div class="patch-form-buttonbar">
+                                <button pButton id="btnCancelBrand" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
+                                <button pButton type="button" id="btnCreateEcu" class="ui-button-ps-hor p-button-rounded p-button-outlined"  [routerLink]="'/edit_ecu/'+brand.code" label="{{'BTN.ADD_NEW_ECU' | translate}}"></button>
+                                <button pButton type='submit' id="btnValidateBrand" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12" *ngIf="!isCreation">
+                <p-table #ecuTable [value]="ecuList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
+                                    [globalFilterFields]="['code', 'name', 'processing']"
+                                    [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
+                                    [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 380px)">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th [pSortableColumn]="'code'" pResizableColumn>{{'ECU.FLD.CODE'| translate}}<p-sortIcon [field]="'code'"></p-sortIcon></th>
+                                                <th [pSortableColumn]="'engine'" pResizableColumn>{{'ECU.FLD.FUEL' | translate}}<p-sortIcon [field]="'fuel'"></p-sortIcon></th>
+                                                <th [pSortableColumn]="'processing'" pResizableColumn>{{'ECU.FLD.PROCESSING' | translate}}<p-sortIcon [field]="'processing'"></p-sortIcon></th>
+                                                <th>#</th>
+                                            </tr>
+                                            <!--tr>
+                                                <th><p-columnFilter type="text" field="code"></p-columnFilter></th>
+                                                <th><p-columnFilter type="text" field="engine"></p-columnFilter></th>
+                                                <th><p-columnFilter type="text" field="processing"></p-columnFilter></th>
+                                                <th></th>
+                                            </tr-->     
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-u>
+                                            <tr>
+                                                <td>{{u.code}}</td>
+                                                <td>{{('FUEL.'+u.fuel) | translate}}</td>
+                                                <td>{{u.processing}}</td>
+                                                <td>
+                                                    <em (click)="setEcu(u)" id="emSetEcu" class="fa-solid fa-pen-to-square" style="cursor: pointer;" title="{{'BTN.SET' | translate}}"></em>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <em id="emDeleteEcu" class="fa-solid fa-trash-alt" style="cursor: pointer;" title="{{'BTN.DELETE' | translate}}" (click)="deleteEcu(u)"></em>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="footer">
+        <div class="patch-form-buttonbar">
+            <button type="button" pButton icon="pi pi-times"  class="ui-button-ps-hor p-button-rounded p-button-outlined" label="{{'GENERAL.CANCEL' | translate}}" (click)="cd.reject()"></button>
+            <button type="button" pButton icon="pi pi-check" class="ui-button-ps-hor p-button-rounded" label="{{'GENERAL.CONFIRM' | translate}}" (click)="cd.accept()"></button>
+        </div>
+    </ng-template>
+</p-confirmDialog>

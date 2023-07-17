@@ -14,10 +14,21 @@ public class DbAccess
 
     private NpgsqlConnection? Connection = null;
     protected object GetParam(object? param) => param == null ? DBNull.Value : param;
+
+    protected static int counter = 0;
     private NpgsqlConnection GetConnection()
     {
+        counter = counter + 1;
+
+        if (counter >= 150 && Connection != null && Connection.State != ConnectionState.Open) {
+            MyLogManager.Log("Npgsq Autoclose to free connections "+counter);
+            Connection!.Close();
+            Connection = null;
+        }
+
         if (Connection == null || Connection.State != ConnectionState.Open)
         {
+            counter = 1;
             MyLogManager.Log("Npgsq OPEN new connecion since former state is "+(Connection == null ? "null": Connection.State.ToString()));
             Connection = new NpgsqlConnection(connString);
             Connection.Open();

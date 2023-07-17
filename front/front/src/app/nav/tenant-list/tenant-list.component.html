@@ -5,7 +5,7 @@
             <p-table #tenantTable [value]="tenantList" styleClass='p-datatable-striped' [paginator]="true" [rows]="25" [resizableColumns]="true" 
             [globalFilterFields]="['code', 'name', 'email', 'level']"
             [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} - {last} sur un total de {totalRecords}"
-            [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 220px)">    
+            [rowsPerPageOptions]="[25, 50, 100]" tableStyleClass="ps-table" [scrollable]="true" scrollHeight="calc(100vh - 15rem)">    
                 <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'code'" pResizableColumn>{{'TENANT.FLD.CODE'| translate}}<p-sortIcon [field]="'code'"></p-sortIcon></th>

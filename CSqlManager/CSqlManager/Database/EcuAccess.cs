@@ -87,4 +87,151 @@ public class EcuAccess : DbAccess
         return requestResult;
     }
     
+    public void Create(ECU ecu)
+    {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"INSERT INTO ps_ecu (brand_code, code, carburant,dpf, egr, " +
+                                              $"lambda, hotstart, flap, adblue, dtc, torqmonitor, " +
+                                              $"speedlimit, startstop, nox, tva, readiness, immo, " +
+                                              $"maf, hardcut, displaycalibration, waterpump, tprot, " +
+                                              $"o2, glowplugs, y75, special, decata, vmax, stage1, " +
+                                              $"stage2, flexfuel) " +
+                                              $"VALUES (@brandCode, @code, @fuel,@dpf, @egr, @lambda, @hotstart, @flap, @adblue, " +
+                                              $"@dtc, @torqmonitor, @speedlimit, @startstop, @nox, @tva, @readiness, @immo, " +
+                                              $"@maf, @hardcut, @displaycalibration, @waterpump, " +
+                                              $"@tprot, @o2, @glowplugs, @y75, @special, @decata, @vmax, @stage1, @stage2, @flexfuel)";
+
+            command.Parameters.AddWithValue("brandCode", ecu.Brand_code);
+            command.Parameters.AddWithValue("code", ecu.code);
+            command.Parameters.AddWithValue("fuel", ecu.Fuel);
+
+            command.Parameters.AddWithValue("dpf", ecu.dpf);
+            command.Parameters.AddWithValue("egr", ecu.egr);
+            command.Parameters.AddWithValue("lambda", ecu.lambda);
+            command.Parameters.AddWithValue("hotstart", ecu.hotstart);
+            command.Parameters.AddWithValue("flap", ecu.flap);
+            command.Parameters.AddWithValue("adblue", ecu.adblue);
+
+            command.Parameters.AddWithValue("dtc", ecu.dtc);
+            command.Parameters.AddWithValue("torqmonitor", ecu.torqmonitor);
+            command.Parameters.AddWithValue("speedlimit", ecu.speedlimit);
+            command.Parameters.AddWithValue("startstop", ecu.startstop);
+            command.Parameters.AddWithValue("nox", ecu.nox);
+            command.Parameters.AddWithValue("tva", ecu.tva);
+
+
+            command.Parameters.AddWithValue("readiness", ecu.readiness);
+            command.Parameters.AddWithValue("immo", ecu.immo);
+            command.Parameters.AddWithValue("maf", ecu.maf);
+            command.Parameters.AddWithValue("hardcut", ecu.hardcut);
+            command.Parameters.AddWithValue("displaycalibration", ecu.displaycalibration);
+            command.Parameters.AddWithValue("waterpump", ecu.waterpump);
+            command.Parameters.AddWithValue("tprot", ecu.tprot);
+
+            command.Parameters.AddWithValue("o2", ecu.o2);
+            command.Parameters.AddWithValue("glowplugs", ecu.glowplugs);
+            command.Parameters.AddWithValue("y75", ecu.y75);
+            command.Parameters.AddWithValue("special", ecu.special);
+            command.Parameters.AddWithValue("decata", ecu.decata);
+            command.Parameters.AddWithValue("vmax", ecu.vmax);
+            command.Parameters.AddWithValue("stage1", ecu.stage1);
+            command.Parameters.AddWithValue("stage2", ecu.stage2);
+            command.Parameters.AddWithValue("flexfuel", ecu.flexfuel);
+            command.ExecuteNonQuery();
+        }
+    }
+    
+    public void Update(ECU ecu)
+    {
+        if (ecu == null) {
+            return;
+        }
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = "UPDATE ps_ecu SET carburant= @fuel, dpf=@dpf, egr=@egr," +
+                                              $" lambda=@lambda, hotstart=@hotstart, flap=@flap, adblue=@adblue, dtc=@dtc, torqmonitor=@torqmonitor," +
+                                              $" speedlimit=@speedlimit, startstop=@startstop, nox=@nox, tva=@tva, readiness=@readiness, immo=@immo," +
+                                              $" maf=@maf, hardcut=@hardcut, displaycalibration=@displaycalibration, waterpump=@waterpump, tprot=@tprot," +
+                                              $" o2=@o2, glowplugs=@glowplugs, y75=@y75, special=@special, decata=@decata, vmax=@vmax, stage1=@stage1," +
+                                              $" stage2=@stage2, flexfuel=@flexfuel WHERE brand_code=@brandCode and code=@code";
+
+
+            command.Parameters.AddWithValue("brandCode", ecu.Brand_code);
+            command.Parameters.AddWithValue("code", ecu.code);
+            command.Parameters.AddWithValue("fuel", ecu.Fuel);
+
+            command.Parameters.AddWithValue("dpf", ecu.dpf);
+            command.Parameters.AddWithValue("egr", ecu.egr);
+
+            command.Parameters.AddWithValue("lambda", ecu.lambda);
+            command.Parameters.AddWithValue("hotstart", ecu.hotstart);
+            command.Parameters.AddWithValue("flap", ecu.flap);
+            command.Parameters.AddWithValue("adblue", ecu.adblue);
+            command.Parameters.AddWithValue("dtc", ecu.dtc);
+            command.Parameters.AddWithValue("torqmonitor", ecu.torqmonitor);
+
+
+            command.Parameters.AddWithValue("speedlimit", ecu.speedlimit);
+            command.Parameters.AddWithValue("startstop", ecu.startstop);
+            command.Parameters.AddWithValue("nox", ecu.nox);
+            command.Parameters.AddWithValue("tva", ecu.tva);
+            command.Parameters.AddWithValue("readiness", ecu.readiness);
+            command.Parameters.AddWithValue("immo", ecu.immo);
+
+            command.Parameters.AddWithValue("maf", ecu.maf);
+            command.Parameters.AddWithValue("hardcut", ecu.hardcut);
+            command.Parameters.AddWithValue("displaycalibration", ecu.displaycalibration);
+            command.Parameters.AddWithValue("waterpump", ecu.waterpump);
+            command.Parameters.AddWithValue("tprot", ecu.tprot);
+
+            command.Parameters.AddWithValue("o2", ecu.o2);
+            command.Parameters.AddWithValue("glowplugs", ecu.glowplugs);
+            command.Parameters.AddWithValue("y75", ecu.y75);
+            command.Parameters.AddWithValue("special", ecu.special);
+            command.Parameters.AddWithValue("decata", ecu.decata);
+            command.Parameters.AddWithValue("vmax", ecu.vmax);
+            command.Parameters.AddWithValue("stage1", ecu.stage1);
+            command.Parameters.AddWithValue("stage2", ecu.stage2);
+            command.Parameters.AddWithValue("flexfuel", ecu.flexfuel);
+
+            /*
+            command.CommandText = "UPDATE ps_ecu SET carburant= @fuel, dpf=@dpf, egr=@egr," +
+                                              $" lambda=@lambda, hotstart=@hotstart, flap=@flap, adblue=@adblue, dtc=@dtc, torqmonitor=@torqmonitor," +
+                                              $" speedlimit=@speedlimit, startstop=@startstop, nox=@nox, tva=@tva, readines=@readinesss, immo=@immo," +
+                                              $" maf=@maf, hardcut=@hardcut, displaycalibration=@displaycalibration, waterpump=@waterpump, tprot=@tprot," +
+                                              $" o2=@o2, glowplugs=@glowplugs, y75=@y75, special=@special, decata=@decata, vmax=@vmax, stage1=@stage1," +
+                                              $" stage2=@stage2, flexfuel=@flexfuel WHERE brand_code=@brandCode and code=@code";
+
+            
+            */
+
+            command.ExecuteNonQuery();
+        }
+    }
+
+    public Boolean DeleteBrandByCode(string brand_code, string code) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_ecu WHERE brand_code = @brandCode and code = @code";
+            
+            command.Parameters.AddWithValue("brandCode", brand_code);
+            command.Parameters.AddWithValue("code", code);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
+        }
+    }
+
+    public Boolean DeleteByBrandCode(string brand_code) {
+        using (NpgsqlCommand command = CreateCommand())
+        {
+            command.CommandText = $"DELETE FROM ps_ecu WHERE brand_code = @brandCode";
+            
+            command.Parameters.AddWithValue("brandCode", brand_code);
+            int count = command.ExecuteNonQuery();
+            
+            return count > 0;
+        }
+    }
 }

@@ -44,4 +44,40 @@ export class EcuService extends PSCommonService {
           return list;
       }));
     }
+
+ /**
+  * delete
+  */
+  public delete(brandCode: string, code: string): Observable<boolean> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ecu}/${brandCode}/${code}`;
+  
+    return this.http.delete<boolean>(url).pipe(map(p => {
+      return true;
+    }));
+  }
+
+  
+ /**
+  * Add
+  */
+ public create(tenant: Ecu): Observable<Ecu> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ecu}`;
+
+    return this.http.post(url, tenant).pipe(map(p => {
+      return new Ecu(p);
+    }));
+  }
+
+
+  /**
+  * Update
+  */
+  public set(tenant: Ecu): Observable<Ecu> {
+    const url = `${Config.APP_URL}${Config.API_ROUTES.ecu}`;
+
+    return this.http.put(url, tenant).pipe(map(p => {
+      return new Ecu(p);
+    }));
+  }
+
 }

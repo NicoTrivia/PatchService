@@ -23,4 +23,8 @@ export class Brand {
     public set name(name: string) {
         this._name = name;
     }
+
+    toJSON(): any {
+        return { code: this._code, name: this._name};
+    }
 }

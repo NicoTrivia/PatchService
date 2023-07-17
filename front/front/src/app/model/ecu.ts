@@ -2,7 +2,7 @@ export class Ecu {
 
     constructor(data: any) {
         this.code = data.code;
-        this.brand_code = data.Brand_code;
+        this.brand_code = data.brand_code;
         this.fuel = data.fuel;
         this.dpf= data.dpf;
         this.egr= data.egr;
@@ -67,4 +67,52 @@ export class Ecu {
     stage1: boolean;
     stage2: boolean;
     flexfuel: boolean;
+
+    processing: string = '';
+
+    
+  getProcessing(): string {
+    if (this.processing != '') {
+      return this.processing;
+    }
+    let result: string[] = [];
+    if (this.dpf) { result.push('dpf');};
+    if (this.egr) { result.push('egr');};
+    if (this.lambda) { result.push('lambda');};
+    if (this.hotstart) { result.push('hotstart');};
+    if (this.flap) { result.push('flap');};
+    if (this.adblue) { result.push('adblue');};
+    if (this.dtc) { result.push('dtc');};
+    if (this.torqmonitor) { result.push('torqmonitor');};
+    if (this.speedlimit) { result.push('speedlimit');};
+    if (this.startstop) { result.push('startstop');};
+    if (this.nox) { result.push('nox');};
+    if (this.tva) { result.push('tva');};
+    if (this.readiness) { result.push('readiness');};
+    if (this.immo) { result.push('immo');};
+    if (this.maf) { result.push('maf');};
+    if (this.hardcut) { result.push('hardcut');};
+    if (this.displaycalibration) { result.push('displaycalibration');};
+    if (this.waterpump) { result.push('waterpump');};
+    if (this.tprot) { result.push('tprot');};
+    if (this.o2) { result.push('o2');};
+    if (this.glowplugs) { result.push('glowplugs');};
+    if (this.y75) { result.push('y75');};
+    if (this.special) { result.push('special');};
+    if (this.decata) { result.push('decata');};
+    if (this.vmax) { result.push('vmax');};
+    if (this.stage1) { result.push('stage1');};
+    if (this.stage2) { result.push('stage2');};
+    if (this.flexfuel) { result.push('flexfuel');};
+
+    let s = '';
+    for(const p of result) {
+      if (s.length > 0) {
+        s = s + ', ';
+      }
+      s = s + p;
+    }
+    this.processing = s;
+    return this.processing;
+  }
 }
