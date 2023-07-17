@@ -28,9 +28,12 @@
         }
     },
     "BTN": {
+        "ADD_NEW_ECU": "Ajouter un nouvel équipement (ECU)",
         "CANCEL": "Annuler",
+        "CREATE_BRAND": "Créer une marque",
         "CREATE_USER": "Ajouter un utilisateur",
         "CREATE_TENANT": "Ajouter un client",
+        "BRAND_LIST": "Voir les marques",
         "TENANT_LIST": "Voir les clients",
         "USER_LIST": "Voir les utilisateurs",
         "SUBMIT": "Soumettre",
@@ -58,6 +61,12 @@
         "UNDEFINED": "Non défini",
         "GREETINGS": "Bonjour",
         "VERSION": "Version de l'application"
+    },
+    "BRAND_FORM": {
+        "TITLE": {
+            "CREATE" : "Ajouter une nouvelle marque",
+            "SET" : "Modifier la marque"
+        }
     },
     "LOGIN_FORM": {
         "CONNECT": "Se connecter",
@@ -93,9 +102,15 @@
             "MAIN": "Liste des clients"
         }
     },
+    "BRAND_LIST" : {
+        "TITLE": {
+            "SIDEBAR": "Marques",
+            "MAIN": "Liste des marques"
+        }
+    },
     "USER_LIST" : {
         "TITLE": {
-            "SIDEBAR": "Utilisateurs",
+            "SIDEBAR": "Paramètres",
             "MAIN": "Liste des utilisateurs"
         }
     },
@@ -110,6 +125,26 @@
         "TITLE": {
             "CREATE": "Ajouter un client",
             "SET": "Modifier un client"
+        }
+    },
+    "ECU_FORM": {
+        "TITLE": {
+            "CREATE": "Ajouter un equipement (ECU)",
+            "SET": "Modifier un équipement (ECU)"
+        }
+    },
+    "BRAND": {
+        "FLD": {
+            "CODE": "Code",
+            "NAME": "Name"
+        }
+    },
+    "ECU": {
+        "FLD": {
+            "CODE": "Code ECU",
+            "BRAND": "Marque",
+            "FUEL": "Motorisation",
+            "PROCESSING": "Traitements applicables"
         }
     },
     "TENANT": {
@@ -168,9 +203,11 @@
             "PROCESSED_USER_NAME": "Traité par",
             "PROCESSED_DATE": "Date de traitement",
             "IMMATRICULATION": "Immatriculation",
+            "ENGINE": "Motorisation",
             "BRAND":"Marque véhicule",
             "ECU": "Calculateur",
             "PROCESSING": "Traitements appliqués",
+            "SOURCE_FILE": "Fichier original",
             "FILES": "Fichiers"
         },
         "STATE": {
@@ -193,10 +230,20 @@
         "MSG": {
             "PROCESS_TICKET_OK": "Vous prenez en charge ce ticket",
             "PROCESS_TICKET_ALREADY_TAKEN": "Le ticket a déjà été pris en charge par {{operator}}",
-            "IN_PROCESSED_BY": "Le ticket est pris en charge par {{operator}}"
+            "IN_PROCESSED_BY": "Le ticket est pris en charge par {{operator}}",
+            "PATCH_COMMENT": "Complément d'information client ou de traitement",
+            "MAX_EXTRA_INFO_LENGTH": "{{max_chars}} caractères maximum",
+            "FAILED_PATCH": "Echec traitement ou fichier source invalide",
+            "FAILED_PATCH_LABEL": "Non traité",
+            "UPLOAD_PATCH_OK": "Fichier patch transmis avec succès"
         },
         "DIALOG": {
             "UPLOAD_DIALOG": "Soumettre le fichier patch traité au client"
         }
+    },
+    "FUEL": {
+        "D": "Diesel",
+        "P": "Essence",
+        "X": "Toutes"
     }
 }

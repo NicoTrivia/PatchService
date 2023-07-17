@@ -3,7 +3,7 @@ namespace CSqlManager;
 
 public class Variables
 {
-    static readonly string filePath = ".properties";
+    static readonly string filePath = "patch_services.properties";
     
     public static void SaveVariables(Dictionary<string, object> variables)
     {

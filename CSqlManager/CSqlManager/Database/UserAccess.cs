@@ -22,8 +22,9 @@ public class UserAccess : DbAccess
     {
         List<User> requestResult = new List<User>();
         
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user ORDER BY tenant, login";
             var reader = command.ExecuteReader();
             
@@ -33,7 +34,7 @@ public class UserAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
-
+            Close(Connection);
         }
         
         return requestResult;
@@ -42,8 +43,9 @@ public class UserAccess : DbAccess
     public User GetUserById(int id)
     {
         User user = new User();
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user WHERE id = @id";
             
             command.Parameters.AddWithValue("id", id);
@@ -53,31 +55,34 @@ public class UserAccess : DbAccess
             {
                 AddFromReader(reader, user);
             }
+            Close(Connection);
         }
 
         return user;
     }
     
     public Boolean DeleteUserById(int id) {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"DELETE FROM ps_user WHERE id = @id";
             
             command.Parameters.AddWithValue("id", id);
             int count = command.ExecuteNonQuery();
-            
+            Close(Connection);            
             return count > 0;
         }
     }
 
     public Boolean DeleteUserByTenant(string tenant) {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"DELETE FROM ps_user WHERE tenant = @tenant";
             
             command.Parameters.AddWithValue("tenant", tenant);
             int count = command.ExecuteNonQuery();
-            
+            Close(Connection);            
             return count > 0;
         }
     }
@@ -85,8 +90,9 @@ public class UserAccess : DbAccess
     public List<User> GetUsersByTenant(string tenant)
     {
         List<User> requestResult = new List<User>();
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT id,login,firstname,lastname,email,tenant,active, profile FROM ps_user WHERE tenant = @tenant";
             
             command.Parameters.AddWithValue("tenant", tenant);
@@ -98,6 +104,7 @@ public class UserAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
+            Close(Connection);
         }
 
         return requestResult;
@@ -123,8 +130,13 @@ public class UserAccess : DbAccess
 
     public void Create(User user)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        if (user == null)
         {
+            return;
+        }
+        using (NpgsqlConnection Connection = GetConnection())
+        {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"INSERT INTO ps_user (id, login, email, firstname, active, lastname, tenant, profile, password)" +
              $" VALUES (nextval('ps_user_id_seq'), @login, @email, @firstname, @active, @lastname, @tenant, @profile, @password);";
             command.Parameters.AddWithValue("login", GetParam(user.login));
@@ -145,13 +157,15 @@ public class UserAccess : DbAccess
             }
             
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
     
     public void Update(User user)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = 
                 "UPDATE ps_user" +
                 $" SET login = @login, email = @email, firstname = @firstname, active = @active, lastname = @lastname, tenant = @tenant, profile = @profile" +
@@ -166,6 +180,7 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("tenant", GetParam(user.tenant));
             command.Parameters.AddWithValue("profile", GetParam(user.profile));
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
 
@@ -175,8 +190,9 @@ public class UserAccess : DbAccess
         if (string.IsNullOrEmpty(user.password)) {
             return;
         }
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = 
                 "UPDATE ps_user SET password = @password WHERE id = @id;";
             
@@ -184,13 +200,15 @@ public class UserAccess : DbAccess
             command.Parameters.AddWithValue("password", ComputeSHA256Hash(user.login+user.password)); 
 
             command.ExecuteNonQuery();
+            Close(Connection);
         }        
     }
 
     public User? Login(string tenant, string login, string password)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             string encrypted = ComputeSHA256Hash(login+password);
             command.Parameters.AddWithValue("login", GetParam(login));
             command.Parameters.AddWithValue("password", GetParam(encrypted));
@@ -204,13 +222,14 @@ public class UserAccess : DbAccess
                 User user = new User();
                 AddFromReader(reader, user);
                 MyLogManager.Log($"User with id {user.id} was found !");
+                Close(Connection);
                 return user;
             }
             else
             {
                 MyLogManager.Error($"No user was found with the given informations");
             }
-            
+            Close(Connection);
             return null;
             
         }

@@ -26,4 +26,15 @@
       <Folder Include="Files" />
     </ItemGroup>
 
+    <Target Name="CopyConfigFiles" AfterTargets="Publish">
+      <ItemGroup>
+        <!-- Add your configuration files here -->
+        <ConfigFiles Include="patch_services.properties" />
+        <ConfigFiles Include="log4net.config" />
+        <ConfigFiles Include="template_mail_qualify.html" />
+        <LogFiles Include="logs/readme.txt" />
+      </ItemGroup>
+      <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(PublishDir)" />
+      <Copy SourceFiles="@(LogFiles)" DestinationFolder="$(PublishDir)/logs" />
+    </Target>
 </Project>

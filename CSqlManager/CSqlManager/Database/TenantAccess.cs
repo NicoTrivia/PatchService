@@ -19,8 +19,9 @@ public class TenantAccess : DbAccess
     {
         List<Tenant> requestResult = new List<Tenant>();
         
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant ORDER BY code";
             var reader = command.ExecuteReader();
             while (reader.Read())
@@ -29,7 +30,7 @@ public class TenantAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
-
+            Close(Connection);
         }
         
         return requestResult;
@@ -38,8 +39,9 @@ public class TenantAccess : DbAccess
     public Tenant GetTenantByCode(string code)
     {
         Tenant tenant = new Tenant();
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT code,name,email,level,active,creation_date,expiration_date FROM ps_tenant WHERE code = @Code";
             
             command.Parameters.AddWithValue("Code", code);
@@ -48,6 +50,7 @@ public class TenantAccess : DbAccess
             {
                 AddFromReader(reader, tenant);
             }
+            Close(Connection);
         }
 
         return tenant;
@@ -55,8 +58,9 @@ public class TenantAccess : DbAccess
 
     public int GetNextFileId(string code)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT next_file_id FROM ps_tenant WHERE code = @Code";
             
             command.Parameters.AddWithValue("Code", code);
@@ -66,6 +70,7 @@ public class TenantAccess : DbAccess
                   int id = (int)getInt(reader, "next_file_id", true)!;
                   return id;
             }
+            Close(Connection);
         }
 
         return 0;
@@ -75,8 +80,9 @@ public class TenantAccess : DbAccess
 
     public void Create(Tenant tenant)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"INSERT INTO ps_tenant (code, name, email, level, active, creation_date, expiration_date, next_file_id)" +
                                   $" VALUES (@code, @name, @email, @level, @active, @creation_date, @expiration_date, @next_file_id);";
             command.Parameters.AddWithValue("code", GetParam(tenant.code));
@@ -89,6 +95,7 @@ public class TenantAccess : DbAccess
 
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
     
@@ -97,8 +104,9 @@ public class TenantAccess : DbAccess
         if (tenant == null) {
             return;
         }
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = 
                 "UPDATE ps_tenant" +
                 $" SET name = @name, email = @email, level = @level ,active = @active," +
@@ -113,6 +121,7 @@ public class TenantAccess : DbAccess
             command.Parameters.AddWithValue("expiration_date", GetParam(tenant.expiration_date));
             
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
     
@@ -121,25 +130,28 @@ public class TenantAccess : DbAccess
         if (tenant == null) {
             return;
         }
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = 
                 "UPDATE ps_tenant SET next_file_id = (next_file_id + 1) WHERE code = @code;";
             
             command.Parameters.AddWithValue("code", tenant);
             
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
 
     public Boolean DeleteTenantByCode(string code) {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"DELETE FROM ps_tenant WHERE code = @code";
             
             command.Parameters.AddWithValue("code", code);
             int count = command.ExecuteNonQuery();
-            
+            Close(Connection);
             return count > 0;
         }
     }

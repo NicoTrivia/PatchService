@@ -12,80 +12,71 @@ public class DbAccess
                                         "Password=" + Variables.RetrieveVariable("Password") +
                                         "MaxPoolSize=" + Variables.RetrieveVariable("MaxPoolSize");
 
-    private NpgsqlConnection? Connection = null;
+
     protected object GetParam(object? param) => param == null ? DBNull.Value : param;
 
-    protected static int counter = 0;
-    private NpgsqlConnection GetConnection()
+    protected NpgsqlConnection GetConnection()
     {
-        counter = counter + 1;
-
-        if (counter >= 150 && Connection != null && Connection.State != ConnectionState.Open) {
-            MyLogManager.Log("Npgsq Autoclose to free connections "+counter);
-            Connection!.Close();
-            Connection = null;
-        }
-
-        if (Connection == null || Connection.State != ConnectionState.Open)
-        {
-            counter = 1;
-            MyLogManager.Log("Npgsq OPEN new connecion since former state is "+(Connection == null ? "null": Connection.State.ToString()));
-            Connection = new NpgsqlConnection(connString);
-            Connection.Open();
-        }
+        NpgsqlConnection Connection = new NpgsqlConnection(connString);
+        Connection.Open();
         return Connection;
     }
 
-    public NpgsqlCommand CreateCommand()
+    protected NpgsqlCommand CreateCommand(NpgsqlConnection Connection)
     {
-        var connection = GetConnection();
-        return connection.CreateCommand();
+        return Connection.CreateCommand();
     }
 
-    public void Close()
+    protected void Close(NpgsqlConnection Connection)
     {
         if(Connection != null)
             Connection.Close();
-        Connection = null;
     }
     
     public void ResetDatabase()
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = "DELETE FROM ps_ecu";
             command.ExecuteNonQuery();
                
             command.CommandText = "DELETE FROM ps_brand";
             command.ExecuteNonQuery();
             MyLogManager.Log("Database content deleted");
+            Close(Connection);
         }
     
     }
     public void RemoveColInBrand(string name)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"ALTER TABLE ps_brand DROP COLUMN {name}";
             command.ExecuteNonQuery();
             MyLogManager.Log($"Column {name} deleted from brands");
+            Close(Connection);
         }
     }
     
     public void RemoveColInECU(string name)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"ALTER TABLE ps_ecu DROP COLUMN {name}";
             command.ExecuteNonQuery();
             MyLogManager.Log($"Column {name} deleted from ecus");
+            Close(Connection);
         }
     }
 
     public void CreateTable(string name, List<(string name, string type, string typePrecisions ,bool isPrimary)> content)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"CREATE TABLE {name} (";
             foreach (var information in content)
             {
@@ -95,7 +86,7 @@ public class DbAccess
 
             command.CommandText += ")";
             command.ExecuteNonQuery();
-            MyLogManager.Log($"Table {name} created");
+            Close(Connection);
         }
     }
 

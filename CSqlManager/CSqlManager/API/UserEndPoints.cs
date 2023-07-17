@@ -14,7 +14,6 @@ public class UserEndPoints: SecureEnpoint
         app.MapPut("/user", Update);
         app.MapPut("/password", Update);
         app.MapDelete("/user/{Id}", DeleteById);
-
     }
     
     public static IResult GetAll(HttpContext context)
@@ -67,7 +66,7 @@ public class UserEndPoints: SecureEnpoint
         
         var access = new UserAccess();
         access.Create(user);
-
+       MyLogManager.Log($"User created : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
         return Results.Ok(user);
     }
     public static IResult Update(HttpContext context, User user)
@@ -81,6 +80,7 @@ public class UserEndPoints: SecureEnpoint
        
         var access = new UserAccess();
         access.Update(user);
+       MyLogManager.Log($"User updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(user);
     }
@@ -97,6 +97,7 @@ public class UserEndPoints: SecureEnpoint
        
         var access = new UserAccess();
         access.UpdatePassword(user);
+       MyLogManager.Log($"User password updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(user);
     }
@@ -104,7 +105,6 @@ public class UserEndPoints: SecureEnpoint
 
     public static IResult UserLogin(HttpContext context)
     {
-        MyLogManager.Log("Authenticate :");
         var Tenant = "";
         var Login = "";
         var Password = "";
@@ -145,6 +145,7 @@ public class UserEndPoints: SecureEnpoint
         }
         var access = new UserAccess();
         var success = access.DeleteUserById(Id);
+       MyLogManager.Log($"User deleted : {Id} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }

@@ -114,8 +114,9 @@ public class TicketAccess : DbAccess
     {
         List<Ticket> requestResult = new List<Ticket>();
         
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT * FROM ps_ticket ORDER BY id DESC";
             var reader = command.ExecuteReader();
             
@@ -125,7 +126,7 @@ public class TicketAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
-
+            Close(Connection);
         }
         
         return requestResult;
@@ -135,8 +136,9 @@ public class TicketAccess : DbAccess
     {
         List<Ticket> requestResult = new List<Ticket>();
         
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT * FROM ps_ticket where processed_file_name is NULL and (processed_user_id IS NULL OR processed_user_id = 0 OR processed_user_id = @userId) ORDER BY CASE level " +
             $" WHEN 'Platine' THEN 1 WHEN 'Gold' THEN 2 WHEN 'Silver' THEN 3 ELSE 4 END, id DESC";
             command.Parameters.AddWithValue("userId", userId);
@@ -148,7 +150,7 @@ public class TicketAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
-
+            Close(Connection);
         }
         
         return requestResult;
@@ -156,8 +158,9 @@ public class TicketAccess : DbAccess
     public List<Ticket> GetByTenant(string tenant)
     {
         List<Ticket> requestResult = new List<Ticket>();
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT * FROM ps_ticket WHERE tenant = @tenant ORDER BY id DESC";
             
             command.Parameters.AddWithValue("tenant", tenant);
@@ -169,6 +172,7 @@ public class TicketAccess : DbAccess
                 AddFromReader(reader, current);
                 requestResult.Add(current);
             }
+            Close(Connection);
         }
 
         return requestResult;
@@ -177,8 +181,9 @@ public class TicketAccess : DbAccess
     public Ticket? GetById(int id)
     {
         Ticket? requestResult = null;
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"SELECT * FROM ps_ticket WHERE id = @id";
             
             command.Parameters.AddWithValue("id", id);
@@ -189,6 +194,7 @@ public class TicketAccess : DbAccess
                 requestResult = new Ticket();
                 AddFromReader(reader, requestResult);
             }
+            Close(Connection);
         }
 
         return requestResult;
@@ -197,8 +203,9 @@ public class TicketAccess : DbAccess
 
     public void Create(Ticket ticket)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"INSERT INTO ps_ticket (id, tenant, level, user_id, user_name, date, " +
                                   $"file_name, file_id, file_size, immatriculation, fuel, " +
                                   $"processed_file_name, processed_file_size, processed_user_name, comment, processed_user_id, processed_date," +
@@ -213,13 +220,15 @@ public class TicketAccess : DbAccess
                                   $" @y75, @special, @decata, @vmax, @stage1, @stage2, @flexfuel)";
             AddInCommand(command, ticket);
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
     
     public void Update(Ticket ticket)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = 
                 "UPDATE ps_ticket" +
                 $" SET tenant = @tenant, level = @level, user_id = @user_id, user_name = @user_name, date = @date, " +
@@ -239,6 +248,7 @@ public class TicketAccess : DbAccess
             command.Parameters.AddWithValue("id", ticket.id);
             MyLogManager.Log($"command.CommandText 2: {command}");
             command.ExecuteNonQuery();
+            Close(Connection);
         }
         
     }

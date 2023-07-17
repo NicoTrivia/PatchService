@@ -9,8 +9,9 @@ public class EcuAccess : DbAccess
     {
         List<ECU> requestResult = new List<ECU>();
         
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             if (command.Parameters.Contains("BrandCode"))
                 command.Parameters.Remove("BrandCode");
             if (command.Parameters.Contains("Fuel"))
@@ -34,9 +35,6 @@ public class EcuAccess : DbAccess
             command.CommandText += $" ORDER BY code";
 
             MyLogManager.Log("BrandCode : "+BrandCode);
-            MyLogManager.Log("Fuel : "+Fuel);
-
-            MyLogManager.Log(command.CommandText);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -81,16 +79,16 @@ public class EcuAccess : DbAccess
 
                  requestResult.Add(ecu);
             }
-
+            Close(Connection);
         }
-        
         return requestResult;
     }
     
     public void Create(ECU ecu)
     {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"INSERT INTO ps_ecu (brand_code, code, carburant,dpf, egr, " +
                                               $"lambda, hotstart, flap, adblue, dtc, torqmonitor, " +
                                               $"speedlimit, startstop, nox, tva, readiness, immo, " +
@@ -139,6 +137,7 @@ public class EcuAccess : DbAccess
             command.Parameters.AddWithValue("stage2", ecu.stage2);
             command.Parameters.AddWithValue("flexfuel", ecu.flexfuel);
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
     
@@ -147,8 +146,9 @@ public class EcuAccess : DbAccess
         if (ecu == null) {
             return;
         }
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = "UPDATE ps_ecu SET carburant= @fuel, dpf=@dpf, egr=@egr," +
                                               $" lambda=@lambda, hotstart=@hotstart, flap=@flap, adblue=@adblue, dtc=@dtc, torqmonitor=@torqmonitor," +
                                               $" speedlimit=@speedlimit, startstop=@startstop, nox=@nox, tva=@tva, readiness=@readiness, immo=@immo," +
@@ -207,30 +207,33 @@ public class EcuAccess : DbAccess
             */
 
             command.ExecuteNonQuery();
+            Close(Connection);
         }
     }
 
     public Boolean DeleteBrandByCode(string brand_code, string code) {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"DELETE FROM ps_ecu WHERE brand_code = @brandCode and code = @code";
             
             command.Parameters.AddWithValue("brandCode", brand_code);
             command.Parameters.AddWithValue("code", code);
             int count = command.ExecuteNonQuery();
-            
+            Close(Connection);
             return count > 0;
         }
     }
 
     public Boolean DeleteByBrandCode(string brand_code) {
-        using (NpgsqlCommand command = CreateCommand())
+        using (NpgsqlConnection Connection = GetConnection())
         {
+            NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"DELETE FROM ps_ecu WHERE brand_code = @brandCode";
             
             command.Parameters.AddWithValue("brandCode", brand_code);
             int count = command.ExecuteNonQuery();
-            
+            Close(Connection);
             return count > 0;
         }
     }

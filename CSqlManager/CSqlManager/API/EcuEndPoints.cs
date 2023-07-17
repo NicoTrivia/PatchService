@@ -41,7 +41,7 @@ public class EcuEndPoints: SecureEnpoint
        
         var access = new EcuAccess();
         access.Create(ecu);
-
+        MyLogManager.Log($"ECU created : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
         return Results.Ok(ecu);
     }
     public static IResult Update(HttpContext context, ECU ecu)
@@ -55,6 +55,7 @@ public class EcuEndPoints: SecureEnpoint
         
         var access = new EcuAccess();
         access.Update(ecu);
+        MyLogManager.Log($"ECU updated : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(ecu);
     }
@@ -68,6 +69,8 @@ public class EcuEndPoints: SecureEnpoint
 
         var access = new EcuAccess();
         var success = access.DeleteBrandByCode(brand_code, code);
+
+        MyLogManager.Log($"ECU deleted : {brand_code} - {code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }
