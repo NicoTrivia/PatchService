@@ -85,7 +85,8 @@ public class FileTransfers: SecureEnpoint
                 fileName = file1.FileName;
             }
         }
-/*        foreach (var formPart in context.Request.Form) {
+        /*
+         foreach (var formPart in context.Request.Form) {
             if (formPart.Key == "filename") {
                fileName = formPart.Value;
             }

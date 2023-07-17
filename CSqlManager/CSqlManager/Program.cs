@@ -17,7 +17,8 @@ class Program
        // WARNING : Rememeber to change the file upload directory depending on the context
        
        MyLogManager.Log("Lancement de PatchServices Bakend");
-
+       EmailSender.Send("alexandre.bodin78@free.fr", "Test1");
+       /*
        builder.Services.AddCors(options =>
        {
            options.AddDefaultPolicy(builder =>
@@ -34,7 +35,7 @@ class Program
        web.UseCors();
        mapEndPoints(web);
        web.Run();
-       
+       */
     }
 
     static void mapEndPoints(WebApplication web) {

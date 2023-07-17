@@ -10,6 +10,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/50c6dd77b885584dcd59d35a59203d3c986a699923eee7aac21bf50c89de1bc/SmtpClient.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -69,6 +72,7 @@
       <workItem from="1687806422069" duration="3119000" />
       <workItem from="1687854803347" duration="5805000" />
       <workItem from="1689070668798" duration="6437000" />
+      <workItem from="1689519458035" duration="2764000" />
     </task>
     <servers />
   </component>

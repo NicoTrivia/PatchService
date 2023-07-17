@@ -18,7 +18,7 @@ public class EmailSender
         MailMessage message = new MailMessage(senderEmail, recipientEmail, subject, body);
         message.IsBodyHtml = true; 
 
-       
+        MyLogManager.Log($"Email sent to {recipientEmail} with server : {smtpServer}/ port : {smtpPort}/sender : {senderEmail}");
         SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
         smtpClient.EnableSsl = true;
         smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
@@ -26,12 +26,11 @@ public class EmailSender
         try
         {
             smtpClient.Send(message);
-
-            Console.WriteLine("Email sent successfully.");
+            MyLogManager.Log("Email sent successfully.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("An error occurred while sending the email: " + ex.Message);
+            MyLogManager.Log("An error occurred while sending the email: " + ex.Message);
         }
     }
 }
