@@ -14,13 +14,22 @@ public class MyLogManager
         isConfig = true;
     }
 
-    public static void Log(string message)
+    public static void Info(string message)
     {
         if (!isConfig)
         {
             Configure();
         }
         log.Info(message);
+    }
+    
+    public static void Debug(string message)
+    {
+        if (!isConfig)
+        {
+            Configure();
+        }
+        log.Debug(message);
     }
     
     public static void Warn(string message)

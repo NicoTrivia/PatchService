@@ -63,7 +63,7 @@ public class FileTransfers: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT");
             return Task.CompletedTask;
         }
-        MyLogManager.Log("Post treatment of a file :");
+        MyLogManager.Debug("Post treatment of a file :");
         var file = context.Request.Form.Files.FirstOrDefault();
 
         if (file == null || file.Length == 0)
@@ -101,7 +101,7 @@ public class FileTransfers: SecureEnpoint
                 Console.WriteLine("WARNING UNKNOWN PARAMETER :" + formPart.Key + " with value :" + formPart.Value);
             }
         }*/
-        MyLogManager.Log("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
+        MyLogManager.Debug("file informations : " + fileName+" "+id+" "+tenant+" CLAIMS: "+claims);
         
         string fileLocation = BuildDirectory(tenant, id);
         var filePath = Path.Combine(fileLocation, fileName);
@@ -113,7 +113,7 @@ public class FileTransfers: SecureEnpoint
 
         context.Response.StatusCode = StatusCodes.Status201Created;
         context.Response.Headers["Location"] = fileLocation;
-        MyLogManager.Log("File Saved in : " + fileLocation + "/n");
+        MyLogManager.Debug("File Saved in : " + fileLocation + "/n");
         
         return Task.CompletedTask;
     }
@@ -128,7 +128,7 @@ public class FileTransfers: SecureEnpoint
             return Task.CompletedTask;
         }
         string fileId = month+'/'+id;
-        MyLogManager.Log("Post treatment of patched file : "+fileId);
+        MyLogManager.Debug("Post treatment of patched file : "+fileId);
         var file = context.Request.Form.Files.FirstOrDefault();
 
         if (file == null || file.Length == 0)
@@ -151,7 +151,7 @@ public class FileTransfers: SecureEnpoint
             }
         }
 
-        MyLogManager.Log("file informations : " + fileName+" "+fileId+" "+tenant+" CLAIMS: "+claims);
+        MyLogManager.Debug("file informations : " + fileName+" "+fileId+" "+tenant+" CLAIMS: "+claims);
         
         string fileLocation = BuildDirectory(tenant, fileId);
         var filePath = Path.Combine(fileLocation, fileName);
@@ -163,7 +163,7 @@ public class FileTransfers: SecureEnpoint
 
         context.Response.StatusCode = StatusCodes.Status201Created;
         context.Response.Headers["Location"] = fileLocation;
-        MyLogManager.Log("File Saved in : " + fileLocation + '\n');
+        MyLogManager.Debug("File Saved in : " + fileLocation + '\n');
         return Task.CompletedTask;
     }
 
@@ -172,7 +172,7 @@ public class FileTransfers: SecureEnpoint
         string fileId = BuildFileId(tenant, id);
         string Dlocation = BuildDirectory(tenant, fileId);
         CreateDirectoryTree(Dlocation);
-        MyLogManager.Log("Writing to : "+Dlocation);
+        MyLogManager.Debug("Writing to : "+Dlocation);
         return Dlocation;
     }
 

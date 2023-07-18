@@ -34,7 +34,7 @@ public class EcuAccess : DbAccess
             }
             command.CommandText += $" ORDER BY code";
 
-            MyLogManager.Log("BrandCode : "+BrandCode);
+            MyLogManager.Debug("BrandCode : "+BrandCode);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {

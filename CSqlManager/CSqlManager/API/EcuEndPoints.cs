@@ -37,11 +37,11 @@ public class EcuEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"ECU POST {ecu}");
+        MyLogManager.Debug($"ECU POST {ecu}");
        
         var access = new EcuAccess();
         access.Create(ecu);
-        MyLogManager.Log($"ECU created : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"ECU created : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
         return Results.Ok(ecu);
     }
     public static IResult Update(HttpContext context, ECU ecu)
@@ -51,11 +51,11 @@ public class EcuEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"ECU PUT {ecu}");
+        MyLogManager.Debug($"ECU PUT {ecu}");
         
         var access = new EcuAccess();
         access.Update(ecu);
-        MyLogManager.Log($"ECU updated : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"ECU updated : {ecu.Brand_code} - {ecu.code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(ecu);
     }
@@ -70,7 +70,7 @@ public class EcuEndPoints: SecureEnpoint
         var access = new EcuAccess();
         var success = access.DeleteBrandByCode(brand_code, code);
 
-        MyLogManager.Log($"ECU deleted : {brand_code} - {code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"ECU deleted : {brand_code} - {code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }

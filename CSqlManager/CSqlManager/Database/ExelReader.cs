@@ -56,7 +56,7 @@ public class ExelReader
                     }
                 }
             }
-            MyLogManager.Log("Exel document read");
+            MyLogManager.Debug("Exel document read");
         }
     }
     
@@ -94,7 +94,7 @@ public class ExelReader
                         command.ExecuteNonQuery();
                     }
                 }
-                MyLogManager.Log("ps_brand fields updated");
+                MyLogManager.Debug("ps_brand fields updated");
                 // Set up ps_ecu fields 
                 foreach (var ecu in _ecus)
                 {
@@ -146,7 +146,7 @@ public class ExelReader
                     }
                     
                 }       
-                MyLogManager.Log("ps_ecu fields updated");
+                MyLogManager.Debug("ps_ecu fields updated");
             }
             connection.Close();
         }

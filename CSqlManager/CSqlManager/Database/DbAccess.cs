@@ -43,7 +43,7 @@ public class DbAccess
                
             command.CommandText = "DELETE FROM ps_brand";
             command.ExecuteNonQuery();
-            MyLogManager.Log("Database content deleted");
+            MyLogManager.Debug("Database content deleted");
             Close(Connection);
         }
     
@@ -55,7 +55,7 @@ public class DbAccess
             NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"ALTER TABLE ps_brand DROP COLUMN {name}";
             command.ExecuteNonQuery();
-            MyLogManager.Log($"Column {name} deleted from brands");
+            MyLogManager.Debug($"Column {name} deleted from brands");
             Close(Connection);
         }
     }
@@ -67,7 +67,7 @@ public class DbAccess
             NpgsqlCommand command = CreateCommand(Connection);
             command.CommandText = $"ALTER TABLE ps_ecu DROP COLUMN {name}";
             command.ExecuteNonQuery();
-            MyLogManager.Log($"Column {name} deleted from ecus");
+            MyLogManager.Debug($"Column {name} deleted from ecus");
             Close(Connection);
         }
     }

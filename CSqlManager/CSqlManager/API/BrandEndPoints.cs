@@ -37,11 +37,11 @@ public class BrandEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"BRAND POST {brand}");
+        MyLogManager.Debug($"BRAND POST {brand}");
        
         var access = new BrandAccess();
         access.Create(brand);
-        MyLogManager.Log($"Brand created : {brand.Code} - {brand.Name} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Brand created : {brand.Code} - {brand.Name} by {claims.User} / {claims.Tenant}");
         return Results.Ok(brand);
     }
     public static IResult Update(HttpContext context, Brand brand)
@@ -51,11 +51,11 @@ public class BrandEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"BRAND PUT {brand}");
+        MyLogManager.Debug($"BRAND PUT {brand}");
         
         var access = new BrandAccess();
         access.Update(brand);
-        MyLogManager.Log($"Brand Updated : {brand.Code} - {brand.Name} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Brand Updated : {brand.Code} - {brand.Name} by {claims.User} / {claims.Tenant}");
         return Results.Ok(brand);
     }
     public static IResult DeleteByCode(HttpContext context, string code)
@@ -72,7 +72,7 @@ public class BrandEndPoints: SecureEnpoint
         var access = new BrandAccess();
         var success = access.DeleteBrandByCode(code);
 
-        MyLogManager.Log($"Brand Deleted : {code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Brand Deleted : {code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }

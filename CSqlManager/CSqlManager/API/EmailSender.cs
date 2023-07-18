@@ -25,7 +25,7 @@ public class EmailSender: SecureEnpoint
         MailMessage message = new MailMessage(senderEmail, recipientEmail, subject, body);
         message.IsBodyHtml = true; 
 
-        MyLogManager.Log($"Email sent to {recipientEmail} with server : {smtpServer}/ port : {smtpPort}/sender : {senderEmail}");
+        MyLogManager.Debug($"Email sent to {recipientEmail} with server : {smtpServer}/ port : {smtpPort}/sender : {senderEmail}");
         SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
         smtpClient.EnableSsl = true;
         smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
@@ -33,11 +33,11 @@ public class EmailSender: SecureEnpoint
         try
         {
             smtpClient.Send(message);
-            MyLogManager.Log("Email sent successfully.");
+            MyLogManager.Debug("Email sent successfully.");
         }
         catch (Exception ex)
         {
-            MyLogManager.Log("An error occurred while sending the email: " + ex.Message);
+            MyLogManager.Debug("An error occurred while sending the email: " + ex.Message);
         }
     }
 
@@ -61,11 +61,11 @@ public class EmailSender: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"MAIL POST {mail}");
+        MyLogManager.Debug($"MAIL POST {mail}");
        
         var access = new MailAccess();
         access.Create(mail);
-        MyLogManager.Log($"Mail created : {mail.Id} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Mail created : {mail.Id} by {claims.User} / {claims.Tenant}");
         return Results.Ok(mail);
     }
     public static IResult UpdateMailTemplate(HttpContext context, MailTemplate mail)
@@ -75,11 +75,11 @@ public class EmailSender: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"MAIL PUT {mail}");
+        MyLogManager.Debug($"MAIL PUT {mail}");
         
         var access = new MailAccess();
         access.Update(mail);
-        MyLogManager.Log($"Mail updated : {mail.Id} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Mail updated : {mail.Id} by {claims.User} / {claims.Tenant}");
         return Results.Ok(mail);
     }
 }

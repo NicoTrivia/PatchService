@@ -1,6 +1,6 @@
 export class Config {
 
-    //private static _appUrl = '/ps/api';
+    // private static _appUrl = '/ps/api';
     private static _appUrl = ':5000';
 
     public  static DATE_TIME_FORMAT = 'DD-MM-YYYY HH:mm';

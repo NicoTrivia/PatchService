@@ -221,7 +221,7 @@ public class UserAccess : DbAccess
             {
                 User user = new User();
                 AddFromReader(reader, user);
-                MyLogManager.Log($"User with id {user.id} was found !");
+                MyLogManager.Debug($"User with id {user.id} was found !");
                 Close(Connection);
                 return user;
             }

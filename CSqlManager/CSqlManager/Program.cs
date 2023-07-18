@@ -16,7 +16,7 @@ class Program
        var builder = WebApplication.CreateBuilder(args);
        // WARNING : Rememeber to change the file upload directory depending on the context
        /*
-       MyLogManager.Log("Lancement de PatchServices Bakend");
+       MyLogManager.Debug("Lancement de PatchServices Bakend");
        EmailSender.Send("alexandre.bodin78@free.fr", "Test1");
        */
        builder.Services.AddCors(options =>

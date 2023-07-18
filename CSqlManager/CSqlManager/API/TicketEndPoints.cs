@@ -82,7 +82,7 @@ public class TicketEndPoints: SecureEnpoint
         var access = new TicketAccess();
         access.Create(ticket);        
         
-        MyLogManager.Log($"Ticket Created : {ticket.id} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Ticket Created : {ticket.id} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(ticket);
     }
@@ -95,7 +95,7 @@ public class TicketEndPoints: SecureEnpoint
         }
         var access = new TicketAccess();
         access.Update(ticket);
-        MyLogManager.Log($"Ticket Updated : {ticket.id} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Ticket Updated : {ticket.id} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(ticket);
     }

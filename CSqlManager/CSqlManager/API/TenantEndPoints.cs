@@ -61,11 +61,11 @@ public class TenantEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"TENANT POST {tenant}");
+        MyLogManager.Debug($"TENANT POST {tenant}");
        
         var access = new TenantAccess();
         access.Create(tenant);
-        MyLogManager.Log($"Tenant Created : {tenant.code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Tenant Created : {tenant.code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(tenant);
     }
@@ -76,11 +76,11 @@ public class TenantEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"TENANT PUT {tenant}");
+        MyLogManager.Debug($"TENANT PUT {tenant}");
         
         var access = new TenantAccess();
         access.Update(tenant);
-        MyLogManager.Log($"Tenant Updated : {tenant.code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Tenant Updated : {tenant.code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(tenant);
     }
@@ -96,7 +96,7 @@ public class TenantEndPoints: SecureEnpoint
 
         var access = new TenantAccess();
         var success = access.DeleteTenantByCode(code);
-        MyLogManager.Log($"Tenant Deleted : {code} by {claims.User} / {claims.Tenant}");
+        MyLogManager.Debug($"Tenant Deleted : {code} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }

@@ -3,6 +3,9 @@ namespace CSqlManager;
 
 public class Variables
 {
+    static Dictionary<string, object> variables = new Dictionary<string, object>();
+    static bool initialiazed = false;
+
     static readonly string filePath = "patch_services.properties";
     static readonly string filePathSecret = "secret.properties";
     
@@ -16,34 +19,15 @@ public class Variables
                 writer.WriteLine(kvp.Key + "=" + kvp.Value);
             }
         }
-        MyLogManager.Log("Variables have been saved");
+        MyLogManager.Debug("Variables have been saved");
     }
     
     public static object RetrieveVariable(string variableName)
     {
-        Dictionary<string, object> variables = new Dictionary<string, object>();
-
-        if (File.Exists(filePath))
-        {
-            using (StreamReader reader = new StreamReader(filePath))
+        if (initialiazed || File.Exists(filePath)) {
+            if (!initialiazed && File.Exists(filePath))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] parts = line.Split('=');
-                    if (parts.Length == 2)
-                    {
-                        string key = parts[0];
-                        string value = parts[1];
-                        variables[key] = value;
-                    }
-                }
-            }
-            MyLogManager.Log("Variables have been successfully retrieved");
-
-            if (File.Exists(filePathSecret))
-            {
-                using (StreamReader reader = new StreamReader(filePathSecret))
+                using (StreamReader reader = new StreamReader(filePath))
                 {
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -57,10 +41,29 @@ public class Variables
                         }
                     }
                 }
-                MyLogManager.Log("Secret Variables have been successfully retrieved");
+                MyLogManager.Debug("Variables have been successfully retrieved");
 
+                if (File.Exists(filePathSecret))
+                {
+                    using (StreamReader reader = new StreamReader(filePathSecret))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string[] parts = line.Split('=');
+                            if (parts.Length == 2)
+                            {
+                                string key = parts[0];
+                                string value = parts[1];
+                                variables[key] = value;
+                            }
+                        }
+                    }
+                    MyLogManager.Debug("Secret Variables have been successfully retrieved");
+                    initialiazed = true;
+
+                }
             }
-
 
             if (variables.ContainsKey(variableName))
             {

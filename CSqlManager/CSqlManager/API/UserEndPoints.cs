@@ -62,11 +62,11 @@ public class UserEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
+        MyLogManager.Debug($"USER POST {user.id} - {user.login} - {user.firstname}- {user.lastname}");
         
         var access = new UserAccess();
         access.Create(user);
-       MyLogManager.Log($"User created : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
+       MyLogManager.Debug($"User created : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
         return Results.Ok(user);
     }
     public static IResult Update(HttpContext context, User user)
@@ -76,11 +76,11 @@ public class UserEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"USER PUT {user}");
+        MyLogManager.Debug($"USER PUT {user}");
        
         var access = new UserAccess();
         access.Update(user);
-       MyLogManager.Log($"User updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
+       MyLogManager.Debug($"User updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(user);
     }
@@ -93,11 +93,11 @@ public class UserEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        MyLogManager.Log($"USER PASSWORD: {user.id}");
+        MyLogManager.Debug($"USER PASSWORD: {user.id}");
        
         var access = new UserAccess();
         access.UpdatePassword(user);
-       MyLogManager.Log($"User password updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
+       MyLogManager.Debug($"User password updated : {user.login} - {user.tenant} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(user);
     }
@@ -120,17 +120,22 @@ public class UserEndPoints: SecureEnpoint
             }
         }
 
-        MyLogManager.Log($"Trying to login in tenant : : {Tenant} as : {Login} with password : ******** ");
+        MyLogManager.Debug($"Trying to login in tenant : : {Tenant} as : {Login} with password : ******** ");
         
         UserAccess access = new UserAccess();
-        TenantAccess tenantAccess = new TenantAccess();
         User? user = access.Login(Tenant,Login,Password);
 
-        //string level = tenantAccess.GetTenantByCode(user.tenant).level;
-        if (user != null)
+
+        if (user != null && user.active && user.profile != null)
         {
-            string profile = user.profile.ToString();
-            user.jwt = User.GenerateJwtToken(user.login, user.id, user.tenant, profile);
+            TenantAccess tenantAccess = new TenantAccess();
+            Tenant tenant = tenantAccess.GetTenantByCode(user.tenant);
+
+            if (tenant != null && tenant.active)
+            {
+                string profile = user.profile.ToString();
+                user.jwt = User.GenerateJwtToken(user.login, user.id, user.tenant, profile);
+            }
         }
         
         return Results.Ok(user);
@@ -145,7 +150,7 @@ public class UserEndPoints: SecureEnpoint
         }
         var access = new UserAccess();
         var success = access.DeleteUserById(Id);
-       MyLogManager.Log($"User deleted : {Id} by {claims.User} / {claims.Tenant}");
+       MyLogManager.Debug($"User deleted : {Id} by {claims.User} / {claims.Tenant}");
 
         return Results.Ok(success);
     }
