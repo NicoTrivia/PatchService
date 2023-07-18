@@ -99,7 +99,8 @@ public class TicketEndPoints: SecureEnpoint
         MyLogManager.Debug($"Ticket Updated : {ticket.id} by {claims.User} / {claims.Tenant}");
         UserAccess userAccess = new UserAccess();
         User user = userAccess.GetUserById((int)ticket.user_id!);
-        if (user != null && user.email != null && !user.email.StartsWith("#") && ticket.processed_user_name != null) {
+        if (user != null && user.email != null && !user.email.StartsWith("#") && ticket.processed_user_name != null 
+            && ticket.processed_file_name != null) {
 
             EmailSender.Send(false, user.email, ticket);
         }

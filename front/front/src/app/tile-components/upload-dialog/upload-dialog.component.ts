@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, SimpleChanges, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -16,14 +16,13 @@ import { AuthenticationService } from '../../auth/authentication-service/authent
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./upload-dialog.component.css']
 })
-export class UploadDialogComponent extends PatchSecured implements OnInit {
-  @Input() public ticket: Ticket|null = null;
+export class UploadDialogComponent extends PatchSecured implements OnInit, OnChanges {
+  @Input() ticket: Ticket|null = null;
   @Output() confirmUpload = new EventEmitter<string>();
   MAX_CHARS_COMMENT = 250;
+
   protected fileName: string|null = null;
   protected fileSize: number = 0;
-  protected file_id: string|null = null;
-  protected fileId: number = 1;
   protected failedPatch: boolean = false;
 
   constructor(override readonly authenticationService: AuthenticationService,
@@ -33,7 +32,15 @@ export class UploadDialogComponent extends PatchSecured implements OnInit {
   }
 
   ngOnInit() {
-    // NO OP
+    this.fileName = null;
+    this.fileSize = 0;
+    this.failedPatch = false;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+      if ('ticket' in changes) {
+        this.ngOnInit();
+      }
   }
 
   validate(resu: boolean): void {

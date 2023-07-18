@@ -176,9 +176,19 @@ public class FileTransfers: SecureEnpoint
         return Dlocation;
     }
 
-      public static string BuildDirectory(string tenant, string fileId)
+    public static string BuildDirectory(string tenant, string fileId)
     {
+        if (!Directory.Exists(UploadDirectory))
+        {
+            // Create the directory
+            Directory.CreateDirectory(UploadDirectory);
+        }
         string Dlocation = $"{UploadDirectory}/{fileId}";
+        if (!Directory.Exists(Dlocation))
+        {
+            // Create the directory
+            Directory.CreateDirectory(Dlocation);
+        }
         return Dlocation;
     }
 

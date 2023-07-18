@@ -23,14 +23,17 @@ public class EmailSender: SecureEnpoint
         string[] name = ticket.user_name!.Split(" ");
         CultureInfo culture = new CultureInfo("fr-FR");
         DateTime dateTicket = TimeZoneInfo.ConvertTimeFromUtc(ticket.date.Value, TimeZoneInfo.Local);
-        MyLogManager.Debug("1: "+ticket.date.Value+" --> "+dateTicket);
+        
         body = body.Replace("${ticket_creation_date}", dateTicket.ToString("F", culture));
         body = body.Replace("${ticket_id}", ticket.id.ToString());
         body = body.Replace("${customer_name}", ticket.tenant);
         body = body.Replace("${immatriculation}", ticket.immatriculation == null ? "" : ticket.immatriculation);
         body = body.Replace("${user_first_name}", name[0]);
         body = body.Replace("${user_last_name}", name[1]);
-
+        body = body.Replace("${comment}", ticket.comment == null ? "" : ticket.comment);
+        body = body.Replace("<p>", "");
+        body = body.Replace("</p>", "<br/>");
+        
         return body;
     }
 
