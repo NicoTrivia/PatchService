@@ -47,7 +47,7 @@ public class User
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2), // Set the token expiration time
+            expires: DateTime.UtcNow.AddHours((profile == "ADMIN" || profile == "OPERATOR") ? 10 : 2), // Set the token expiration time
             signingCredentials: credentials
         );
 
