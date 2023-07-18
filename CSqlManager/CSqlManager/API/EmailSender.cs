@@ -18,10 +18,27 @@ public class EmailSender: SecureEnpoint
     static string senderEmail = (string)Variables.RetrieveVariable("senderEmail");
     static string senderPassword = (string)Variables.RetrieveVariable("senderPassword");
 
-    private static string body = File.ReadAllText("template_mail_qualify.html");
-
-    public static void Send(string recipientEmail, string subject)
+    private static string ReplaceAll(string body, Ticket? ticket)
     {
+        if (ticket is null)
+            return body;
+
+        var name = ticket.user_name.Split(" ");
+        
+        body = body.Replace("${ticket_creation_date}", ticket.date.ToString());
+        body = body.Replace("${ticket_id}", ticket.id.ToString());
+        body = body.Replace("${customer_name}", ticket.tenant);
+        body = body.Replace("${user_first_name}", name[0]);
+        body = body.Replace("${user_first_name}", name[1]);
+
+        return body;
+    }
+
+    public static void Send(string recipientEmail, string subject, Ticket? ticket = null)
+    {
+        string body = ""; // GET THE MAIL TEMPLATE THERE 
+        body = ReplaceAll(body, ticket);
+        
         MailMessage message = new MailMessage(senderEmail, recipientEmail, subject, body);
         message.IsBodyHtml = true; 
 
