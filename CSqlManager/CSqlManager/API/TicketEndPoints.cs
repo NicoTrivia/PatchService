@@ -19,7 +19,7 @@ public class TicketEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         var list = access.GetTickets();
 
         return Results.Ok(list);
@@ -32,7 +32,7 @@ public class TicketEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         var list = access.GetInProgress(claims.UserId);
 
         return Results.Ok(list);
@@ -44,7 +44,7 @@ public class TicketEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         var list = access.GetByTenant(Tenant);
 
         return Results.Ok(list);
@@ -57,7 +57,7 @@ public class TicketEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT : "+ claims);
             return Results.Unauthorized();
         }
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         var ticket = access.GetById(id);
 
         if (ticket != null && (claims.Tenant != ticket.tenant) && (claims.Profile != "ADMIN" && claims.Profile != "OPERATOR")) {
@@ -79,11 +79,12 @@ public class TicketEndPoints: SecureEnpoint
             return Results.BadRequest("Invalid file id: "+ticket.file_id+" for tenant: "+claims.Tenant );
         }
 
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         access.Create(ticket);        
-        
-        MyLogManager.Debug($"Ticket Created : {ticket.id} by {claims.User} / {claims.Tenant}");
-
+        MyLogManager.Debug($"Ticket Created : {ticket.id} by {claims.User} / {claims.Tenant} / {claims.UserEmail}");
+        if (claims.UserEmail != null && !claims.UserEmail.StartsWith("#")) {
+            EmailSender.Send(true, claims.UserEmail, ticket);
+        }
         return Results.Ok(ticket);
     }
     public static IResult Update(HttpContext context,Ticket ticket)
@@ -93,10 +94,15 @@ public class TicketEndPoints: SecureEnpoint
             MyLogManager.Error("ERROR 401 : Invalid JWT/PROFILE : "+ claims);
             return Results.Unauthorized();
         }
-        var access = new TicketAccess();
+        TicketAccess access = new TicketAccess();
         access.Update(ticket);
         MyLogManager.Debug($"Ticket Updated : {ticket.id} by {claims.User} / {claims.Tenant}");
+        UserAccess userAccess = new UserAccess();
+        User user = userAccess.GetUserById((int)ticket.user_id!);
+        if (user != null && user.email != null && !user.email.StartsWith("#") && ticket.processed_user_name != null) {
 
+            EmailSender.Send(false, user.email, ticket);
+        }
         return Results.Ok(ticket);
     }
 

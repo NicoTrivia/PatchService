@@ -3,7 +3,7 @@ namespace CSqlManager;
 
 public class Variables
 {
-    static Dictionary<string, object> variables = new Dictionary<string, object>();
+    static Dictionary<string, string> variables = new Dictionary<string, string>();
     static bool initialiazed = false;
 
     static readonly string filePath = "patch_services.properties";
@@ -22,7 +22,7 @@ public class Variables
         MyLogManager.Debug("Variables have been saved");
     }
     
-    public static object RetrieveVariable(string variableName)
+    public static string RetrieveVariable(string variableName)
     {
         if (initialiazed || File.Exists(filePath)) {
             if (!initialiazed && File.Exists(filePath))

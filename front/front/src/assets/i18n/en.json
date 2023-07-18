@@ -48,7 +48,8 @@
         "DELETE": "Supprimer",
         "ACTIVATE": "Activer",
         "UNACTIVATE": "Désactiver",
-        "IN_PROGRESS_VIEW": "A traiter"
+        "IN_PROGRESS_VIEW": "A traiter",
+        "EDIT_MAIL_TEMPLATE": "Paramétrage emails"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -235,7 +236,8 @@
             "MAX_EXTRA_INFO_LENGTH": "{{max_chars}} caractères maximum",
             "FAILED_PATCH": "Echec traitement ou fichier source invalide",
             "FAILED_PATCH_LABEL": "Non traité",
-            "UPLOAD_PATCH_OK": "Fichier patch transmis avec succès"
+            "UPLOAD_PATCH_OK": "Fichier patch transmis avec succès",
+            "PROCESS_TICKET_PROCESSED": "Le ticket a été traité avec succès"
         },
         "DIALOG": {
             "UPLOAD_DIALOG": "Soumettre le fichier patch traité au client"
@@ -245,5 +247,19 @@
         "D": "Diesel",
         "P": "Essence",
         "X": "Toutes"
+    },
+    "MAIL_TEMPLATE_FORM": {
+        "TITLE": {
+            "CREATE": "Créer un paramétrage des emails",
+            "SET": "Modifier le paramétrge des emails"
+        }
+    },
+    "MAIL_TEMPLATE": {
+        "FLD": {
+            "MAIL_ACKNOWLEDGE": "Mail envoyé lors des acquittements",
+            "MAIL_COMPLETED": "Mail envoyé à complétion du ticket"
+        },
+        "INFO": "Mots clés (remplacés) : ",
+        "INFO_VALUE": "Les mots suivant sont remplacés par leur valeur: ${ticket_creation_date} ${ticket_id} ${customer_name} ${user_first_name} ${user_last_name} ${immatriculation}"
     }
 }

@@ -134,7 +134,7 @@ public class UserEndPoints: SecureEnpoint
             if (tenant != null && tenant.active)
             {
                 string profile = user.profile.ToString();
-                user.jwt = User.GenerateJwtToken(user.login, user.id, user.tenant, profile);
+                user.jwt = User.GenerateJwtToken(user.login, user.id, user.tenant, profile, user.email);
             }
         }
         

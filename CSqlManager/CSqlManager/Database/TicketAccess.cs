@@ -217,9 +217,12 @@ public class TicketAccess : DbAccess
                                   $"@processed_file_name, @processed_file_size, @processed_user_name, @comment, @processed_user_id, @processed_date," +
                                   $"@brand_code, @ecu_code, @brand_name, @dpf, @egr, @lambda, @hotstart, @flap, @adblue, @dtc, @torqmonitor, @speedlimit," +
                                   $"@startstop, @nox, @tva, @readiness, @immo, @maf, @hardcut, @displaycalibration, @waterpump, @tprot, @o2, @glowplugs," +
-                                  $" @y75, @special, @decata, @vmax, @stage1, @stage2, @flexfuel)";
+                                  $" @y75, @special, @decata, @vmax, @stage1, @stage2, @flexfuel) RETURNING id";
             AddInCommand(command, ticket);
-            command.ExecuteNonQuery();
+            int? generatedId = (int?)command.ExecuteScalar();
+            if (generatedId != null) {
+                ticket.id = (int)generatedId;
+            }
             Close(Connection);
         }
     }

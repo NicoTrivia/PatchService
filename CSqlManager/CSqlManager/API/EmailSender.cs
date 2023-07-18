@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
-
+using System.Globalization;
 namespace CSqlManager;
 
 public class EmailSender: SecureEnpoint
@@ -18,25 +18,32 @@ public class EmailSender: SecureEnpoint
     static string senderEmail = (string)Variables.RetrieveVariable("senderEmail");
     static string senderPassword = (string)Variables.RetrieveVariable("senderPassword");
 
-    private static string ReplaceAll(string body, Ticket? ticket)
+    private static string ReplaceAll(string body, Ticket ticket)
     {
-        if (ticket is null)
-            return body;
-
-        var name = ticket.user_name.Split(" ");
-        
-        body = body.Replace("${ticket_creation_date}", ticket.date.ToString());
+        string[] name = ticket.user_name!.Split(" ");
+        CultureInfo culture = new CultureInfo("fr-FR");
+        DateTime dateTicket = TimeZoneInfo.ConvertTimeFromUtc(ticket.date.Value, TimeZoneInfo.Local);
+        MyLogManager.Debug("1: "+ticket.date.Value+" --> "+dateTicket);
+        body = body.Replace("${ticket_creation_date}", dateTicket.ToString("F", culture));
         body = body.Replace("${ticket_id}", ticket.id.ToString());
         body = body.Replace("${customer_name}", ticket.tenant);
+        body = body.Replace("${immatriculation}", ticket.immatriculation == null ? "" : ticket.immatriculation);
         body = body.Replace("${user_first_name}", name[0]);
-        body = body.Replace("${user_first_name}", name[1]);
+        body = body.Replace("${user_last_name}", name[1]);
 
         return body;
     }
 
-    public static void Send(string recipientEmail, string subject, Ticket? ticket = null)
+    public static void Send(bool acknowledge, string recipientEmail, Ticket ticket)
     {
-        string body = ""; // GET THE MAIL TEMPLATE THERE 
+        MailAccess access = new MailAccess();
+        MailTemplate? mailTemplate = access.GetMailTemplate();
+        string subject = acknowledge ? Variables.RetrieveVariable("mail_subject_acknowledge") : Variables.RetrieveVariable("mail_subject_completed");
+        if (mailTemplate == null) {
+            MyLogManager.Error("Mail template is not set.");
+            return;
+        }
+        string body = acknowledge ? mailTemplate.MailAcknowledge : mailTemplate.MailCompleted;
         body = ReplaceAll(body, ticket);
         
         MailMessage message = new MailMessage(senderEmail, recipientEmail, subject, body);
@@ -54,7 +61,7 @@ public class EmailSender: SecureEnpoint
         }
         catch (Exception ex)
         {
-            MyLogManager.Debug("An error occurred while sending the email: " + ex.Message);
+            MyLogManager.Error("An error occurred while sending the email: " + ex.Message);
         }
     }
 

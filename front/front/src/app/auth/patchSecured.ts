@@ -7,7 +7,9 @@ import { AuthenticationService } from '../auth/authentication-service/authentica
 export class PatchSecured {
     public PROFILE = PROFILE;
     constructor(readonly authenticationService: AuthenticationService, readonly router: Router) {
-        this.authenticationService.checkTimeOut(true);
+        if (!this.authenticationService.checkTimeOut(true)) {
+            this.router.navigate([`/logout`]);
+        }
     }
 
     public allow(p: PROFILE): boolean {

@@ -1,7 +1,7 @@
 import { Injectable, OnInit} from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
-import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {map, catchError} from 'rxjs/operators';
 import {Config} from '../../config';
 import * as CryptoJS from 'crypto-js';
@@ -17,7 +17,8 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
 
     private user: User|null = null;
     private jwtToken: string|null = null;
-    private timeOut = 0;
+    private static timeOut = 0;
+    private static timeOutCheck = 0;
     private csrfToken: string | null = null;
 
     private isTimeout = false;
@@ -32,7 +33,6 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
     public ngOnInit() {
         this.initialized = true;
         this.jwtToken = localStorage.getItem(Config.STORAGE_ACCESS_TOKEN);
-        this.timeOut = 0;
         this.clearTimoutDetected();
         if (this.jwtToken) {
             const userStr = localStorage.getItem(Config.STORAGE_USER_OBJ);
@@ -43,7 +43,9 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
                 this.user = userJson ? new User(userJson) : null;
             }
 
-            this.initTimeOut();
+            if (AuthenticationService.timeOut == 0) {
+                this.initTimeOut();
+            }
         }
         this.checkExpired();
     }
@@ -83,7 +85,7 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         localStorage.removeItem(Config.STORAGE_USER_OBJ);
         this.user = null;
         this.jwtToken = null;
-        this.timeOut = 0;
+        AuthenticationService.timeOut = 0;
     }
   
     /**
@@ -101,8 +103,6 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
         this.csrfToken = s;
     }
   
-    
-
     public login(tenant: string, login: string, password: string): Observable<User|null> {
         this.isTimeout = false;
         const formData: FormData = new FormData();
@@ -116,59 +116,6 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
             catchError(err => {
                 this.handleError(err);
                 return of(null); }));
-        /*
-        if (tenant === 'ACME' && 'nicolas' === login && 'nicolas' == password) {
-            const user = new User('');
-            user.login = login;
-            user.firstname = "Nicolas";
-            user.lastname = "Duval";
-            user.tenant = tenant;
-            user.email = "nicolas.duval@acme.fr"
-            user.profile = PROFILE.CUSTOMER;
-            user.active = true;
-            this.setUser(user);
-            return of(user);
-        }
-        if (tenant === 'AutoBis' && 'julia' === login && 'julia' == password) {
-            const user = new User('');
-            user.login = login;
-            user.firstname = "Julia";
-            user.lastname = "Valasky";
-            user.tenant = tenant;
-            user.email = "j.valasky@autobis.com"
-            user.profile = PROFILE.CUSTOMER;
-            user.active = true;
-            this.setUser(user);
-
-            return of(user);
-        }
-        if (tenant === 'AutoBis' && 'frank' === login && 'frank' == password) {
-            const user = new User('');
-            user.login = login;
-            user.firstname = "Frank";
-            user.lastname = "Sably";
-            user.tenant = tenant;
-            user.profile = PROFILE.CUSTOMER;
-            user.email = "f.sably@autobis.com"
-            user.active = false;
-            this.setUser(user);
-
-            return of(user);
-        }
-        if (tenant === 'EA-Tech' && 'lionel' === login && 'lionel' == password) {
-            const user = new User('');
-            user.login = login;
-            user.firstname = "Lionel";
-            user.lastname = "Gros";
-            user.email = "support@eatech.com"
-            user.tenant = tenant;
-            user.profile = PROFILE.OPERATOR;
-            user.active = true;
-            this.setUser(user);
-
-            return of(user);
-        }
-        return of(null);    */
     }
 
     private setUser(user :any): User|null
@@ -196,7 +143,12 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
     }
   
     private initTimeOut() {
-        this.timeOut = new Date().getTime();
+        AuthenticationService.timeOut = new Date().getTime();
+        this.initTimeOutCheck();
+    }
+
+    private initTimeOutCheck() {
+        AuthenticationService.timeOutCheck = new Date().getTime();
     }
 
     public updateUser(user: User) {
@@ -228,28 +180,40 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
      */
     public checkTimeOut(reinit: boolean): boolean {
         const time = new Date().getTime();
-        if (!this.timeOut || this.timeOut <= 0) {
+        if (!AuthenticationService.timeOut || AuthenticationService.timeOut <= 0) {
             return false;
         }
-        this.checkExpired();
-        if (this.timeOut < (time - Config.TIMEOUT_CHECK)) {
-            // renew JWT
-            this.http.get<string>(`${Config.APP_URL}${Config.API_ROUTES.reset_timeout}`).pipe(map(tokenStr => {
-                this.initTimeOut();
-                if (tokenStr === null || tokenStr === '{}') {
-                    return null;
-                }
-                const jsonStr = JSON.stringify(tokenStr);
-                const newToken = JSON.parse(jsonStr);
-                return newToken.access_token;
+        if (!AuthenticationService.timeOutCheck) {
+            this.initTimeOutCheck();
+        }
+        if (AuthenticationService.timeOutCheck >= (time - (Config.TIMEOUT_CHECK))) {
+            return true;// check expired later
+        }
+        const expirationOk = this.checkExpired();
+        this.initTimeOutCheck();
+        this.logger.info('Check JWT expiration : ', expirationOk);
+        if (expirationOk && reinit && (AuthenticationService.timeOut < (time - (Config.TIMEOUT_CHECK * 6)))) {
+            this.initTimeOut();
+       // renew JWT
+       /*
+       this.logger.info('Re-init JWT token.');
+       this.http.get<string>(`${Config.APP_URL}${Config.API_ROUTES.reset_timeout}`).pipe(map(tokenStr => {
+
+           if (tokenStr === null || tokenStr === '{}') {
+               return null;
+           }
+           const jsonStr = JSON.stringify(tokenStr);
+           const newToken = JSON.parse(jsonStr);
+           this.logger.info('JWT token renewed');
+           return newToken.access_token;
             })).subscribe(accessToken => {
                 if (reinit && accessToken) {
                     this.jwtToken = accessToken;
                     localStorage.setItem(Config.STORAGE_ACCESS_TOKEN, this.jwtToken!);
                 }
-            });
+            });*/
         }
-        return true;
+        return expirationOk;
     }
 
     /**
@@ -292,31 +256,32 @@ export class AuthenticationService  extends PSCommonService implements OnInit{
      * @returns check if jwt token is not expired
      */
     private checkExpired(): boolean {
-        /*if (this.jwtToken) {
+        if (this.jwtToken) {
             const payloadBase64 = this.jwtToken.split('.')[1];
             const decodedJson = Buffer.from(payloadBase64, 'base64').toString();
             const decoded = JSON.parse(decodedJson);
             const exp = decoded.exp;
             const expired = (Date.now() >= exp * 1000);
+            const d1 = new Date( exp * 1000);
             let ok = true;
             if (expired) {
                 this.logger.warn('JWT token has expired');
                 ok = false;
-            } if (decoded.iss != 'SLFP') {
+            } if (decoded.APP != 'Patch Services') {
                 this.logger.warn('JWT token not valid');
                 ok = false;
-            } else if (this.getTenant() != null && this.getTenant() != decoded.tenant) {
-                this.logger.warn('JWT has invalid tenant %s : %s', this.getTenant(), decoded.tenant);
+            } else if (this.getTenant() != null && this.getTenant() != decoded.Tenant) {
+                this.logger.warn('JWT has invalid tenant %s : %s', this.getTenant(), decoded.Tenant);
                 ok = false;
-            } else if (this.getLogin() != null && this.getLogin() != decoded.user_login) {
-                this.logger.warn('JWT has invalid login %s : %s', this.getLogin(), decoded.user_login);
+            } else if (this.getLogin() != null && this.getLogin() != decoded.User) {
+                this.logger.warn('JWT has invalid login %s : %s', this.getLogin(), decoded.User);
                 ok = false;
             }
             if (!ok) {
                 this.jwtToken = null;
                 this.user = null;
             }
-        }*/
+        }
         return this.jwtToken != null;
     }
 

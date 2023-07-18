@@ -42,6 +42,8 @@ public class SecureEnpoint
                     result.APP = claim.Value;
                 } else if (claim.Type == "User") {
                     result.User = claim.Value;
+                } else if (claim.Type == "UserEmail") {
+                    result.UserEmail = claim.Value;
                 }  else if (claim.Type == "Tenant") {
                     result.Tenant = claim.Value;
                 }  else if (claim.Type == "Profile") {

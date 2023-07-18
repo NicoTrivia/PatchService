@@ -22,7 +22,7 @@ public class User
 
     public string? jwt  { get; set; }
     private static readonly string jwtKey = Variables.RetrieveVariable("jwtKey").ToString() ?? throw new InvalidOperationException();
-    public static string GenerateJwtToken(string userLogin, int userId, string tenant, string profile)
+    public static string GenerateJwtToken(string userLogin, int userId, string tenant, string profile, string? email)
     {
         byte[] keyBytes = Encoding.UTF8.GetBytes(jwtKey);
         byte[] hashedKeyBytes;
@@ -37,6 +37,7 @@ public class User
             new Claim("APP", "Patch Services"),
             new Claim("User", userLogin),
             new Claim("UserId", userId.ToString()),
+            new Claim("UserEmail", email == null ? "" : email),
             new Claim("Tenant", tenant),
             new Claim("Profile", profile)
         };
