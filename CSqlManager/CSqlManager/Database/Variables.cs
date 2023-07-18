@@ -4,6 +4,7 @@ namespace CSqlManager;
 public class Variables
 {
     static readonly string filePath = "patch_services.properties";
+    static readonly string filePathSecret = "secret.properties";
     
     public static void SaveVariables(Dictionary<string, object> variables)
     {
@@ -38,8 +39,28 @@ public class Variables
                     }
                 }
             }
-
             MyLogManager.Log("Variables have been successfully retrieved");
+
+            if (File.Exists(filePathSecret))
+            {
+                using (StreamReader reader = new StreamReader(filePathSecret))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] parts = line.Split('=');
+                        if (parts.Length == 2)
+                        {
+                            string key = parts[0];
+                            string value = parts[1];
+                            variables[key] = value;
+                        }
+                    }
+                }
+                MyLogManager.Log("Secret Variables have been successfully retrieved");
+
+            }
+
 
             if (variables.ContainsKey(variableName))
             {
