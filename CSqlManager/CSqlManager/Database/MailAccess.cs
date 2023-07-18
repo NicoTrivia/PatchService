@@ -11,9 +11,9 @@ public class MailAccess : DbAccess
         using (NpgsqlConnection Connection = GetConnection())
         {
             NpgsqlCommand command = CreateCommand(Connection);
-            command.CommandText = $"SELECT id, mail_acknowledge, mail_completed FROM ps_mail ORDER BY id DESC";
+            command.CommandText = $"SELECT id, mail_acknowledge, mail_completed FROM ps_mail ORDER BY id DESC LIMIT 1";
             var reader = command.ExecuteReader();
-            while (reader.Read())
+            if (reader.Read())
             {
                 requestResult = new MailTemplate();
                 requestResult.Id = (int)getInt(reader, "id", true)!;
