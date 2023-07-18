@@ -10,15 +10,25 @@
                                 {{(isCreation ? 'MAIL_TEMPLATE_FORM.TITLE.CREATE' :'MAIL_TEMPLATE_FORM.TITLE.SET') | translate}}
                             </div>
                             <div class="patch-form-group row">
+                                <label for="code" class="col-sm-3 patch-col-form-label">
+                                    {{'MAIL_TEMPLATE.INFO' | translate}}
+                                </label>
+                                <div class="col-sm-8">
+                                    {{'MAIL_TEMPLATE.INFO_VALUE' | translate}}
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">&nbsp;</div>
+                            <div class="patch-form-group row">
                                 <label for="code" class="col-sm-12 patch-col-form-label">
                                     {{'MAIL_TEMPLATE.FLD.MAIL_ACKNOWLEDGE' | translate}}&nbsp;:
                                 </label>
                             </div>
                             <div class="patch-form-group row">
                                 <div class="col-sm-12">
-                                    <p-editor [(ngModel)]="mailTemplate.mailAcknowledge" [style]="{ height: '10rem' }"></p-editor>
+                                    <p-editor [(ngModel)]="mailTemplate.mailAcknowledge" [style]="{ height: '8rem' }"></p-editor>
                                 </div>
                             </div>
+                            <div class="patch-form-group row">&nbsp;</div>
                             <div class="patch-form-group row">
                                 <label for="name" class="col-sm-12 patch-col-form-label">
                                     {{'MAIL_TEMPLATE.FLD.MAIL_COMPLETED' | translate}}&nbsp;:
@@ -26,7 +36,7 @@
                             </div>
                             <div class="patch-form-group row">
                                 <div class="col-sm-12">
-                                    <p-editor [(ngModel)]="mailTemplate.mailCompleted" [style]="{ height: '10rem' }"></p-editor>
+                                    <p-editor [(ngModel)]="mailTemplate.mailCompleted" [style]="{ height: '8rem' }"></p-editor>
                                 </div>
                             </div>
                             <div class="patch-form-buttonbar">

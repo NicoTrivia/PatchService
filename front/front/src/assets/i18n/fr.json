@@ -256,8 +256,9 @@
     "MAIL_TEMPLATE": {
         "FLD": {
             "MAIL_ACKNOWLEDGE": "Mail envoyé lors des acquittements",
-            "MAIL_COMPLETED ": "Mail envoyé à complétion du ticket"
+            "MAIL_COMPLETED": "Mail envoyé à complétion du ticket"
         },
-        "INFO": "Les mots clés autorisés dans le modèle d'email (remplacés) sont : xxxx"
+        "INFO": "Mots clés (remplacés) : ",
+        "INFO_VALUE": "Les mots suivant sont remplacés par leur valeur: ${ticket_creation_date} ${ticket_id} ${customer_name} ${customer_code} ${user_first_name} ${user_last_name}"
     }
 }

@@ -6,8 +6,8 @@ export class MailTemplate {
     
     constructor(data: any) {
         this._id = data.id;
-        this._mailAcknowledge = data.mail_acknowledge;
-        this._mailCompleted = data.mail_completed;
+        this._mailAcknowledge = data.mailAcknowledge;
+        this._mailCompleted = data.mailCompleted;
     }
 
     public get id(): number {
@@ -36,6 +36,6 @@ export class MailTemplate {
 
 
     toJSON(): any {
-        return { id: this._id, mail_acknowledge: this._mailAcknowledge, mail_completed: this._mailCompleted};
+        return { id: this._id, mailAcknowledge: this._mailAcknowledge, mailCompleted: this._mailCompleted};
     }
 }
