@@ -22,7 +22,7 @@ public class EmailSender: SecureEnpoint
     {
         string[] name = ticket.user_name!.Split(" ");
         CultureInfo culture = new CultureInfo("fr-FR");
-        DateTime dateTicket = TimeZoneInfo.ConvertTimeFromUtc(ticket.date.Value, TimeZoneInfo.Local);
+        DateTime dateTicket = (ticket.processed_file_name == null) ? TimeZoneInfo.ConvertTimeFromUtc(ticket.date.Value, TimeZoneInfo.Local) : ticket.date.Value;
         
         body = body.Replace("${ticket_creation_date}", dateTicket.ToString("F", culture));
         body = body.Replace("${ticket_id}", ticket.id.ToString());
@@ -31,6 +31,11 @@ public class EmailSender: SecureEnpoint
         body = body.Replace("${user_first_name}", name[0]);
         body = body.Replace("${user_last_name}", name[1]);
         body = body.Replace("${comment}", ticket.comment == null ? "" : ticket.comment);
+        body = body.Replace("${brand_code}", ticket.brand_code);
+        body = body.Replace("${brand_name}", ticket.brand_name);
+        body = body.Replace("${ecu_code}", ticket.ecu_code);
+        body = body.Replace("${engine}", ticket.fuel == null ? "" : ticket.fuel );
+        body = body.Replace("${processed_user_name}", ticket.processed_user_name == null ? "" :  ticket.processed_user_name );
         body = body.Replace("<p>", "");
         body = body.Replace("</p>", "<br/>");
         

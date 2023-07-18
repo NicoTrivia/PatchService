@@ -260,6 +260,6 @@
             "MAIL_COMPLETED": "Mail envoyé à complétion du ticket"
         },
         "INFO": "Mots clés (remplacés) : ",
-        "INFO_VALUE": "Les mots suivant sont remplacés par leur valeur: ${ticket_creation_date} ${ticket_id} ${customer_name} ${immatriculation} ${user_first_name} ${user_last_name} ${comment}"
+        "INFO_VALUE": "Les mots suivant sont remplacés par leur valeur: ${ticket_creation_date} ${ticket_id} ${customer_name} ${immatriculation} ${user_first_name} ${user_last_name} ${comment} ${brand_code} ${brand_name} ${ecu_code} ${engine} ${processed_user_name}"
     }
 }
