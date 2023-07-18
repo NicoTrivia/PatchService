@@ -12,3 +12,5 @@ CSqlManager/CSqlManager/publish/
 backtest/
 
 CSqlManager/CSqlManager/.idea/
+
+CSqlManager/CSqlManager/secret.properties

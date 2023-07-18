@@ -52,7 +52,8 @@ export class Config {
             ecu: '/ecu',
             files: '/files',
             files_patched: '/files_patched',
-            next_file_id: '/next_file_id'
+            next_file_id: '/next_file_id',
+            mail_template: '/mail_template'
         };
     }
 }

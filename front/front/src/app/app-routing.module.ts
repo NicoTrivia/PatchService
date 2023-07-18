@@ -10,6 +10,8 @@ import {TicketInProgressComponent} from './nav/ticket-in-progress/ticket-in-prog
 import {EditTenantComponent} from './forms/edit-tenant/edit-tenant.component';
 import {EditBrandComponent} from './forms/edit-brand/edit-brand.component';
 import {EditEcuComponent} from './forms/edit-ecu/edit-ecu.component';
+import {EditMailComponent} from './forms/edit-mail/edit-mail.component';
+
 import {AuthGuard} from './auth/auth-guard/authGuard';
 import {LoginComponent} from './auth/login/login.component';
 import {LogoutComponent} from './auth/logout/logout.component';
@@ -21,6 +23,7 @@ const routes: Routes = [
   { path: 'user_list', component: UserListComponent, canActivate: [AuthGuard]  },
   { path: 'edit_brand', component: EditBrandComponent, canActivate: [AuthGuard]  },
   { path: 'edit_brand/:code', component: EditBrandComponent, canActivate: [AuthGuard]  },
+  { path: 'edit_mail_template', component: EditMailComponent, canActivate: [AuthGuard]  },
   { path: 'edit_ecu/:brand_code', component: EditEcuComponent, canActivate: [AuthGuard]  },
   { path: 'edit_ecu/:brand_code/:code', component: EditEcuComponent, canActivate: [AuthGuard]  },
   { path: 'edit_user', component: EditUserComponent, canActivate: [AuthGuard]  },

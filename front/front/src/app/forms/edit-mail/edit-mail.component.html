@@ -1,0 +1,41 @@
+<section class='patch-container-sidebar'>
+    <app-sidebar [title]="isCreation ? 'MAIL_TEMPLATE_FORM.TITLE.CREATE' : 'MAIL_TEMPLATE_FORM.TITLE.SET'"></app-sidebar>
+    <div class="patch-container-large patch-no-scroll-container patch-im-bg" style="background-image: url('assets/images/bg-2.png')">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div *ngIf="mailTemplate" class="patch-card-area patch-card-form-top">
+                    <!-- Create / set mailTemplate  -->
+                    <div class="patch-card">
+                            <div class="patch-form-title-main">
+                                {{(isCreation ? 'MAIL_TEMPLATE_FORM.TITLE.CREATE' :'MAIL_TEMPLATE_FORM.TITLE.SET') | translate}}
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="code" class="col-sm-12 patch-col-form-label">
+                                    {{'MAIL_TEMPLATE.FLD.MAIL_ACKNOWLEDGE' | translate}}&nbsp;:
+                                </label>
+                            </div>
+                            <div class="patch-form-group row">
+                                <div class="col-sm-12">
+                                    <p-editor [(ngModel)]="mailTemplate.mailAcknowledge" [style]="{ height: '10rem' }"></p-editor>
+                                </div>
+                            </div>
+                            <div class="patch-form-group row">
+                                <label for="name" class="col-sm-12 patch-col-form-label">
+                                    {{'MAIL_TEMPLATE.FLD.MAIL_COMPLETED' | translate}}&nbsp;:
+                                </label>
+                            </div>
+                            <div class="patch-form-group row">
+                                <div class="col-sm-12">
+                                    <p-editor [(ngModel)]="mailTemplate.mailCompleted" [style]="{ height: '10rem' }"></p-editor>
+                                </div>
+                            </div>
+                            <div class="patch-form-buttonbar">
+                                <button pButton id="btnCancelBrand" class="ui-button-ps-hor p-button-rounded p-button-outlined" (click)="cancelForm()" label="{{'BTN.CANCEL' | translate}}"></button>
+                                <button pButton type='submit' id="btnValidateBrand" class="ui-button-ps-hor p-button-rounded" (click)="validateForm()" label="{{'BTN.VALIDATE' | translate}}"></button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -17,6 +17,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 // UI
+import { EditorModule } from 'primeng/editor';
 import {TableModule} from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
@@ -58,6 +59,7 @@ import { UploadDialogComponent } from './tile-components/upload-dialog/upload-di
 import { BrandListComponent } from './nav/brand-list/brand-list.component';
 import { EditBrandComponent } from './forms/edit-brand/edit-brand.component';
 import { EditEcuComponent } from './forms/edit-ecu/edit-ecu.component';
+import { EditMailComponent } from './forms/edit-mail/edit-mail.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -81,13 +83,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     UploadDialogComponent,
     BrandListComponent,
     EditBrandComponent,
-    EditEcuComponent
+    EditEcuComponent,
+    EditMailComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,  CommonModule,HttpClientModule, BrowserAnimationsModule, FormsModule,
     FileUploadModule, DialogModule, ToastModule, DropdownModule, InputSwitchModule,MessageModule, MessagesModule,
     InputTextModule, TableModule, TriStateCheckboxModule, PasswordModule, RadioButtonModule, ConfirmDialogModule,
-    InputTextareaModule, TooltipModule, CheckboxModule, OverlayPanelModule,
+    InputTextareaModule, TooltipModule, CheckboxModule, OverlayPanelModule, EditorModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,

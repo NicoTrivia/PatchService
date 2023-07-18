@@ -44,7 +44,7 @@ class Program
         UserEndPoints.MapEndPoints(web);
         FileTransfers.MapEndPoints(web);
         TicketEndPoints.MapEndPoints(web);
+        EmailSender.MapEndPoints(web);
     }
-    
 }
 

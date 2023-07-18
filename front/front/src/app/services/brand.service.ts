@@ -15,9 +15,10 @@ export class BrandService extends PSCommonService {
   constructor(private http: HttpClient, protected override readonly logger: NGXLogger ) {
     super(logger);
   }
-   /**
-     * Get the list of available data
-     */
+
+ /**
+  * Get the list of available data
+  */
   public findAll(): Observable<Brand[]> {
     const url = `${Config.APP_URL}${Config.API_ROUTES.brand}`;
     return this.http.get<Array<Brand>>(url).pipe(map(resu => {

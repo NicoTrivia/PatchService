@@ -48,7 +48,8 @@
         "DELETE": "Supprimer",
         "ACTIVATE": "Activer",
         "UNACTIVATE": "Désactiver",
-        "IN_PROGRESS_VIEW": "A traiter"
+        "IN_PROGRESS_VIEW": "A traiter",
+        "EDIT_MAIL_TEMPLATE": "Paramétrage emails"
     },
     "HISTORY_VIEW": {
         "TITLE":  {
@@ -245,5 +246,18 @@
         "D": "Diesel",
         "P": "Essence",
         "X": "Toutes"
+    },
+    "MAIL_TEMPLATE_FORM": {
+        "TITLE": {
+            "CREATE": "Créer un paramétrage des emails",
+            "SET": "Modifier le paramétrge des emails"
+        }
+    },
+    "MAIL_TEMPLATE": {
+        "FLD": {
+            "MAIL_ACKNOWLEDGE": "Mail envoyé lors des acquittements",
+            "MAIL_COMPLETED ": "Mail envoyé à complétion du ticket"
+        },
+        "INFO": "Les mots clés autorisés dans le modèle d'email (remplacés) sont : xxxx"
     }
 }
